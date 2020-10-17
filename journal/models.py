@@ -59,7 +59,7 @@ class Mark(models.Model):
     holder = models.ForeignKey('accounts.Apprentices', null=False, on_delete=models.CASCADE, verbose_name='Получатель')
     appraiser = models.ForeignKey('accounts.Teachers', null=False, on_delete=models.CASCADE,
                                   verbose_name='Постановитель')
-    # lesson = models.ForeignKey('schedule.Lessons', null=True, on_delete=models.CASCADE, verbose_name='Урок')
+    lesson = models.ForeignKey('schedule.Lessons', null=True, on_delete=models.CASCADE, verbose_name='Урок')
 
 
 def homework_path():
@@ -82,3 +82,7 @@ class Homework(models.Model):
     deadline_lesson = models.ForeignKey('schedule.Lessons', null=True, on_delete=models.CASCADE,
                                         related_name='+', verbose_name='Урок сдачи')
     deadline_time = models.DateTimeField(null=False, blank=False, verbose_name='Срок сдачи')
+
+
+class Specialization(models.Model):
+    title = models.CharField(max_length=30, null=False, blank=False, verbose_name='Название')

@@ -7,7 +7,7 @@ class StudyGroups(models.Model):
     symbol = models.CharField(max_length=1, null=False, blank=False, verbose_name='Буква')
 
     # отношения
-    specialisation = models.ForeignKey('journal.Disciples', null=True, on_delete=models.CASCADE,
+    specialisation = models.ForeignKey('journal.Specialization', null=True, on_delete=models.CASCADE,
                                        verbose_name='Специализация')
 
 
@@ -48,6 +48,9 @@ class Apprentices(models.Model):
     phone = models.TextField(null=True, blank=False, max_length=20, verbose_name='Телефон')
     email = models.TextField(null=True, blank=False, max_length=30, verbose_name='Электронная почта')
     civ_id = models.CharField(null=False, blank=False, max_length=30, verbose_name='Документ')
+
+    profile_picture = models.FilePathField(null=True, match=".*\.png$|.*\.jpeg$",
+                                           verbose_name='Картинка профиля')
 
     # флаги
     active = models.BooleanField(null=False, default=False, verbose_name='Активность')
@@ -150,6 +153,8 @@ class Managers(models.Model):
                                     ('GBH', 'Head of Governing Council'),
                                     # агент профсоюза
                                     ('LUA', 'Labor Union Agent'),
+                                    # главный библиотекарь
+                                    ('CL', 'Chief Librarian'),
                                     # наемный сотрудник
                                     ('THW', 'Temporary Hired Worker')
                                 ], default='THW')
