@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 from accounts.forms import *
@@ -60,7 +61,20 @@ def account_register(request):
         form = RegisterForm(request.POST)
 
         if form.is_valid():
-            pass
+            user = User.objects.create_user(username=form.cleaned_data['login'],
+                                            password=form.cleaned_data['password'],
+                                            first_name=user_data['first_name'],
+                                            last_name=user_data['last_name'],
+                                            email=user_data['email'],
+                                            )
+
+            if int(user_data['role']) > 2:
+                user.is_staff = True
+                if int(user_data['role']) > 4:
+                    user.is_superuser = True
+
+            user.save()
+            return redirect('/accounts/login')
 
     return render(request, 'registration/register.html', {'user_name': user_data['first_name'],
                                                           'user_last_name': user_data['last_name']})
