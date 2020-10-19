@@ -32,7 +32,8 @@ class Parents(models.Model):
     email = models.TextField(null=False, blank=False, max_length=30, verbose_name='Электронная почта')
 
     # учетные данные
-    account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Аккаунт')
+    account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, unique=True,
+                                   verbose_name='Аккаунт')
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
 
@@ -64,7 +65,8 @@ class Apprentices(models.Model):
     creative_groups = models.ManyToManyField('accounts.CreativeGroups')
 
     # учетные данные
-    account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Аккаунт')
+    account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, unique=True,
+                                   verbose_name='Аккаунт')
     register_date = models.DateField(null=True, auto_now_add=True, verbose_name='Дата регистрации')
 
 
@@ -89,7 +91,8 @@ class Teachers(models.Model):
     disciple = models.ForeignKey('journal.Disciples', null=True, on_delete=models.CASCADE, verbose_name='Специализация')
 
     # учетные данные
-    account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Аккаунт')
+    account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, unique=True,
+                                   verbose_name='Аккаунт')
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
 
@@ -106,7 +109,8 @@ class Staff(models.Model):
     civ_id = models.CharField(null=False, blank=False, max_length=30, verbose_name='Документ')
 
     # учетные данные
-    account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Аккаунт')
+    account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,
+                                   verbose_name='Аккаунт')
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
 
@@ -160,6 +164,6 @@ class Managers(models.Model):
                                 ], default='THW')
 
     # учетные данные
-    account = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=False,
-                                verbose_name='Аккаунт')
+    account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, unique=False,
+                                   verbose_name='Аккаунт')
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')

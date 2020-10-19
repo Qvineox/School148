@@ -1,11 +1,10 @@
-from django.contrib.auth import views
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from accounts.forms import LoginForm
+from accounts.forms import *
 
 
-def site_login(request):
+def account_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
 
@@ -26,3 +25,30 @@ def site_login(request):
             print('failure')
 
     return render(request, 'registration/login.html')
+
+
+def account_preregister(request):
+    if request.method == 'POST':
+        form = PreRegisterForm(request.POST)
+
+        if form.is_valid():
+            # print(form.cleaned_data)
+
+            request.session['new_user_data'] = form.cleaned_data
+            return redirect('/accounts/registration')
+        else:
+            print('failure')
+
+    return render(request, 'registration/preregister.html')
+
+
+def account_register(request):
+    user_data = request.session['new_user_data']
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            pass
+
+    return render(request, 'registration/register.html', {'user_name': user_data['first_name'],
+                                                          'user_last_name': user_data['last_name']})

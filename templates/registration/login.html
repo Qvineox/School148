@@ -1,5 +1,4 @@
 {% extends  'base.html' %}
-{% load crispy_forms_tags %}
 
 {% block title %}
     <title>Авторизация</title>
@@ -22,7 +21,7 @@
                             </button>
                         </div>
                         <div class="col-8" style="alignment: right">
-                            <button class="btn btn-success btn-block">Регистрация</button>
+                            <a class="btn btn-success btn-block" href="/accounts/preregistration">Регистрация</a>
                         </div>
                     </div>
 
