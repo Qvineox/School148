@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 
 from accounts.forms import *
+from accounts.services import *
 
 
 def account_login(request):
@@ -32,10 +33,20 @@ def account_preregister(request):
         form = PreRegisterForm(request.POST)
 
         if form.is_valid():
-            # print(form.cleaned_data)
+            check = check_account_availability(form.cleaned_data['role'],
+                                               form.cleaned_data['first_name'],
+                                               form.cleaned_data['second_name'])
 
-            request.session['new_user_data'] = form.cleaned_data
-            return redirect('/accounts/registration')
+            if type(check) == bool:
+                if check:
+                    request.session['new_user_data'] = form.cleaned_data
+                    return redirect('/accounts/registration')
+                else:
+                    print('failure: 1+')
+            else:
+                message = check
+                print(message)
+
         else:
             print('failure')
 
@@ -44,6 +55,7 @@ def account_preregister(request):
 
 def account_register(request):
     user_data = request.session['new_user_data']
+    print(user_data)
     if request.method == 'POST':
         form = RegisterForm(request.POST)
 
