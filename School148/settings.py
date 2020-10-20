@@ -163,6 +163,11 @@ LOGGING = {
             'handlers': ['events', 'user_activity', 'errors'],
             'level': 'DEBUG',
             'propagate': True
+        },
+        'database': {
+            'handlers': ['events', 'database', 'errors'],
+            'level': 'DEBUG',
+            'propagate': True
         }
 
     }

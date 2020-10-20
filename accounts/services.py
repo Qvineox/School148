@@ -1,7 +1,12 @@
+import logging
+
 import accounts.models as models
+
+logger = logging.getLogger('database')
 
 
 def check_account_availability(role, first_name, second_name, last_name=None):
+    logger.debug('Querying registration availability data.')
     if role == '1':
         available_accounts = models.Apprentices.objects.filter(first_name=first_name, second_name=second_name)
     elif role == '2':
@@ -17,7 +22,9 @@ def check_account_availability(role, first_name, second_name, last_name=None):
 
     if available_accounts.count() == 1:
         if not available_accounts.filter(active=False).count() == 0:
-            return available_accounts.first().id
+            account_id = available_accounts.first().id
+            logger.debug('Registration availability received: {0}:'.format(account_id))
+            return account_id
         else:
             return 'Account already has been registered.'
     elif available_accounts.count() == 0:
@@ -36,6 +43,7 @@ def check_account_availability(role, first_name, second_name, last_name=None):
 
 
 def connect_account_to_record(role, account_id, record_id):
+    logger.debug('Connecting new account to school record.')
     if role == '1':
         connect_account = models.Apprentices.objects.filter(id=record_id).first()
     elif role == '2':
@@ -52,3 +60,5 @@ def connect_account_to_record(role, account_id, record_id):
     connect_account.account_id = account_id
     connect_account.active = True
     connect_account.save()
+
+    logger.info('Connected new account to school record.')
