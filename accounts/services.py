@@ -14,21 +14,41 @@ def check_account_availability(role, first_name, second_name, last_name=None):
         available_accounts = models.Managers.objects.filter(first_name=first_name, second_name=second_name)
     elif role == '6':
         pass
-    else:
-        return False
 
     if available_accounts.count() == 1:
-        return True
+        if not available_accounts.filter(active=False).count() == 0:
+            return available_accounts.first().id
+        else:
+            return 'Account already has been registered.'
     elif available_accounts.count() == 0:
-        return 'Записей с такими данными не обнаружено. Обратитесь к администратору.'
+        return 'Record with such data has not been found.'
     elif available_accounts.count() > 1:
         if last_name is not None:
             available_accounts = available_accounts.filter(last_name=last_name)
             if available_accounts.count() == 1:
                 return True
             elif available_accounts.count() == 0:
-                return 'Записей с такими данными не обнаружено. Обратитесь к администратору.'
+                return 'Record with such data has not been found.'
             elif available_accounts.count() > 1:
-                return 'Обнаружено несколько идентичных записей. Обратитесь к администратору.'
+                return 'Several identical records has been found.'
         else:
-            return 'Обнаружено несколько схожих записей. Введите отчество, чтобы продолжить.'
+            return 'Several similar records has been found.'
+
+
+def connect_account_to_record(role, account_id, record_id):
+    if role == '1':
+        connect_account = models.Apprentices.objects.filter(id=record_id).first()
+    elif role == '2':
+        connect_account = models.Parents.objects.filter(id=record_id).first()
+    elif role == '3':
+        connect_account = models.Teachers.objects.filter(id=record_id).first()
+    elif role == '4':
+        connect_account = models.Staff.objects.filter(id=record_id).first()
+    elif role == '5':
+        connect_account = models.Managers.objects.filter(id=record_id).first()
+    elif role == '6':
+        pass
+
+    connect_account.account_id = account_id
+    connect_account.active = True
+    connect_account.save()

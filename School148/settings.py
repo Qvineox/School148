@@ -106,6 +106,68 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'event_format': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} | {message}',
+            'style': '{'
+        },
+        'user_format': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} | {message}',
+            'style': '{'
+        },
+        'database_format': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} | {message}',
+            'style': '{'
+        },
+        'error_format': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} | {message}',
+            'style': '{'
+        },
+    },
+    'handlers': {
+        'events': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/events.log'),
+            'formatter': 'event_format'
+        },
+        'user_activity': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/users.log'),
+            'formatter': 'user_format'
+        },
+        'admin_activity': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/admins.log'),
+        },
+        'errors': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/errors.log'),
+            'formatter': 'error_format'
+        },
+        'database': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/database.log'),
+            'formatter': 'database_format'
+        },
+    },
+    'loggers': {
+        'auth': {
+            'handlers': ['events', 'user_activity', 'errors'],
+            'level': 'DEBUG',
+            'propagate': True
+        }
+
+    }
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
