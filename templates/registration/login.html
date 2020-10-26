@@ -1,4 +1,4 @@
-{% extends  'base.html' %}
+{% extends  'registration/auth_base.html' %}
 
 {% block title %}
     <title>Авторизация</title>
@@ -6,7 +6,7 @@
 
 {% block main %}
     <div class="container" style="align-items: center; justify-content: center; margin-top: 10%">
-        <div class="card" style="background-color: #666699">
+        <div class="card" style="background-color: #292929">
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
