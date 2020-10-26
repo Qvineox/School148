@@ -13,8 +13,8 @@ class PreRegisterForm(forms.Form):
 
     CHOICES = [('1', 'Apprentice'),
                ('2', 'Parent'),
-               ('3', 'Teacher'),
-               ('4', 'Staff'),
+               ('3', 'Staff'),
+               ('4', 'Teacher'),
                ('5', 'Managers'),
                ('6', 'Administration')]
 

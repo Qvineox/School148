@@ -1,5 +1,7 @@
 import logging
 
+from django.contrib.auth.models import User
+
 import accounts.models as models
 
 logger = logging.getLogger('database')
@@ -55,10 +57,45 @@ def connect_account_to_record(role, account_id, record_id):
     elif role == '5':
         connect_account = models.Managers.objects.filter(id=record_id).first()
     elif role == '6':
-        pass
+        return False
 
     connect_account.account_id = account_id
     connect_account.active = True
     connect_account.save()
 
     logger.info('Connected new account to school record.')
+
+
+def get_profile_data(user_id):
+    logger.debug('User data requested. User: {0}'.format(user_id))
+    data = get_profile_from_user(user_id)
+    return data
+
+
+def get_profile_from_user(user_id):
+    user = User.objects.get(id=user_id)
+    logger.info('Querying school profile. User: {0}'.format(user.username))
+
+    # данные будут получены из профиля с наивысшим уровнем группы
+    group = user.groups.values_list('id', flat=True).order_by('-id').first()
+
+    # выбираем школьный профиль из нужной таблицы на основании группы пользователя
+    if group == 1:
+        school_profile = models.Apprentices.objects.filter(account_id=user_id).first()
+    elif group == 2:
+        school_profile = models.Parents.objects.filter(account_id=user_id).first()
+    elif group == 3:
+        school_profile = models.Teachers.objects.filter(account_id=user_id).first()
+    elif group == 4:
+        school_profile = models.Staff.objects.filter(account_id=user_id).first()
+    elif group == 5:
+        school_profile = models.Managers.objects.filter(account_id=user_id).first()
+    elif group == 6:
+        return False
+    else:
+        return False
+
+    if school_profile is not None:
+        return school_profile
+    else:
+        logger.error('Querying school profile failed. User: {0}'.format(user.username))
