@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 
@@ -33,7 +32,6 @@ def account_login(request):
                     messages.error(request, 'Записи с такими данными не существует. Обратитесь к своему куратору.')
 
                 logger.warning('User {0} login failed: {1}'.format(user_login, reason))
-
 
         else:
             logger.warning('Invalid form received from user.')
@@ -108,11 +106,6 @@ def account_register(request):
 
     return render(request, 'registration/register.html', {'user_name': user_data['first_name'],
                                                           'user_last_name': user_data['last_name']})
-
-
-@login_required
-def home(request):
-    return render(request, 'home/apprentice_home.html', navbar_data(request))
 
 
 def profile(request, user_id):
