@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'library',
     'schedule',
     'statistic',
-    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -180,6 +179,7 @@ LOGGING = {
 
 
 LANGUAGE_CODE = 'ru'
+
 
 TIME_ZONE = 'UTC'
 
