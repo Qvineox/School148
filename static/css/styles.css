@@ -11,11 +11,11 @@
 }
 
 .card:not(:first-child) {
-    margin-left: -90px;
+    margin-left: -150px;
 }
 
 .card:hover {
-  transform: translateY(-20px);
+  transform: translateY(-30px);
   transition: 0.4s ease-out;
 }
 

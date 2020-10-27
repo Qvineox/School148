@@ -9,14 +9,16 @@
 
 {% block main %}
     <h1 style="color: whitesmoke">Сегодня, {% now "F j" %}</h1>
-    <div class="container-lg"
+    <div class="container-md"
          style="
             height: 600px;
+            width: 100%;
             top: 60px;
             display: inline-flex;
             margin-top: 1%;
             padding-left: 2%;
             padding-right: 2%; ">
+
 
         <div class="card">
             <div class="container" style="padding: 5%">
@@ -24,7 +26,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" style="margin-left: -150px;">
             <h3 class="title">Card 2</h3>
         </div>
 
@@ -47,6 +49,27 @@
         <div class="card">
             <h3 class="title">Card 7</h3>
         </div>
+
+        <div class="card">
+            <h3 class="title">Card 8</h3>
+        </div>
+
+        <div class="card">
+            <h3 class="title">Card 9</h3>
+        </div>
+
+    <div class="card">
+            <h3 class="title">Card 10</h3>
+        </div>
+
+
+
+
+
+
+
+
+
     </div>
 
 {% endblock %}
