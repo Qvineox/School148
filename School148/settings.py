@@ -9,12 +9,13 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+from django.contrib import messages
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -27,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
+    'journal',
+    'library',
+    'schedule',
+    'statistic',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -70,17 +76,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'School148.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'school',
+        'USER': 'school_admin',
+        'PASSWORD': 'shkola148',
+        'HOST': 'qvineox.ru',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -100,6 +108,72 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'event_format': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} | {message}',
+            'style': '{'
+        },
+        'user_format': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} | {message}',
+            'style': '{'
+        },
+        'database_format': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} | {message}',
+            'style': '{'
+        },
+        'error_format': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} | {message}',
+            'style': '{'
+        },
+    },
+    'handlers': {
+        'events': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/events.log'),
+            'formatter': 'event_format'
+        },
+        'user_activity': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/users.log'),
+            'formatter': 'user_format'
+        },
+        'admin_activity': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/admins.log'),
+        },
+        'errors': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/errors.log'),
+            'formatter': 'error_format'
+        },
+        'database': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/database.log'),
+            'formatter': 'database_format'
+        },
+    },
+    'loggers': {
+        'auth': {
+            'handlers': ['events', 'user_activity', 'errors'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'database': {
+            'handlers': ['events', 'database', 'errors'],
+            'level': 'DEBUG',
+            'propagate': True
+        }
+
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -115,8 +189,23 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(STATIC_DIR),
+]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+LOGIN_REDIRECT_URL = '/accounts/login/'
+LOGIN_URL = '/accounts/login/'
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+ }

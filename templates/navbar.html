@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                {% if 'home' in request.path %}
+                    <a class="nav-link active" href="/accounts/home">Главная</a>
+                {% else %}
+                    <a class="nav-link" href="/accounts/home">Главная</a>
+                {% endif %}
+            </li>
+
+            <li class="nav-item">
+                {% if 'journal' in request.path %}
+                    <a class="nav-link active" href="/journal">Журнал</a>
+                {% else %}
+                    <a class="nav-link" href="/journal">Журнал</a>
+                {% endif %}
+            </li>
+
+            <li class="nav-item">
+                {% if 'profile' in request.path %}
+                    <a class="nav-link active " href="/accounts/profile/{{ request.user.id }}">Профиль</a>
+                {% else %}
+                    <a class="nav-link " href="/accounts/profile/{{ request.user.id }}">Профиль</a>
+                {% endif %}
+            </li>
+
+            <li class="nav-item">
+                {% if 'statistics' in request.path %}
+                    <a class="nav-link active " href="/statistics">Статистика</a>
+                {% else %}
+                    <a class="nav-link " href="/statistics">Статистика</a>
+                {% endif %}
+            </li>
+
+            <li class="nav-item">
+                {% if 'library' in request.path %}
+                    <a class="nav-link active " href="/library">Библиотека</a>
+                {% else %}
+                    <a class="nav-link " href="/library">Библиотека</a>
+                {% endif %}
+            </li>
+        </ul>
+        <ul class="navbar-nav  ml-auto">
+
+
+            {% if current_lesson is None %}
+                <a class="btn btn-outline-light disabled"
+                   style="margin-right: 2%; color: whitesmoke">
+                Урок не идет
+            {% else %}
+                <a class="btn btn-success"
+                   style="margin-right: 2%; color: whitesmoke"
+                   href="/current_lesson">
+                Текущий урок
+            {% endif %}
+
+            </a>
+
+            {% if request.user is not None %}
+                <a type="button"
+                   class="btn btn-outline-primary"
+                   href="/accounts/profile/{{ request.user.id }}"
+                   style="margin-right: 2%; color: whitesmoke">
+                    {{ first_name }} {{ last_name }}
+                </a>
+            {% else %}
+                <a type="button"
+                   class="btn btn-outline-warning"
+                   href="/accounts/login"
+                   style="margin-right: 2%; color: whitesmoke">
+                    Войти
+                </a>
+            {% endif %}>
+
+        </ul>
+    </div>
+</nav>

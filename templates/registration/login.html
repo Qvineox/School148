@@ -1,0 +1,32 @@
+{% extends  'base.html' %}
+
+{% block title %}
+    <title>Авторизация</title>
+{% endblock %}
+
+{% block main %}
+    <div class="container" style="align-items: center; justify-content: center; margin-top: 10%">
+        <div class="card" style="background-color: #666699">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <p style="text-align: center; color: whitesmoke; font-size: large"> Добро пожаловать в систему Школяр!</p>
+                    <input id="login" title="login" class="form-control" type="text" name="login" placeholder="Учетная запись"
+                           style="margin-top: 2%" maxlength="150">
+                    <input id="password" title='password' class="form-control" type="password" name="password" placeholder="Пароль"
+                           style="margin-top: 2%" maxlength="128">
+                    <div class="row" style="margin-top: 5%">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Войти
+                            </button>
+                        </div>
+                        <div class="col-8" style="alignment: right">
+                            <a class="btn btn-success btn-block" href="/accounts/preregistration">Регистрация</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

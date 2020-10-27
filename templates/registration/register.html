@@ -1,0 +1,58 @@
+{% extends  'base.html' %}
+
+{% block title %}
+    <title>Регистрация</title>
+{% endblock %}
+
+{% block main %}
+    <style type="text/css">
+        label {
+            font-size: 120%;
+            font-family: Avantgarde, Gill Sans, Verdana, sans-serif;
+            color: whitesmoke;
+            margin-bottom: -2%;
+        }
+    </style>
+
+    <div class="container" style="align-items: center; justify-content: center; margin-top: 10%">
+        <div class="card" style="background-color: #666699">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <p style="text-align: center; color: whitesmoke; font-size: large">Добро пожаловать, {{ user_name }} {{ user_last_name }}</p>
+                    <div class="row">
+                        <div class="col">
+                            <label for="login">Новый логин для входа</label>
+                            <input id="login"
+                                   title="login"
+                                   class="form-control"
+                                   type="text"
+                                   name="login"
+                                   placeholder="ivan_ivanov (обязательно)"
+                                   maxlength="150"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 2%;">
+                        <div class="col">
+                            <label for="password">Новый пароль</label>
+                            <input id="password"
+                                   title="password"
+                                   class="form-control"
+                                   type="password"
+                                   name="password"
+                                   placeholder="Пароль (обязательно)"
+                                   maxlength="128"
+                                   minlength="3"
+                                   required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1%">Регистрация
+                    </button>
+
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
