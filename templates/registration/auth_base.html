@@ -5,18 +5,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}">
-
     {% block title %}
     {% endblock %}
 </head>
-<body style="background-color: #5f5f5f">
-{% include 'navbar.html' %}
-<div class="container-fluid" style="margin-left: 5%; padding-right: 5%; padding-top: 2%">
-    <div class="row" style="margin-top: 3%; margin-right: 5%">
-        {% include 'partials/messages.html' %}
-    </div>
-    {% block main %}
-    {% endblock %}
-</div>
-</body>
+    <body style="background-color: #5f5f5f">
+        <div class="container">
+            <div class="row" style="margin-top: 2%;">
+                {% include 'partials/messages.html' %}
+            </div>
+            {% block main %}
+            {% endblock %}
+        </div>
+    </body>
 </html>
