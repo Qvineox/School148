@@ -2,7 +2,6 @@
   display: flex;
   height: 480px;
   width: 320px;
-
   background-color: #17141d;
   border-radius: 10px;
   box-shadow: -1rem 0 3rem #000;
@@ -12,7 +11,7 @@
 }
 
 .card:not(:first-child) {
-    margin-left: -50px;
+    margin-left: -90px;
 }
 
 .card:hover {
