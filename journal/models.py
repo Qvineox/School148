@@ -113,15 +113,15 @@ class Lessons(models.Model):
         (TENTH, 'Десятый')
     )
 
-    order = models.SmallIntegerField(choices=ORDER_CHOICES, null=True, blank=False, verbose_name='Порядковый номер')
-    date = models.DateTimeField(null=False, blank=False, verbose_name='Дата урока')
+    order = models.SmallIntegerField(choices=ORDER_CHOICES, null=False, blank=False, verbose_name='Порядковый номер')
+    date = models.DateField(null=False, blank=False, verbose_name='Дата урока')
 
     # флаги
     active = models.BooleanField(null=False, default=True, verbose_name='Активность')
 
     # отношения
-    subject = models.ForeignKey('Disciples', on_delete=models.CASCADE, null=True, verbose_name='Предмет')
-    teacher = models.ForeignKey('accounts.Teachers', on_delete=models.CASCADE, null=True, verbose_name='Преподаватель')
-    study_group = models.ForeignKey('accounts.StudyGroups', on_delete=models.CASCADE, null=True, verbose_name='Класс')
+    subject = models.ForeignKey('Disciples', on_delete=models.CASCADE, null=False, verbose_name='Предмет')
+    teacher = models.ForeignKey('accounts.Teachers', on_delete=models.CASCADE, null=False, verbose_name='Преподаватель')
+    study_group = models.ForeignKey('accounts.StudyGroups', on_delete=models.CASCADE, null=False, verbose_name='Класс')
     homework = models.ForeignKey('Homework', on_delete=models.CASCADE, null=True,
                                  verbose_name='Домашнее задание')
