@@ -72,6 +72,7 @@ def get_profile_data(user_id):
     return data
 
 
+# возвращает школьный профиль из id учетной записи django
 def get_profile_from_user(user_id):
     user = User.objects.get(id=user_id)
     logger.info('Querying school profile. User: {0}'.format(user.username))

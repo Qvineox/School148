@@ -59,7 +59,7 @@ class Mark(models.Model):
     holder = models.ForeignKey('accounts.Apprentices', null=False, on_delete=models.CASCADE, verbose_name='Получатель')
     appraiser = models.ForeignKey('accounts.Teachers', null=False, on_delete=models.CASCADE,
                                   verbose_name='Постановитель')
-    lesson = models.ForeignKey('schedule.Lessons', null=True, on_delete=models.CASCADE, verbose_name='Урок')
+    lesson = models.ForeignKey('Lessons', null=True, on_delete=models.CASCADE, verbose_name='Урок')
 
 
 def homework_path():
@@ -77,12 +77,51 @@ class Homework(models.Model):
 
     # отношения
     author = models.ForeignKey('accounts.Teachers', null=True, on_delete=models.CASCADE, verbose_name='Автор')
-    placement_lesson = models.ForeignKey('schedule.Lessons', null=False, on_delete=models.CASCADE,
+    placement_lesson = models.ForeignKey('Lessons', null=False, on_delete=models.CASCADE,
                                          related_name='+', verbose_name='Урок установки')
-    deadline_lesson = models.ForeignKey('schedule.Lessons', null=True, on_delete=models.CASCADE,
+    deadline_lesson = models.ForeignKey('Lessons', null=True, on_delete=models.CASCADE,
                                         related_name='+', verbose_name='Урок сдачи')
     deadline_time = models.DateTimeField(null=False, blank=False, verbose_name='Срок сдачи')
 
 
 class Specialization(models.Model):
     title = models.CharField(max_length=30, null=False, blank=False, verbose_name='Название')
+
+
+class Lessons(models.Model):
+    FIRST = 1
+    SECOND = 2
+    THIRD = 3
+    FOURTH = 4
+    FIFTH = 5
+    SIXTH = 6
+    SEVENTH = 7
+    EIGHTH = 8
+    NINTH = 9
+    TENTH = 10
+
+    ORDER_CHOICES = (
+        (FIRST, 'Первый'),
+        (SECOND, 'Второй'),
+        (THIRD, 'Третий'),
+        (FOURTH, 'Четвертый'),
+        (FIFTH, 'Пятый'),
+        (SIXTH, 'Шестой'),
+        (SEVENTH, 'Седьмой'),
+        (EIGHTH, 'Восьмой'),
+        (NINTH, 'Девятый'),
+        (TENTH, 'Десятый')
+    )
+
+    order = models.SmallIntegerField(choices=ORDER_CHOICES, null=True, blank=False, verbose_name='Порядковый номер')
+    date = models.DateTimeField(null=False, blank=False, verbose_name='Дата урока')
+
+    # флаги
+    active = models.BooleanField(null=False, default=True, verbose_name='Активность')
+
+    # отношения
+    subject = models.ForeignKey('Disciples', on_delete=models.CASCADE, null=True, verbose_name='Предмет')
+    teacher = models.ForeignKey('accounts.Teachers', on_delete=models.CASCADE, null=True, verbose_name='Преподаватель')
+    study_group = models.ForeignKey('accounts.StudyGroups', on_delete=models.CASCADE, null=True, verbose_name='Класс')
+    homework = models.ForeignKey('Homework', on_delete=models.CASCADE, null=True,
+                                 verbose_name='Домашнее задание')

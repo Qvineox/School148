@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 import accounts.services as account_services
+import journal.services as journal_services
 
 
 # Create your views here.
@@ -21,4 +22,13 @@ def navbar_data(request):
 
 @login_required
 def home(request):
-    return render(request, 'home/apprentice_home.html', navbar_data(request))
+    data = {}
+    school_profile = account_services.get_profile_from_user(request.user.id)
+
+    print(school_profile.study_group.id)
+    # data = {
+    #     'lesson_cards': journal_services.get_lessons_for_study_group(),
+    # }
+
+    data.update(navbar_data(request))
+    return render(request, 'home/apprentice_home.html', data)
