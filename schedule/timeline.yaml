@@ -1,6 +1,5 @@
 monday:
-  -
-    class-id: 1
+  - class-id: 1
     lessons:
       - lesson-id: 1
         teacher-id: 1
@@ -14,46 +13,48 @@ monday:
         teacher-id: 4
 
 tuesday:
-  class-id: 1
-  lessons:
-    - lesson-id: 3
-      teacher-id: 3
-    - lesson-id: 13
-      teacher-id: 13
-    - lesson-id: 16
-      teacher-id: 16
+  - class-id: 1
+    lessons:
+      - lesson-id: 3
+        teacher-id: 3
+      - lesson-id: 1
+        teacher-id: 1
+      - lesson-id: 1
+        teacher-id: 1
 
 wednesday:
-  class-id: 1
-  lessons:
-    - lesson-id: 1
-      teacher-id: 1
-    - lesson-id: 4
-      teacher-id: 4
-    - lesson-id: 16
-      teacher-id: 16
+  - class-id: 1
+    lessons:
+      - lesson-id: 1
+        teacher-id: 1
+      - lesson-id: 4
+        teacher-id: 4
+      - lesson-id: 2
+        teacher-id: 2
 
-thusday:
-  class-id: 1
-  lessons:
-    - lesson-id: 3
-      teacher-id: 3
-    - lesson-id: 2
-      teacher-id: 2
-    - lesson-id: 4
-      teacher-id: 4
+thursday:
+  - class-id: 1
+    lessons:
+      - lesson-id: 3
+        teacher-id: 3
+      - lesson-id: 2
+        teacher-id: 2
+      - lesson-id: 4
+        teacher-id: 4
 
 friday:
-  class-id: 1
-  lessons:
-    - lesson-id: 3
-      teacher-id: 3
-    - lesson-id: 2
-      teacher-id: 2
-    - lesson-id: 4
-      teacher-id: 4
-    - lesson-id: 16
-      teacher-id: 16
+  - class-id: 1
+    lessons:
+      - lesson-id: 3
+        teacher-id: 3
+      - lesson-id: 2
+        teacher-id: 2
+      - lesson-id: 4
+        teacher-id: 4
+      - lesson-id: 4
+        teacher-id: 4
 
 saturday:
-  class-id-1:
+  - class-id: 1
+    lessons:
+
