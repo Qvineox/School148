@@ -10,5 +10,5 @@ def timeline(request):
 
 
 def create_week_lessons(request):
-    print(start_week_replenish())
+    start_week_replenish()
     return timeline(request)
