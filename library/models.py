@@ -19,6 +19,9 @@ class Books(models.Model):
     subject = models.ForeignKey('journal.Disciples', null=True, blank=False, on_delete=models.CASCADE,
                                 verbose_name='Предмет')
 
+    # def __str__(self):
+    #     return self.title
+
 
 class LoanReceipts(models.Model):
     book = models.ForeignKey('library.Books', null=False, blank=False, on_delete=models.CASCADE,
