@@ -35,6 +35,8 @@
             transition: 0.6s ease-out;
         }
 
+        .lesson-field:
+
         {# оформление отдельных уроков #}
         .lesson-field.russian {
 
@@ -82,90 +84,61 @@
         </tr>
         <tr>
             <td>
-                <b>Понедельник</b></td>
-            <td>Eng</td>
-            <td>Mat</td>
-            <td>Che</td>
-            <td rowspan="6">
-                <h2>О<br>Б<br>Е<br>Д</h2>
+                <b>Понедельник</b>
             </td>
-            <td> LAB</td>
-            <td> LAB</td>
-            <td> LAB</td>
-            <td rowspan="6">
-                <h2>П<br>Е<br>Р<br>Е<br>Р<br>Ы<br>В</h2>
-            </td>
-            <td>Phy</td>
-            <td>Obama</td>
+            {% for lesson in lessons.monday %}
+                {% if forloop.counter != 4 and forloop.counter != 7 %}
+                    <td style="color: {{ lesson.color }}">{{ lesson.subject }}</td>
+                {% else %}
+                    <td rowspan="6">
+                        <h2>О<br>Б<br>Е<br>Д</h2>
+                    </td>
+                    <td>{{ lesson.subject }}</td>
+                {% endif %}
+            {% endfor %}
         </tr>
         <tr>
             <td>
                 <b>Вторник</b>
             </td>
-            <td>LAB</td>
-            <td>LAB</td>
-            <td>LAB</td>
-            <td>Eng</td>
-            <td>Che</td>
-            <td>Mat</td>
-            <td>SPORTS</td>
-            <td>Obama</td>
-
+            {% for lesson in lessons.tuesday %}
+                <td>{{ lesson.subject }}</td>
+            {% endfor %}
         </tr>
         <tr>
             <td>
                 <b>Среда</b>
             </td>
-            <td class="lesson-field">Mat</td>
-            <td>phy</td>
-            <td>Eng</td>
-            <td>Che</td>
-            <td>LIBRARY</td>
-            <td>LIBRARY</td>
-            <td>Obama</td>
-            <td>Obama</td>
+            {% for lesson in lessons.wednesday %}
+                <td>{{ lesson.subject }}</td>
+            {% endfor %}
 
         </tr>
         <tr>
             <td>
                 <b>Четверг</b>
             </td>
-            <td>Phy</td>
-            <td>Eng</td>
-            <td>Che</td>
-            <td>LAB</td>
-            <td>LAB</td>
-            <td>LAB</td>
-            <td>Mat</td>
-            <td>Obama</td>
+            {% for lesson in lessons.thursday %}
+                <td>{{ lesson.subject }}</td>
+            {% endfor %}
 
         </tr>
         <tr>
             <td>
                 <b>Пятница</b>
             </td>
-            <td>LAB</td>
-            <td>LAB</td>
-            <td>LAB</td>
-            <td>Mat</td>
-            <td>Che</td>
-            <td>Eng</td>
-            <td>Phy</td>
-            <td>Obama</td>
+            {% for lesson in lessons.friday %}
+                <td>{{ lesson.subject }}</td>
+            {% endfor %}
 
         </tr>
         <tr>
             <td>
                 <b>Суббота</b>
             </td>
-            <td>Eng</td>
-            <td>Che</td>
-            <td>Mat</td>
-            <td>SEMINAR</td>
-            <td>SEMINAR</td>
-            <td>SEMINAR</td>
-            <td>SPORTS</td>
-            <td>Obama</td>
+            {% for lesson in lessons.saturday %}
+                <td>{{ lesson.subject }}</td>
+            {% endfor %}
 
         </tr>
     </table>
