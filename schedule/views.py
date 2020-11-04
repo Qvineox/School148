@@ -10,5 +10,7 @@ def timeline(request):
 
 
 def create_week_lessons(request):
-    start_week_replenish()
+    date_time_str = '2020-11-01'
+    date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d')
+    start_week_replenish(date_time_obj)
     return timeline(request)

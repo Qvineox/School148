@@ -115,6 +115,7 @@ class Lessons(models.Model):
 
     order = models.SmallIntegerField(choices=ORDER_CHOICES, null=False, blank=False, verbose_name='Порядковый номер')
     date = models.DateField(null=False, blank=False, verbose_name='Дата урока')
+    auditory = models.CharField(null=True, blank=False, max_length=20, verbose_name='Аудитория')
 
     # флаги
     active = models.BooleanField(null=False, default=True, verbose_name='Активность')

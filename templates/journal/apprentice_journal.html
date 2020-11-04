@@ -7,123 +7,166 @@
 
 {% block style %}
     <style>
+        table {
+            border: 3px solid whitesmoke;
+            width: 100%;
+            border-collapse: collapse;
+            color: whitesmoke;
+        }
+
+
+        {# все ячейки #}
+        td {
+            padding: 5px;
+            height: 80px;
+            border: 2px solid whitesmoke;
+            text-align: center;
+        }
+
+        {# все ячейки уроков #}
+        .lesson-field {
+            padding: 15px;
+            border: 1px solid whitesmoke;
+        }
+
+        {# все ячейки уроков при наведении #}
+        .lesson-field:hover {
+            transform: translate(-5px, -5px);
+            transition: 0.6s ease-out;
+        }
+
+        {# оформление отдельных уроков #}
+        .lesson-field.russian {
+
+        }
 
     </style>
 {% endblock %}
 
 {% block main %}
-    <table border="5" cellspacing="1" align="center">
-        <!--<caption>Timetable</caption>-->
+    <table>
         <tr>
-            <td align="center" height="50"
-                width="5%"><br>
-                <b>Неделя</b></br>
+            <td style="width: 7%;">
+                <b>Неделя</b>
             </td>
-            <td align="center" height="50"
-                width="100">
-                <b>I<br>9:30-10:20</b>
+            <td>
+                <b>I урок<br>8:30-9:15</b>
             </td>
-            <td align="center" height="50"
-                width="100">
-                <b>II<br>10:20-11:10</b>
+            <td>
+                <b>II урок<br>9:25-10:10</b>
             </td>
-            <td align="center" height="50"
-                width="100">
-                <b>III<br>11:10-12:00</b>
+            <td>
+                <b>III урок<br>10:20-12:05</b>
             </td>
-            <td align="center" height="50"
-                width="100">
-                <b>12:00-12:40</b>
+            <td style="width: 4%;">
+                <b>12:05-12:25</b>
             </td>
-            <td align="center" height="50"
-                width="100">
-                <b>IV<br>12:40-1:30</b>
+            <td>
+                <b>IV урок<br>12:25-13:10</b>
             </td>
-            <td align="center" height="50"
-                width="100">
-                <b>V<br>1:30-2:20</b>
+            <td>
+                <b>V урок<br>13:20-14:05</b>
             </td>
-            <td align="center" height="50"
-                width="100">
-                <b>VI<br>2:20-3:10</b>
+            <td>
+                <b>VI урок<br>14:15-15:00</b>
             </td>
-            <td align="center" height="50"
-                width="100">
-                <b>VII<br>3:10-4:00</b>
+            <td style="width: 4%;">
+                <b>15:00-15:15</b>
+            </td>
+            <td>
+                <b>VII урок<br>15:15-16:00</b>
+            </td>
+            <td>
+                <b>IIX урок<br>16:10-16:55</b>
             </td>
         </tr>
         <tr>
-            <td align="center" height="50">
-                <b>Monday</b></td>
-            <td align="center" height="50">Eng</td>
-            <td align="center" height="50">Mat</td>
-            <td align="center" height="50">Che</td>
-            <td rowspan="6" align="center" height="50">
-                <h2>L<br>U<br>N<br>C<br>H</h2>
+            <td>
+                <b>Понедельник</b></td>
+            <td>Eng</td>
+            <td>Mat</td>
+            <td>Che</td>
+            <td rowspan="6">
+                <h2>О<br>Б<br>Е<br>Д</h2>
             </td>
-            <td colspan="3" align="center"
-                height="50">LAB</td>
-            <td align="center" height="50">Phy</td>
+            <td> LAB</td>
+            <td> LAB</td>
+            <td> LAB</td>
+            <td rowspan="6">
+                <h2>П<br>Е<br>Р<br>Е<br>Р<br>Ы<br>В</h2>
+            </td>
+            <td>Phy</td>
+            <td>Obama</td>
         </tr>
         <tr>
-            <td align="center" height="50">
-                <b>Tuesday</b>
+            <td>
+                <b>Вторник</b>
             </td>
-            <td colspan="3" align="center"
-                height="50">LAB
-            </td>
-            <td align="center" height="50">Eng</td>
-            <td align="center" height="50">Che</td>
-            <td align="center" height="50">Mat</td>
-            <td align="center" height="50">SPORTS</td>
+            <td>LAB</td>
+            <td>LAB</td>
+            <td>LAB</td>
+            <td>Eng</td>
+            <td>Che</td>
+            <td>Mat</td>
+            <td>SPORTS</td>
+            <td>Obama</td>
+
         </tr>
         <tr>
-            <td align="center" height="50">
-                <b>Wednesday</b>
+            <td>
+                <b>Среда</b>
             </td>
-            <td align="center" height="50">Mat</td>
-            <td align="center" height="50">phy</td>
-            <td align="center" height="50">Eng</td>
-            <td align="center" height="50">Che</td>
-            <td colspan="3" align="center"
-                height="50">LIBRARY
-            </td>
+            <td class="lesson-field">Mat</td>
+            <td>phy</td>
+            <td>Eng</td>
+            <td>Che</td>
+            <td>LIBRARY</td>
+            <td>LIBRARY</td>
+            <td>Obama</td>
+            <td>Obama</td>
+
         </tr>
         <tr>
-            <td align="center" height="50">
-                <b>Thursday</b>
+            <td>
+                <b>Четверг</b>
             </td>
-            <td align="center" height="50">Phy</td>
-            <td align="center" height="50">Eng</td>
-            <td align="center" height="50">Che</td>
-            <td colspan="3" align="center"
-                height="50">LAB
-            </td>
-            <td align="center" height="50">Mat</td>
+            <td>Phy</td>
+            <td>Eng</td>
+            <td>Che</td>
+            <td>LAB</td>
+            <td>LAB</td>
+            <td>LAB</td>
+            <td>Mat</td>
+            <td>Obama</td>
+
         </tr>
         <tr>
-            <td align="center" height="50">
-                <b>Friday</b>
+            <td>
+                <b>Пятница</b>
             </td>
-            <td colspan="3" align="center"
-                height="50">LAB
-            </td>
-            <td align="center" height="50">Mat</td>
-            <td align="center" height="50">Che</td>
-            <td align="center" height="50">Eng</td>
-            <td align="center" height="50">Phy</td>
+            <td>LAB</td>
+            <td>LAB</td>
+            <td>LAB</td>
+            <td>Mat</td>
+            <td>Che</td>
+            <td>Eng</td>
+            <td>Phy</td>
+            <td>Obama</td>
+
         </tr>
         <tr>
-            <td align="center" height="50">
-                <b>Saturday</b>
+            <td>
+                <b>Суббота</b>
             </td>
-            <td align="center" height="50">Eng</td>
-            <td align="center" height="50">Che</td>
-            <td align="center" height="50">Mat</td>
-            <td colspan="3" align="center"
-                height="50">SEMINAR
-            </td>
-            <td align="center" height="50">SPORTS</td>
+            <td>Eng</td>
+            <td>Che</td>
+            <td>Mat</td>
+            <td>SEMINAR</td>
+            <td>SEMINAR</td>
+            <td>SEMINAR</td>
+            <td>SPORTS</td>
+            <td>Obama</td>
+
         </tr>
     </table>
 {% endblock %}

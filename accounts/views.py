@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 
 from accounts.forms import *
 from accounts.services import *
+from home.views import navbar_data
 
 logger = logging.getLogger('auth')
 
@@ -22,7 +23,6 @@ def account_login(request):
             if user is not None:
                 login(request, user)
                 logger.info('User logged: {0}'.format(user_login))
-                print('success')
             else:
                 if User.objects.filter(username=user_login).count() > 0:
                     reason = 'Incorrect password.'
@@ -114,17 +114,4 @@ def profile(request, user_id):
     else:
         user_data = get_profile_data(request.user.id)
 
-    return render(request, 'profiles/apprentice_page.html', navbar_data(request))
-
-
-def navbar_data(request):
-    data = get_profile_data(request.user.id)
-
-    data = {
-        'first_name': data.first_name,
-        'second_name': data.second_name,
-        'last_name': data.last_name,
-        'id': data.id
-    }
-
-    return data
+    return render(request, 'profiles/apprentice_page.html', {'navbar': navbar_data(request)})
