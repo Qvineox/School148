@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'journal',
     'library',
     'schedule',
-    'statistic',
-    'django_sass'
+    'statistic'
+
 ]
 
 MIDDLEWARE = [

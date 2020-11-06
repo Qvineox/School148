@@ -18,6 +18,7 @@
           position: relative;
           left: -61px;
           cursor: pointer;
+           user-select: none;
         }
 
        .book:not(:first-child) {
@@ -39,37 +40,103 @@
             text-align: left;
             padding: 1px 15px;
        }
+       .all_book {
+          display: block;
+          height: 350px;
+          width: 300px;
+          background-color: #17141d;
+          box-shadow: -1rem 0 3rem #000;
+          transition: 0.4s ease-out;
+          position: relative;
+          left: -61px;
+          cursor: pointer;
+           user-select: none;
+        }
+
+       .all_book:not(:first-child) {
+            {#margin-left: 0%;#}
+        }
+
+       .all_book:hover {
+          transform: translateY(-5px);
+          transition: 0.4s ease-out;
+        }
+
+       .all_book:hover ~ .book {
+          position: relative;
+          {#left: 80px;#}
+          transition: 0.4s ease-out;
+        }
    </style>
 {% endblock %}
 
 {% block main %}
-    {#    Скрипты для popup_book #}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-    <h1 style="color: whitesmoke">Мои книги</h1>
-    {% if books %}
-
+    <h1 style="color: whitesmoke;  user-select: none;">Мои книги</h1>
+    {% if my_books %}
         <ul>
-            {% for el in books %}
-                {% if  el.borrower.id  ==  person_data.id  %}
+            {% for my_book in my_books %}
                     <li class="book_table">
                         <div class="book">
-                            <h4>{{ el.book.title }}</h4>
-                            <p>{{ el.book.author }}</p>
+                            <h5>{{ my_book.title }}</h5>
+                            <h6>{{ my_book.author }}</h6>
                         </div>
-                    </li>
-                {% endif %}
 
+                    </li>
+                {
             {% endfor %}
         </ul>
-
-
-
-
-    {%  else %}
-        <p>У вас нет книг</p>
+    {% else %}
+        <h5 style=" user-select: none;">Тут пусто</h5>
     {% endif %}
+    <h1 style="color: whitesmoke;  user-select: none;">Доступные книги</h1>
+    {% if all_books %}
+        <ul>
+            {% for book in all_books %}
+                    <li class="book_table">
+                        <div class="all_book"  id='book_button' data-toggle="modal" data-target="#exampleModal">
+                            <h5>{{ book.title }}</h5>
+                            <h6>{{ book.author }}</h6>
+                        </div>
+                    </li>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                          <div class="modal-dialog" role="document" >
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Оформление выдачи</h5>
+                              </div>
+                              <div class="modal-body">
+                                  <p>Название: {{ book.title }}</p>
+                                <p>Автор: {{ book.author }}</p>
+                                  <hr>
+                                  <h5>Дата выдачи:</h5>
+                                  <input class="form-control" type="date" value="2020-09-01" id="example-datetime-local-input">
+                                  <hr>
+                                  <h5>Дата возврата:</h5>
+                                  <input class="form-control" type="date" value="2021-06-01" id="example-datetime-local-input">
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                <button type="button" class="btn btn-info">Оформить</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+            {% endfor %}
+        </ul>
+        <script type="text/javascript">
+            let books = document.querySelectorAll('#book_button');
+            let pops = document.querySelectorAll('#exampleModal');
+            for(let i = 0; i < books.length; i++) {
+                books[i].setAttribute('data-target','#' + i);
+                pops[i].setAttribute('id', i);
+            }
 
+        </script>
+    {% else %}
+        <p>Нет доступных книг</p>
+    {% endif %}
 {% endblock %}

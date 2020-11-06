@@ -12,8 +12,8 @@
 {% endblock %}
 
 {% block main %}
-    <h1 style="color: whitesmoke">{{ pretext }}</h1>
-    <h2 style="color: whitesmoke; font-weight: lighter">{{ date|date:"l, j F" }}</h2>
+    <h1 style="color: whitesmoke; user-select: none;">{{ pretext }}</h1>
+    <h2 style="color: whitesmoke; font-weight: lighter; user-select: none;">{{ date|date:"l, j F" }}</h2>
     <div class="container-md"
          style="
             width: 100%;
@@ -33,9 +33,9 @@
                 <div class="container" style="padding: 8%; opacity: 0">
             {% endif %}
 
-        <h2 class="title {{ lesson.scheme }}" style="color: whitesmoke">{{ lesson.subject }}</h2>
-        <h3 class="title" style="color: darkgray; font-weight: lighter">{{ lesson.teacher }}</h3>
-        <h4 class="title" style="color: dimgray; font-weight: lighter">
+        <h2 class="title {{ lesson.scheme }}" style="color: whitesmoke; user-select: none;">{{ lesson.subject }}</h2>
+        <h3 class="title" style="color: darkgray; font-weight: lighter; user-select: none;">{{ lesson.teacher }}</h3>
+        <h4 class="title" style="color: dimgray; font-weight: lighter; user-select: none;">
             Ауд. {{ lesson.auditory|default:"не указана" }}</h4>
         </div>
         </div>

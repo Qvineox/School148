@@ -15,12 +15,10 @@ class Books(models.Model):
     available = models.BooleanField(null=False, default=False, verbose_name='Наличие')
     stock = models.IntegerField(null=False, default=0, verbose_name='Осталось экземпляров')
 
+
     # отношения
     subject = models.ForeignKey('journal.Disciples', null=True, blank=False, on_delete=models.CASCADE,
                                 verbose_name='Предмет')
-
-    # def __str__(self):
-    #     return self.title
 
 
 class LoanReceipts(models.Model):
