@@ -2,14 +2,16 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 import accounts.services as account_services
-
-
-# Create your views here.
+from home.services import get_homepage_lessons
 
 
 @login_required
 def home(request):
-    return render(request, 'home/apprentice_home.html', {'navbar': navbar_data(request)})
+    lessons, pretext, date = get_homepage_lessons(request.user.id)
+    return render(request, 'home/apprentice_home.html', {'navbar': navbar_data(request),
+                                                         'lessons': lessons,
+                                                         'pretext': pretext,
+                                                         'date': date})
 
 
 def navbar_data(request):

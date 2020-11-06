@@ -57,4 +57,12 @@ friday:
 saturday:
   - class-id: 1
     lessons:
+      - lesson-id: 3
+        teacher-id: 3
+      - lesson-id: 2
+        teacher-id: 2
+      - lesson-id: 4
+        teacher-id: 4
+      - lesson-id: 4
+        teacher-id: 4
 

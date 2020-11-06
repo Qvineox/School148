@@ -31,12 +31,12 @@ def get_schedule_for_user(user):
     return process_schedule_data_for_journal_view(this_week_lessons)
 
 
-class Object(object):
+class Lesson(object):
     pass
 
 
 def process_schedule_data_for_journal_view(lessons_queryset):
-    lessons = Object()
+    lessons = Lesson()
 
     setattr(lessons, 'monday', [])
     setattr(lessons, 'tuesday', [])
@@ -77,21 +77,21 @@ def get_lesson_info(lesson_object, full=False):
                                                 lesson_teacher.first_name[0],
                                                 lesson_teacher.last_name[0]))
 
-    lesson_subject = Disciples.objects.get(id=lesson_object['subject_id']).title
+    disciple = Disciples.objects.get(id=lesson_object['subject_id'])
+    lesson_subject = disciple.title
+    lesson_scheme = disciple.scheme
     lesson_auditory = lesson_object['auditory']
-
-    lesson_color = 'red'
 
     if lesson_object['homework_id'] is not None:
         lesson_has_homework = True
     else:
         lesson_has_homework = False
 
-    lesson_info = Object()
+    lesson_info = Lesson()
     setattr(lesson_info, 'subject', lesson_subject)
     setattr(lesson_info, 'id', lesson_object['id'])
     setattr(lesson_info, 'active', lesson_object['active'])
-    setattr(lesson_info, 'color', lesson_color)
+    setattr(lesson_info, 'scheme', lesson_scheme)
 
     if full:
         setattr(lesson_info, 'teacher', lesson_teacher_info)

@@ -10,6 +10,10 @@ class Disciples(models.Model):
     start_grade = models.PositiveSmallIntegerField(null=False, blank=False, verbose_name='Начальный класс')
     end_grade = models.PositiveSmallIntegerField(null=False, blank=False, verbose_name='Конечный класс')
 
+    # цветовая схема предмета (для визуальной дифференциации), сопоставляется с одноименными стилями css
+    scheme = models.CharField(max_length=20, null=False, blank=False, default='empty',
+                              verbose_name='Цветовая схема')
+
     # флаги
     active = models.BooleanField(null=False, default=False, verbose_name='Активность')
 
