@@ -1,0 +1,70 @@
+.emp-profile {
+    margin-bottom: 3%;
+    border-radius: 0.5rem;
+    background: whitesmoke;
+}
+
+.profile-img img {
+    position: absolute;
+    left: -1000%;
+    right: -1000%;
+    top: -1000%;
+    bottom: -1000%;
+    margin: auto;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.profile-img .file {
+    position: relative;
+    overflow: hidden;
+    margin-top: -20%;
+    width: 70%;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    background: #212529b8;
+}
+
+.profile-img .file input {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+
+.profile-edit-btn {
+    border: none;
+    border-radius: 1.5rem;
+    width: 70%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+
+.profile-work a {
+    text-decoration: none;
+    color: #495057;
+    font-weight: 600;
+    font-size: 14px;
+    align-content: end;
+}
+
+.profile-work ul {
+    list-style: none;
+}
+
+.profile-tab label {
+    color: black;
+    font-weight: 600;
+}
+
+.profile-tab p {
+    font-weight: 600;
+}
+
+.border-right {
+    border-right: 2px solid black;
+}

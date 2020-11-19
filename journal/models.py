@@ -25,12 +25,13 @@ class Disciples(models.Model):
 
 
 # все поставленные оценки
-class Mark(models.Model):
+class Marks(models.Model):
     EXCELLENT = 5
     GOOD = 4
     NORMAL = 3
     BAD = 2
     WORST = 1
+    ABSENT = 0
 
     MARK_CHOICES = (
         (EXCELLENT, 'Отлично'),
@@ -38,6 +39,7 @@ class Mark(models.Model):
         (NORMAL, 'Удовлетворительно'),
         (BAD, 'Неудовлетворительно'),
         (WORST, 'Плохо'),
+        (ABSENT, 'Отсутсвует'),
     )
 
     value = models.SmallIntegerField(choices=MARK_CHOICES, null=False, verbose_name='Значение')
@@ -54,7 +56,7 @@ class Mark(models.Model):
         (HOMEWORK, 'Домашняя работа')
     )
 
-    weight = models.SmallIntegerField(choices=WEIGHT_CHOICES, null=False, default=2, verbose_name='Вес')
+    weight = models.SmallIntegerField(choices=WEIGHT_CHOICES, null=True, default=1, verbose_name='Вес')
     comment = models.TextField(null=True, blank=False, verbose_name='Комментарий')
     rating_date = models.DateTimeField(auto_now_add=True, null=False, verbose_name='Дата установки')
     modify_date = models.DateTimeField(auto_now=True, null=False, verbose_name='Дата изменения')
@@ -71,7 +73,7 @@ def homework_path():
 
 
 # все домашние задания
-class Homework(models.Model):
+class Homeworks(models.Model):
     text = models.TextField(null=False, blank=False, verbose_name='Текст домашнего задания')
     file = models.FilePathField(path=homework_path, null=True, match=".*\.zip$|.*\.pdf$|.*\.png$|.*\.jpeg$",
                                 verbose_name='Файл домашнего задания')
@@ -128,5 +130,5 @@ class Lessons(models.Model):
     subject = models.ForeignKey('Disciples', on_delete=models.CASCADE, null=False, verbose_name='Предмет')
     teacher = models.ForeignKey('accounts.Teachers', on_delete=models.CASCADE, null=False, verbose_name='Преподаватель')
     study_group = models.ForeignKey('accounts.StudyGroups', on_delete=models.CASCADE, null=False, verbose_name='Класс')
-    homework = models.ForeignKey('Homework', on_delete=models.CASCADE, null=True,
+    homework = models.ForeignKey('Homeworks', on_delete=models.CASCADE, null=True,
                                  verbose_name='Домашнее задание')

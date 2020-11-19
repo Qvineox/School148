@@ -108,10 +108,15 @@ def account_register(request):
                                                           'user_last_name': user_data['last_name']})
 
 
-def profile(request, user_id):
+def profile(request, user_id=None):
     if user_id is not None:
         user_data = get_profile_data(user_id)
     else:
         user_data = get_profile_data(request.user.id)
 
-    return render(request, 'profiles/apprentice_page.html', {'navbar': navbar_data(request)})
+    attendance_score, average_score = get_profile_statistics(user_id)
+
+    return render(request, 'profiles/apprentice_page.html', {'profile_data': user_data,
+                                                             'average_score': average_score,
+                                                             'attendance_score': attendance_score,
+                                                             'navbar': navbar_data(request)})

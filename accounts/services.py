@@ -3,6 +3,7 @@ import logging
 from django.contrib.auth.models import User
 
 import accounts.models as models
+import statistic.services as statistics
 
 logger = logging.getLogger('database')
 
@@ -66,6 +67,7 @@ def connect_account_to_record(role, account_id, record_id):
     logger.info('Connected new account to school record.')
 
 
+# возвращает профиль пользователя из id
 def get_profile_data(user_id):
     logger.debug('User data requested. User: {0}'.format(user_id))
     data = get_profile_from_user(user_id)
@@ -74,11 +76,8 @@ def get_profile_data(user_id):
 
 # возвращает школьный профиль из id учетной записи django
 def get_profile_from_user(user_id):
-    user = User.objects.get(id=user_id)
-    logger.info('Querying school profile. User: {0}'.format(user.username))
-
     # данные будут получены из профиля с наивысшим уровнем группы
-    group = user.groups.values_list('id', flat=True).order_by('-id').first()
+    group = get_user_prior_group_number(user_id)
 
     # выбираем школьный профиль из нужной таблицы на основании группы пользователя
     if group == 1:
@@ -99,4 +98,26 @@ def get_profile_from_user(user_id):
     if school_profile is not None:
         return school_profile
     else:
-        logger.error('Querying school profile failed. User: {0}'.format(user.username))
+        logger.error('Querying school profile failed. User: {0}'.format(user_id))
+
+
+def get_user_prior_group_number(user_id):
+    user = User.objects.get(id=user_id)
+    group = user.groups.values_list('id', flat=True).order_by('-id').first()
+    return group
+
+
+def get_user_group_numbers(user_id):
+    user = User.objects.get(id=user_id)
+    groups = user.groups.values_list('id', flat=True).order_by('-id')
+    return list(groups)
+
+
+# возвращает значения статистики для прфиля
+def get_profile_statistics(user_id):
+    user_profile_id = get_profile_from_user(user_id).id
+    # если пользователь школьник
+    if get_user_prior_group_number(user_id) == 1:
+        statistics_data = statistics.get_apprentice_non_attendance_score(
+            user_profile_id), statistics.get_apprentice_average_score(user_profile_id)
+    return statistics_data
