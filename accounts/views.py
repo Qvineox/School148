@@ -1,3 +1,4 @@
+import numpy as np
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
@@ -159,7 +160,11 @@ def edit_profile(request, user_id=None):
 
 def view_all_groups(request):
     groups_data = get_all_groups()
-    return render(request, 'profiles/groups/all_groups.html', {'study_groups': groups_data['study_groups'],
+    separated_study_groups = separate_study_groups(groups_data['study_groups'])
+
+    return render(request, 'profiles/groups/all_groups.html', {'high_school_groups': separated_study_groups['high'],
+                                                               'middle_school_groups': separated_study_groups['middle'],
+                                                               'primary_school_groups': separated_study_groups['primary'],
                                                                'creative_groups': groups_data['creative_groups']})
 
 

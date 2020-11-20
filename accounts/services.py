@@ -126,11 +126,28 @@ def get_profile_statistics(user_id):
 # возвращает словарь всех групп
 def get_all_groups():
     groups_data = {
-        'study_groups': list(models.StudyGroups.objects.all()),
+        'study_groups': list(models.StudyGroups.objects.all().order_by('-grade', 'symbol')),
         'creative_groups': list(models.CreativeGroups.objects.all())
     }
 
     return groups_data
 
+
+def separate_study_groups(groups_data):
+    separated_groups = {
+        'high': [],
+        'middle': [],
+        'primary': [],
+    }
+
+    for group in groups_data:
+        if group.grade > 9:
+            separated_groups['high'].append(group)
+        elif group.grade > 5:
+            separated_groups['middle'].append(group)
+        else:
+            separated_groups['primary'].append(group)
+
+    return separated_groups
 
 # возвращает список всех учеников одной группы и куратора группы
