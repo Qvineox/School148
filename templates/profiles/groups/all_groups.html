@@ -1,0 +1,122 @@
+{% extends  'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Все группы</title>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lesson_schemas.css' %}">
+    <style>
+        .course {
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            max-width: 100%;
+            margin: 20px;
+            overflow: hidden;
+            width: 700px;
+        }
+
+        .course h6 {
+            opacity: 0.6;
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .course h2 {
+            letter-spacing: 1px;
+            margin: 10px 0;
+        }
+
+        .course-preview {
+            background-color: #2A265F;
+            color: #fff;
+            padding: 30px;
+            width: 200px;
+        }
+
+        .course-preview a {
+            color: #fff;
+            display: inline-block;
+            font-size: 12px;
+            opacity: 0.6;
+            margin-top: 30px;
+            text-decoration: none;
+
+        }
+
+        .course-info {
+            padding: 30px;
+            position: relative;
+            width: 100%;
+        }
+
+
+        .algebra-background {
+            background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);
+        }
+
+        .russian-background {
+            background: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+        }
+
+        .physics-background {
+            background-image: linear-gradient(to right, #00dbde 0%, #fc00ff 100%);
+        }
+
+        .chemistry-background {
+            background-image: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+        }
+
+        .biology-background {
+            background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+        }
+
+        .it-background {
+            background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
+        }
+
+        .art-background {
+            background-image: linear-gradient(to top, #df89b5 0%, #bfd9fe 100%);
+        }
+
+        .english-background {
+            background-image: linear-gradient(to top, #3b41c5 0%, #a981bb 49%, #ffc8a9 100%);
+        }
+
+        .general-background {
+            background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+        }
+
+    </style>
+{% endblock %}
+
+{% block main %}
+    {% include 'navbar.html' %}
+    {% for item in study_groups %}
+        <div class="courses-container">
+            <div class="course">
+                <div class="course-preview {{ item.specialisation.main_disciple.scheme }}-background">
+                    <h6>Класс</h6>
+                    <h2>{{ item.specialisation.title }}</h2>
+                </div>
+                <div class="course-info">
+                    <h6>{{ item.supervisor.first_name }} {{ item.supervisor.last_name }}</h6>
+                    <h2>{{ item.grade }}"{{ item.symbol }}"</h2>
+                    <button class="btn-outline-dark" style="box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                                                            border-radius: 20px;
+                                                            font-size: 12px;
+                                                            padding: 10px 15px;
+                                                            position: absolute;
+                                                            bottom: 20px;
+                                                            right: 30px;
+                                                            letter-spacing: 1px;">Посмотреть
+                    </button>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

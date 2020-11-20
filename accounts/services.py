@@ -122,3 +122,15 @@ def get_profile_statistics(user_id):
             user_profile_id), statistics.get_apprentice_average_score(user_profile_id)
     return statistics_data
 
+
+# возвращает словарь всех групп
+def get_all_groups():
+    groups_data = {
+        'study_groups': list(models.StudyGroups.objects.all()),
+        'creative_groups': list(models.CreativeGroups.objects.all())
+    }
+
+    return groups_data
+
+
+# возвращает список всех учеников одной группы и куратора группы

@@ -93,6 +93,9 @@ class Homeworks(models.Model):
 class Specialization(models.Model):
     title = models.CharField(max_length=30, null=False, blank=False, verbose_name='Название')
 
+    # отношения
+    main_disciple = models.ForeignKey('Disciples', null=True, on_delete=models.CASCADE, verbose_name='Дисциплина')
+
 
 class Lessons(models.Model):
     FIRST = 1

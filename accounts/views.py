@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
-from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 
 from accounts.forms import *
@@ -156,3 +155,13 @@ def edit_profile(request, user_id=None):
                                                                    'average_score': average_score,
                                                                    'attendance_score': attendance_score,
                                                                    'navbar': navbar_data(request)})
+
+
+def view_all_groups(request):
+    groups_data = get_all_groups()
+    return render(request, 'profiles/groups/all_groups.html', {'study_groups': groups_data['study_groups'],
+                                                               'creative_groups': groups_data['creative_groups']})
+
+
+def view_group(request, group_id):
+    return render(request)
