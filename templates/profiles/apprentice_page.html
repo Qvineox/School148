@@ -12,185 +12,237 @@
 {% block main %}
     {% include 'navbar.html' %}
     <div class="container-md emp-profile" style="padding: 2%">
-        <form method="post">
-            <div class="row">
-                <div class="col-md-2 border-right">
-                    <div class="row">
-                        <div class="profile-img"
-                             style="width: 250px; height: 250px; overflow: hidden; position: relative; border-radius: 10%; margin-left: 2%">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
-                                 alt=""/>
-                        </div>
-                    </div>
-                    <div class="profile-work" style="margin-top: 60px">
-                        <p>КРАТКАЯ СТАТИСТИКА</p>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <a href="">Средний балл</a>
-                            </div>
-                            <div class="col">
-                                <a href="">{{ average_score|default_if_none:"Нет оценок" }}</a>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <a href="">Посещаемость</a>
-                            </div>
-                            <div class="col">
-                                <a href="">{{ attendance_score }}%</a>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <a href="">Успеваемость</a>
-                            </div>
-                            <div class="col">
-                                <a href="">N/A</a>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <a href="">План работ</a>
-                            </div>
-                            <div class="col">
-                                <a href="">N/A</a>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <a href="">Активность</a>
-                            </div>
-                            <div class="col">
-                                <a href="">N/A</a>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <a href="">Допуск</a>
-                            </div>
-                            <div class="col">
-                                {% if average_score > 3 and attendance_score > 60 %}
-                                    <a href="" style="color: green">Да</a>
-                                {% else %}
-                                    <a href="" style="color: red">Нет</a>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="profile-achievements" style="margin-top: 30px">
-                            <p>ДОСТИЖЕНИЯ</p>
-                        </div>
+        <div class="row">
+            <div class="col-md-2 border-right">
+                <div class="row">
+                    <div class="profile-img"
+                         style="width: 250px; height: 250px; overflow: hidden; position: relative; border-radius: 10%; margin-left: auto;
+                       margin-right: auto">
+                        <img src="/media/{{ profile_data.profile_picture }}"
+                             alt=""/>
                     </div>
                 </div>
-                <div class="col-md-8" style="padding-left: 3%">
+                <div class="profile-work" style="margin-top: 60px; margin-left: 5%">
+                    <p>КРАТКАЯ СТАТИСТИКА</p>
                     <div class="row">
-                        <div class="profile-head">
-                            <h1>
-                                {{ profile_data.first_name }} {{ profile_data.second_name }} {{ profile_data.last_name }}
-                            </h1>
-                            <h5>
-                                Ученик {{ profile_data.study_group.grade }}{{ profile_data.study_group.symbol }} класса
-                            </h5>
+                        <div class="col-sm-6">
+                            <a href="">Средний балл</a>
+                        </div>
+                        <div class="col">
+                            <a href="">{{ average_score|default_if_none:"Нет оценок" }}</a>
                         </div>
                     </div>
 
-                    <div class="row" style="margin-top: 3%">
-                        <div class="profile-head">
-                            <h2>
-                                Личная информация
-                            </h2>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm" style="padding-left: 0">
-                                        <h5>пол</h5>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h5>{{ profile_data.gender }}</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm" style="padding-left: 0">
-                                        <h5>дата рождения</h5>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h5>{{ profile_data.birth_date|date:"j.n.Y" }}</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm" style="padding-left: 0">
-                                        <h5>документ</h5>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h5>{{ profile_data.civ_id }}</h5>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="">Посещаемость</a>
+                        </div>
+                        <div class="col">
+                            <a href="">{{ attendance_score }}%</a>
                         </div>
                     </div>
 
-
-                    <div class="row" style="margin-top: 3%">
-                        <div class="profile-head">
-                            <h2>
-                                Контактная информация
-                            </h2>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm" style="padding-left: 0">
-                                        <h5>почта</h5>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h5>{{ profile_data.email }}</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm" style="padding-left: 0">
-                                        <h5>телефон</h5>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h5>{{ profile_data.phone }}</h5>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="">Успеваемость</a>
+                        </div>
+                        <div class="col">
+                            <a href="">N/A</a>
                         </div>
                     </div>
 
-                    <div class="row" style="margin-top: 3%">
-                        <div class="profile-head">
-                            <h2>
-                                Родители
-                            </h2>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm" style="padding-left: 0">
-                                        <h5>отец</h5>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h5>{{ profile_data.father_id.name }}</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm" style="padding-left: 0">
-                                        <h5>мать</h5>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h5>{{ profile_data.mother_id.name }}</h5>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="">План работ</a>
+                        </div>
+                        <div class="col">
+                            <a href="">N/A</a>
                         </div>
                     </div>
 
-                </div>
-                <div class="col border-left" style="padding-left: 2%; margin-left: 7%">
-                    <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Изменить"/>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="">Активность</a>
+                        </div>
+                        <div class="col">
+                            <a href="">N/A</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="">Допуск</a>
+                        </div>
+                        <div class="col">
+                            {% if average_score > 3 and attendance_score > 60 %}
+                                <a href="" style="color: green">Да</a>
+                            {% else %}
+                                <a href="" style="color: red">Нет</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="profile-achievements" style="margin-top: 30px">
+                        <p>ДОСТИЖЕНИЯ</p>
+                    </div>
                 </div>
             </div>
-        </form>
+            <div class="col-md-4" style="padding-left: 3%">
+                <div class="row" style="height: 100px">
+                    <div class="profile-head">
+                        <h1>
+                            {{ profile_data.first_name }} {{ profile_data.second_name }} {{ profile_data.last_name }}
+                        </h1>
+                        <h5>
+                            Ученик {{ profile_data.study_group.grade }}{{ profile_data.study_group.symbol }} класса
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="profile-head">
+                        <h2>
+                            Личная информация
+                        </h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>пол</h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>{{ profile_data.gender }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>дата рождения</h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>{{ profile_data.birth_date|date:"j.n.Y" }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>документ</h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>{{ profile_data.civ_id }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top: 3%">
+                    <div class="profile-head">
+                        <h2>
+                            Контактная информация
+                        </h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>почта</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>{{ profile_data.email }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>телефон</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>{{ profile_data.phone }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 3%">
+                    <div class="profile-head">
+                        <h2>
+                            Родители
+                        </h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>отец</h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>{{ profile_data.father_id.name }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>мать</h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>{{ profile_data.mother_id.name }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="row" style="height: 100px">
+                </div>
+                <div class="row">
+                    <div class="profile-head">
+                        <h2>
+                            Общая информация
+                        </h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>учебная группа</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>{{ profile_data.study_group.grade }}{{ profile_data.study_group.symbol }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>специализация</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>{{ profile_data.study_group.specialisation.title }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>куратор</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>{{ profile_data.study_group.supervisor.first_name }} {{ profile_data.study_group.supervisor.last_name }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>творческая группа</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>N/A</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>проектная группа</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>N/A</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col border-left" style="padding-left: 2%; margin-left: 7%">
+                <a class="btn btn-outline-dark" href="edit" role="button" style="border-radius: 0.9rem">Изменить</a>
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -27,3 +27,11 @@ class PreRegisterForm(forms.Form):
 class RegisterForm(forms.Form):
     login = forms.CharField(label='login', max_length=150, required=True)
     password = forms.CharField(label='password', max_length=128, widget=forms.PasswordInput(), required=True)
+
+
+class ProfileEditForm(forms.Form):
+    email = forms.CharField(label='email', max_length=30, required=True)
+    phone = forms.CharField(label='phone', max_length=30, required=True)
+    status = forms.CharField(label='status', max_length=30, required=False)
+
+    profile_image = forms.ImageField(label='profile_image', allow_empty_file=True, required=False)

@@ -9,6 +9,7 @@ class StudyGroups(models.Model):
     # отношения
     specialisation = models.ForeignKey('journal.Specialization', null=True, on_delete=models.CASCADE,
                                        verbose_name='Специализация')
+    supervisor = models.ForeignKey('Teachers', null=True, on_delete=models.CASCADE, verbose_name='Куратор')
 
 
 MALE = 'M'
@@ -50,8 +51,8 @@ class Apprentices(models.Model):
     email = models.TextField(null=True, blank=False, max_length=30, verbose_name='Электронная почта')
     civ_id = models.CharField(null=False, blank=False, max_length=30, verbose_name='Документ')
 
-    profile_picture = models.FilePathField(null=True, match=".*\.png$|.*\.jpeg$",
-                                           verbose_name='Картинка профиля')
+    profile_picture = models.ImageField(null=True, upload_to='profile_images/',
+                                        verbose_name='Картинка профиля')
 
     # флаги
     active = models.BooleanField(null=False, default=False, verbose_name='Активность')
@@ -87,7 +88,6 @@ class Teachers(models.Model):
     active = models.BooleanField(null=False, default=False, verbose_name='Активность')
 
     # отношения
-    supervision_group = models.ForeignKey(StudyGroups, null=True, on_delete=models.CASCADE, verbose_name='Кураторство')
     disciple = models.ForeignKey('journal.Disciples', null=True, on_delete=models.CASCADE, verbose_name='Специализация')
 
     # учетные данные

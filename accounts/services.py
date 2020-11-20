@@ -121,3 +121,4 @@ def get_profile_statistics(user_id):
         statistics_data = statistics.get_apprentice_non_attendance_score(
             user_profile_id), statistics.get_apprentice_average_score(user_profile_id)
     return statistics_data
+

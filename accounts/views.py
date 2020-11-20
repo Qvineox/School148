@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 
 from accounts.forms import *
@@ -115,8 +116,43 @@ def profile(request, user_id=None):
         user_data = get_profile_data(request.user.id)
 
     attendance_score, average_score = get_profile_statistics(user_id)
-
     return render(request, 'profiles/apprentice_page.html', {'profile_data': user_data,
                                                              'average_score': average_score,
                                                              'attendance_score': attendance_score,
                                                              'navbar': navbar_data(request)})
+
+
+def edit_profile(request, user_id=None):
+    if user_id is not None:
+        user_data = get_profile_data(user_id)
+    else:
+        user_data = get_profile_data(request.user.id)
+
+    if request.method == 'POST':
+
+        form = ProfileEditForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            new_email = form.data.get('email')
+            new_phone = form.data.get('phone')
+            new_image = form.cleaned_data['profile_image']
+            new_status = form.data.get('status')
+
+            if user_data.email != new_email:
+                user_data.email = new_email
+
+            if user_data.phone != new_phone:
+                user_data.phone = new_phone
+
+            if new_image is not None:
+                user_data.profile_picture = new_image
+
+            user_data.save()
+
+    print(user_data.profile_picture)
+    attendance_score, average_score = get_profile_statistics(user_id)
+
+    return render(request, 'profiles/editor/profile_editor.html', {'profile_data': user_data,
+                                                                   'average_score': average_score,
+                                                                   'attendance_score': attendance_score,
+                                                                   'navbar': navbar_data(request)})
