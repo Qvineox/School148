@@ -18,7 +18,7 @@
             </li>
 
             <li class="nav-item">
-                {% if 'profile' in request.path %}
+                {% if 'accounts' in request.path %}
                     <a class="nav-link active " href="/accounts/profile/{{ request.user.id }}">Профиль</a>
                 {% else %}
                     <a class="nav-link " href="/accounts/profile/{{ request.user.id }}">Профиль</a>
@@ -58,7 +58,7 @@
             </a>
 
             {% if request.user is not None %}
-                <div class="dropdown">
+                <div class="nav-item dropdown">
                     <a type="button"
                        class="btn btn-outline-primary"
                        href="/accounts/profile/{{ request.user.id }}"

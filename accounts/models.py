@@ -10,6 +10,8 @@ class StudyGroups(models.Model):
     specialisation = models.ForeignKey('journal.Specialization', null=True, on_delete=models.CASCADE,
                                        verbose_name='Специализация')
     supervisor = models.ForeignKey('Teachers', null=True, on_delete=models.CASCADE, verbose_name='Куратор')
+    methodist = models.ForeignKey('Managers', null=True, on_delete=models.CASCADE, verbose_name='Методист')
+    headman = models.ForeignKey('Apprentices', null=True, on_delete=models.CASCADE, verbose_name='Староста')
 
 
 MALE = 'M'
@@ -37,6 +39,10 @@ class Parents(models.Model):
                                    verbose_name='Аккаунт')
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
+    # медиа
+    profile_picture = models.ImageField(null=True, upload_to='profile_images/',
+                                        verbose_name='Картинка профиля')
+
 
 # данные школьников
 class Apprentices(models.Model):
@@ -51,6 +57,7 @@ class Apprentices(models.Model):
     email = models.TextField(null=True, blank=False, max_length=30, verbose_name='Электронная почта')
     civ_id = models.CharField(null=False, blank=False, max_length=30, verbose_name='Документ')
 
+    # медиа
     profile_picture = models.ImageField(null=True, upload_to='profile_images/',
                                         verbose_name='Картинка профиля')
 
@@ -95,6 +102,10 @@ class Teachers(models.Model):
                                    verbose_name='Аккаунт')
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
+    # медиа
+    profile_picture = models.ImageField(null=True, upload_to='profile_images/',
+                                        verbose_name='Картинка профиля')
+
 
 # данные персонала
 class Staff(models.Model):
@@ -112,6 +123,10 @@ class Staff(models.Model):
     account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,
                                    verbose_name='Аккаунт')
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
+
+    # медиа
+    profile_picture = models.ImageField(null=True, upload_to='profile_images/',
+                                        verbose_name='Картинка профиля')
 
 
 # управляющий коллектив
@@ -167,3 +182,7 @@ class Managers(models.Model):
     account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, unique=False,
                                    verbose_name='Аккаунт')
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
+
+    # медиа
+    profile_picture = models.ImageField(null=True, upload_to='profile_images/',
+                                        verbose_name='Картинка профиля')

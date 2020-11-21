@@ -1,4 +1,3 @@
-import numpy as np
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
@@ -164,9 +163,39 @@ def view_all_groups(request):
 
     return render(request, 'profiles/groups/all_groups.html', {'high_school_groups': separated_study_groups['high'],
                                                                'middle_school_groups': separated_study_groups['middle'],
-                                                               'primary_school_groups': separated_study_groups['primary'],
-                                                               'creative_groups': groups_data['creative_groups']})
+                                                               'primary_school_groups': separated_study_groups[
+                                                                   'primary'],
+                                                               'creative_groups': groups_data['creative_groups'],
+                                                               'navbar': navbar_data(request)})
 
 
-def view_group(request, group_id):
-    return render(request)
+def view_study_group(request, group_id):
+    group_data = get_study_group_data(group_id)
+    apprentices = get_study_group_apprentices(group_id)
+
+    apprentices_grid = [[], [], []]
+
+    for counter, item in enumerate(apprentices):
+        item.__setattr__('stats', get_profile_statistics(item.account_id))
+        apprentices_grid[counter % 3].append(item)
+
+    headman = group_data.headman
+    headman.__setattr__('stats', get_profile_statistics(headman.account_id))
+
+    methodist = group_data.methodist
+
+    supervisor = group_data.supervisor
+    try:
+        supervisor.__setattr__('stats', get_profile_statistics(methodist.account_id))
+    except AttributeError:
+        supervisor.__setattr__('stats', ('N/A', 'N/A', 'N/A'))
+
+    print(len(apprentices_grid[0]))
+    return render(request, 'profiles/groups/group_page.html', {'group_data': group_data,
+                                                               'headman': headman,
+                                                               'methodist': methodist,
+                                                               'supervisor': supervisor,
+                                                               'first_column': apprentices_grid[0],
+                                                               'second_column': apprentices_grid[1],
+                                                               'third_column': apprentices_grid[2],
+                                                               'navbar': navbar_data(request)})

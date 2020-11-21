@@ -133,6 +133,10 @@ def get_all_groups():
     return groups_data
 
 
+def get_study_group_data(study_group_id):
+    return models.StudyGroups.objects.get(id=study_group_id)
+
+
 def separate_study_groups(groups_data):
     separated_groups = {
         'high': [],
@@ -150,4 +154,9 @@ def separate_study_groups(groups_data):
 
     return separated_groups
 
+
 # возвращает список всех учеников одной группы и куратора группы
+def get_study_group_apprentices(study_group_id):
+    group_apprentices = models.Apprentices.objects.filter(study_group_id=study_group_id).order_by('second_name')
+    return list(group_apprentices)
+

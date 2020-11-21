@@ -21,12 +21,17 @@
                              style="width: 250px; height: 250px; overflow: hidden; position: relative; border-radius: 10%; margin-left: auto;
                        margin-right: auto">
                             <img src="/media/{{ profile_data.profile_picture }}"
-                                 alt=""/>
+                                 alt=""
+                                 class="rounded"
+                                 width="160"
+                                 height="160"
+                                 style="width: 160px; height: 160px; object-fit: cover;"/>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 5%">
                         <input type="file" name="profile_image" id="profile_image" hidden alt=""/>
-                        <label for="profile_image" class="btn btn-outline-dark" style="margin-left: auto; margin-right: auto">
+                        <label for="profile_image" class="btn btn-outline-dark"
+                               style="margin-left: auto; margin-right: auto">
                             Сменить аватар
                         </label>
                     </div>
@@ -142,7 +147,8 @@
                     <div class="row">
                         <button class="btn btn-outline-success" type="submit" style="border-radius: 0.9rem;margin-left: auto;
                        margin-right: auto;
-                       margin-top: 5%">Сохранить</button>
+                       margin-top: 5%">Сохранить
+                        </button>
                     </div>
                     <div class="row">
                         <a class="btn btn-outline-danger" href="/accounts/profile/{{ request.user.id }}" style="border-radius: 0.9rem; margin-left: auto;

@@ -7,6 +7,25 @@
 
 {% block style %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/profile_style.css' %}">
+    <style>
+        a.btn-outline-dark {
+            box-shadow: 0 3px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            padding: 10px 15px;
+            letter-spacing: 1px;
+            margin-left: auto;
+            border-radius: 0.9rem;
+        }
+
+        btn-link.btn-outline-dark {
+            box-shadow: 0 3px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            padding: 10px 15px;
+            letter-spacing: 1px;
+            margin-left: auto;
+            border-radius: 0.9rem;
+        }
+    </style>
 {% endblock %}
 
 {% block main %}
@@ -19,7 +38,11 @@
                          style="width: 250px; height: 250px; overflow: hidden; position: relative; border-radius: 10%; margin-left: auto;
                        margin-right: auto">
                         <img src="/media/{{ profile_data.profile_picture }}"
-                             alt=""/>
+                             alt=""
+                             class="rounded"
+                             width="160"
+                             height="160"
+                             style="width: 160px; height: 160px; object-fit: cover;"/>
                     </div>
                 </div>
                 <div class="profile-work" style="margin-top: 60px; margin-left: 5%">
@@ -87,14 +110,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4" style="padding-left: 3%">
-                <div class="row" style="height: 100px">
+            <div class="col-md-4 border-right" style="padding-left: 3%">
+                <div class="row" style="height: 150px">
                     <div class="profile-head">
                         <h1>
                             {{ profile_data.first_name }} {{ profile_data.second_name }} {{ profile_data.last_name }}
                         </h1>
                         <h5>
-                            Ученик {{ profile_data.study_group.grade }}{{ profile_data.study_group.symbol }} класса
+                            {% if profile_data.study_group.headman == profile_data %}
+                                Староста
+                            {% else %}
+                                Ученик
+                            {% endif %}
+                            {{ profile_data.study_group.grade }}{{ profile_data.study_group.symbol }} класса
                         </h5>
                     </div>
                 </div>
@@ -187,8 +215,8 @@
                 </div>
 
             </div>
-            <div class="col-md-4">
-                <div class="row" style="height: 100px">
+            <div class="col-md-4" style="padding-left: 3%">
+                <div class="row" style="height: 150px">
                 </div>
                 <div class="row">
                     <div class="profile-head">
@@ -201,7 +229,8 @@
                                     <h5>учебная группа</h5>
                                 </div>
                                 <div class="col-md-4">
-                                    <h5>{{ profile_data.study_group.grade }}{{ profile_data.study_group.symbol }}</h5>
+                                    <h5 href="../../">
+                                        {{ profile_data.study_group.grade }}{{ profile_data.study_group.symbol }}</h5>
                                 </div>
                             </div>
                             <div class="row">
@@ -235,6 +264,60 @@
                                 <div class="col-md-4">
                                     <h5>N/A</h5>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 3%">
+                    <div class="profile-head">
+                        <h2>
+                            Ссылки
+                        </h2>
+                        <div class="container">
+                            <div class="row" style="padding-top: 1%;">
+                                <a class="btn btn-outline-dark"
+                                   href="/accounts/group/study/{{ profile_data.study_group_id }}"
+                                   style="margin-left: 0px">Учебная
+                                    группа</a>
+                                {% if profile_data.study_group.supervisor.account_id == None %}
+                                    <btn-link
+                                            class="btn btn-outline-dark disabled"
+                                            aria-label="Пользователь еще не зарегистрирован!"
+                                            data-balloon-pos="down"
+                                            style="margin-left: 2px">
+                                        Куратор
+                                    </btn-link>
+                                {% else %}
+                                    <a href="/accounts/profile/{{ profile_data.study_group.supervisor.account_id }}"
+                                       class="btn btn-outline-dark" style="margin-left: 2px">Куратор
+                                    </a>
+                                {% endif %}
+                                {% if profile_data.study_group.headman.account_id == None %}
+                                    <btn-link
+                                            class="btn btn-outline-dark disabled"
+                                            aria-label="Пользователь еще не зарегистрирован!"
+                                            data-balloon-pos="down"
+                                            style="margin-left: 2px">
+                                        Староста
+                                    </btn-link>
+                                {% else %}
+                                    <a href="/accounts/profile/{{ profile_data.study_group.headman.account_id }}"
+                                       class="btn btn-outline-dark" style="margin-left: 2px">
+                                        Староста
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="row" style="padding-top: 2%">
+                                <a class="btn btn-outline-dark" href="#"
+                                   style="margin-left: 0px"
+                                   aria-label="Функционал пока недоступен."
+                                   data-balloon-pos="down">
+                                    Творческая группа</a>
+                                <a class="btn btn-outline-dark" href="#"
+                                   style="margin-left: 2px"
+                                   aria-label="Функционал пока недоступен."
+                                   data-balloon-pos="down">
+                                    Проектная группа</a>
                             </div>
                         </div>
                     </div>

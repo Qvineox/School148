@@ -6,10 +6,369 @@
 {% endblock %}
 
 {% block style %}
+    <style>
+        h1 {
+            color: whitesmoke;
+        }
 
+        h3 {
+            color: whitesmoke;
+        }
+
+        .stats {
+            background: #f2f5f8 !important;
+            color: #000 !important;
+            border-radius: 10px;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: -5px 5px 5px rgba(56, 56, 56, .5);
+        }
+
+
+        .stats-awesome {
+            background: #f2f5f8 !important;
+            color: #000 !important
+        }
+
+        .stats-good {
+            background: #f2f5f8 !important;
+            color: #000 !important
+        }
+
+        .stats-bad {
+            background: #f2f5f8 !important;
+            color: #000 !important
+        }
+
+        .stats-worst {
+            background: #f2f5f8 !important;
+            color: #000 !important
+        }
+
+        btn-link {
+            box-shadow: 0 3px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            font-size: 12px;
+            padding: 10px 15px;
+            letter-spacing: 1px;
+            margin-left: auto;
+        }
+
+        a.btn-outline-dark {
+            box-shadow: 0 3px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            font-size: 12px;
+            padding: 10px 15px;
+            letter-spacing: 1px;
+            margin-left: auto;
+        }
+
+    </style>
 {% endblock %}
 
 {% block main %}
     {% include 'navbar.html' %}
+    <div class="container-lg">
+        <div class="row border-bottom" style="padding-bottom: 10px">
+            <h1>Класс {{ group_data.grade }}
+                "{{ group_data.symbol }}"</h1>
+        </div>
+        <div class="row" style="padding-top: 1%; margin-bottom: 10px">
+            <h3>Руководители</h3>
+        </div>
 
+        <div class="row border-bottom" style="padding-bottom: 20px">
+            <div class="col-4">
+                {% if supervisor != None %}
+                    <div class="card p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="image"><img
+                                    src="/media/{{ supervisor.profile_picture }}"
+                                    class="rounded"
+                                    width="160"
+                                    height="160"
+                                    style="width: 160px; height: 160px; object-fit: cover;">
+                            </div>
+                            <div class="ml-3 w-100">
+                                <h4 class="mb-0 mt-0">{{ supervisor.second_name }} {{ supervisor.first_name }} {{ supervisor.last_name }}</h4>
+                                <span>Классный руководитель</span>
+                                <div class="p-2 mt-2 d-flex justify-content-between stats">
+                                    <div class="d-flex flex-column"><span>Средний балл</span> <span
+                                            class="number1">{{ supervisor.stats.0 }}</span></div>
+                                    <div class="d-flex flex-column"><span>Занятия</span> <span
+                                            class="number2">{{ supervisor.stats.1 }}</span></div>
+                                    <div class="d-flex flex-column"><span>Рейтинг</span> <span
+                                            class="number3">{{ supervisor.stats.2 }}</span></div>
+                                </div>
+                                <div class="button mt-2 d-flex flex-row align-items-center">
+                                    {% if supervisor.account_id == None %}
+                                        <btn-link
+                                                class="btn-outline-dark disabled"
+                                                aria-label="Пользователь еще не зарегистрирован!"
+                                                data-balloon-pos="down">
+                                            Посмотреть профиль
+                                        </btn-link>
+                                    {% else %}
+                                        <a href="/accounts/profile/{{ supervisor.account_id }}"
+                                           class="btn-outline-dark">
+                                            Посмотреть профиль
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            {% if methodist != None %}
+                <div class="col-4">
+                    <div class="card p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="image"><img
+                                    src="/media/{{ methodist.profile_picture }}"
+                                    class="rounded"
+                                    width="160"
+                                    height="160"
+                                    style="width: 160px; height: 160px; object-fit: cover;">
+                            </div>
+                            <div class="ml-3 w-100">
+                                <h4 class="mb-0 mt-0">{{ methodist.second_name }} {{ methodist.first_name }} {{ methodist.last_name }}</h4>
+                                <span>Методист</span>
+                                <div class="p-2 mt-2 d-flex justify-content-between stats">
+
+                                </div>
+                                <div class="button mt-2 d-flex flex-row align-items-center">
+                                    {% if methodist.account_id == None %}
+                                        <btn-link
+                                                class="btn-outline-dark disabled"
+                                                aria-label="Пользователь еще не зарегистрирован!"
+                                                data-balloon-pos="down">
+                                            Посмотреть профиль
+                                        </btn-link>
+                                    {% else %}
+                                        <a href="/accounts/profile/{{ methodist.account_id }}"
+                                           class="btn-outline-dark">
+                                            Посмотреть профиль
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if headman %}
+                <div class="col-4">
+                    <div class="card p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="image"><img
+                                    src="/media/{{ headman.profile_picture }}"
+                                    class="rounded"
+                                    width="160"
+                                    height="160"
+                                    style="width: 160px; height: 160px; object-fit: cover;">
+                            </div>
+                            <div class="ml-3 w-100">
+                                <h4 class="mb-0 mt-0">{{ headman.second_name }} {{ headman.first_name }} {{ headman.last_name }}</h4>
+                                <span>Староста</span>
+                                <div class="p-2 mt-2 d-flex justify-content-between stats">
+                                    <div class="d-flex flex-column"><span class="articles">Средний балл</span> <span
+                                            class="number1">{{ headman.stats.1|default_if_none:"Нет оценок" }}</span>
+                                    </div>
+                                    <div class="d-flex flex-column"><span class="followers">Посещаемость</span>
+                                        <span
+                                                class="number2">{{ headman.stats.0 }}%</span></div>
+                                    <div class="d-flex flex-column"><span class="rating">Допуск</span>
+                                        <span class="number3">
+                                    {% if headman.stats.1 > 3 and headman.stats.0 > 60 %}
+                                        Да
+                                    {% else %}
+                                        Нет
+                                    {% endif %}
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="button mt-2 d-flex flex-row align-items-center">
+                                    {% if headman.account_id == None %}
+                                        <btn-link
+                                                class="btn-outline-dark disabled"
+                                                aria-label="Пользователь еще не зарегистрирован!"
+                                                data-balloon-pos="down">
+                                            Посмотреть профиль
+                                        </btn-link>
+                                    {% else %}
+                                        <a href="/accounts/profile/{{ headman.account_id }}"
+                                           class="btn-outline-dark">
+                                            Посмотреть профиль
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="row" style="padding-top: 1%; margin-bottom: 10px">
+            <h3>Ученики</h3>
+        </div>
+        <div class="row border-bottom" style="padding-bottom: 20px">
+            <div class="col-4">
+                {% for apprentice in first_column %}
+                    <div class="card p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="image"><img
+                                    src="/media/{{ apprentice.profile_picture }}"
+                                    class="rounded"
+                                    width="160"
+                                    height="160"
+                                    style="width: 160px; height: 160px; object-fit: cover;">
+                            </div>
+                            <div class="ml-3 w-100">
+                                <h4 class="mb-0 mt-0">{{ apprentice.second_name }} {{ apprentice.first_name }} {{ apprentice.last_name }}</h4>
+                                <span>Староста</span>
+                                <div class="p-2 mt-2 d-flex justify-content-between stats">
+                                    <div class="d-flex flex-column"><span class="articles">Средний балл</span> <span
+                                            class="number1">{{ apprentice.stats.1|default_if_none:"Нет оценок" }}</span>
+                                    </div>
+                                    <div class="d-flex flex-column"><span class="followers">Посещаемость</span>
+                                        <span
+                                                class="number2">{{ apprentice.stats.0 }}%</span></div>
+                                    <div class="d-flex flex-column"><span class="rating">Допуск</span>
+                                        <span class="number3">
+                                    {% if apprentice.stats.1 > 3 and apprentice.stats.0 > 60 %}
+                                        Да
+                                    {% else %}
+                                        Нет
+                                    {% endif %}
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="button mt-2 d-flex flex-row align-items-center">
+                                    {% if apprentice.account_id == None %}
+                                        <btn-link
+                                                class="btn-outline-dark disabled"
+                                                aria-label="Пользователь еще не зарегистрирован!"
+                                                data-balloon-pos="down">
+                                            Посмотреть профиль
+                                        </btn-link>
+                                    {% else %}
+                                        <a href="/accounts/profile/{{ apprentice.account_id }}"
+                                           class="btn-outline-dark">
+                                            Посмотреть профиль
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-4">
+                {% for apprentice in second_column %}
+                    <div class="card p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="image"><img
+                                    src="/media/{{ apprentice.profile_picture }}"
+                                    class="rounded"
+                                    width="160"
+                                    height="160"
+                                    style="width: 160px; height: 160px; object-fit: cover;">
+                            </div>
+                            <div class="ml-3 w-100">
+                                <h4 class="mb-0 mt-0">{{ apprentice.second_name }} {{ apprentice.first_name }} {{ apprentice.last_name }}</h4>
+                                <span>Староста</span>
+                                <div class="p-2 mt-2 d-flex justify-content-between stats">
+                                    <div class="d-flex flex-column"><span class="articles">Средний балл</span> <span
+                                            class="number1">{{ apprentice.stats.1|default_if_none:"Нет оценок" }}</span>
+                                    </div>
+                                    <div class="d-flex flex-column"><span class="followers">Посещаемость</span>
+                                        <span
+                                                class="number2">{{ apprentice.stats.0 }}%</span></div>
+                                    <div class="d-flex flex-column"><span class="rating">Допуск</span>
+                                        <span class="number3">
+                                    {% if apprentice.stats.1 > 3 and apprentice.stats.0 > 60 %}
+                                        Да
+                                    {% else %}
+                                        Нет
+                                    {% endif %}
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="button mt-2 d-flex flex-row align-items-center">
+                                    {% if apprentice.account_id == None %}
+                                        <btn-link
+                                                class="btn-outline-dark disabled"
+                                                aria-label="Пользователь еще не зарегистрирован!"
+                                                data-balloon-pos="down">
+                                            Посмотреть профиль
+                                        </btn-link>
+                                    {% else %}
+                                        <a href="/accounts/profile/{{ apprentice.account_id }}"
+                                           class="btn-outline-dark">
+                                            Посмотреть профиль
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-4">
+                {% for apprentice in third_column %}
+                    <div class="card p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="image"><img
+                                    src="/media/{{ apprentice.profile_picture }}"
+                                    class="rounded"
+                                    width="160"
+                                    height="160"
+                                    style="width: 160px; height: 160px; object-fit: cover;">
+                            </div>
+                            <div class="ml-3 w-100">
+                                <h4 class="mb-0 mt-0">{{ apprentice.second_name }} {{ apprentice.first_name }} {{ apprentice.last_name }}</h4>
+                                <span>Староста</span>
+                                <div class="p-2 mt-2 d-flex justify-content-between stats">
+                                    <div class="d-flex flex-column"><span class="articles">Средний балл</span> <span
+                                            class="number1">{{ apprentice.stats.1|default_if_none:"Нет оценок" }}</span>
+                                    </div>
+                                    <div class="d-flex flex-column"><span class="followers">Посещаемость</span>
+                                        <span
+                                                class="number2">{{ apprentice.stats.0 }}%</span></div>
+                                    <div class="d-flex flex-column"><span class="rating">Допуск</span>
+                                        <span class="number3">
+                                    {% if apprentice.stats.1 > 3 and apprentice.stats.0 > 60 %}
+                                        Да
+                                    {% else %}
+                                        Нет
+                                    {% endif %}
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="button mt-2 d-flex flex-row align-items-center">
+                                    {% if apprentice.account_id == None %}
+                                        <btn-link
+                                                class="btn-outline-dark disabled"
+                                                aria-label="Пользователь еще не зарегистрирован!"
+                                                data-balloon-pos="down">
+                                            Посмотреть профиль
+                                        </btn-link>
+                                    {% else %}
+                                        <a href="/accounts/profile/{{ apprentice.account_id }}"
+                                           class="btn-outline-dark">
+                                            Посмотреть профиль
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

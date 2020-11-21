@@ -9,5 +9,7 @@ urlpatterns = [
     path('profile/<int:user_id>/', views.profile, name='profile'),
     path('profile/<int:user_id>/edit', views.edit_profile, name='edit profile'),
     path('group/all/', views.view_all_groups, name='view all groups'),
-    path('group/<int:group_id>/', views.view_group, name='view group'),
+    path('group/study/<int:group_id>/', views.view_study_group, name='view study group'),
+    # path('group/creative/<int:group_id>/', views.view_creative_group, name='view creative group'),
+    # path('group/project/<int:group_id>/', views.view_project_group, name='view project group'),
 ]
