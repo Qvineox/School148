@@ -1,0 +1,16 @@
+<div class="container-lg"
+     style="padding-left: 1%;
+            padding-right: 1%;
+            margin-right: auto;
+            margin-left: -2%;
+            margin-top: -25px">
+    <div class="multi-button">
+        {% for tool in toolbox %}
+            <a class="btn btn-toolbox"
+               style="color: whitesmoke; background-color: #333333; margin-right: 5px;"
+               href="{{ tool.link }}">
+                {{ tool.title }}
+            </a>
+        {% endfor %}
+    </div>
+</div>

@@ -58,7 +58,7 @@ class Apprentices(models.Model):
     civ_id = models.CharField(null=False, blank=False, max_length=30, verbose_name='Документ')
 
     # медиа
-    profile_picture = models.ImageField(null=True, upload_to='profile_images/',
+    profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',
                                         verbose_name='Картинка профиля')
 
     # флаги
@@ -103,7 +103,7 @@ class Teachers(models.Model):
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
     # медиа
-    profile_picture = models.ImageField(null=True, upload_to='profile_images/',
+    profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',
                                         verbose_name='Картинка профиля')
 
 
@@ -125,7 +125,7 @@ class Staff(models.Model):
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
     # медиа
-    profile_picture = models.ImageField(null=True, upload_to='profile_images/',
+    profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',
                                         verbose_name='Картинка профиля')
 
 
@@ -184,5 +184,5 @@ class Managers(models.Model):
     registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
     # медиа
-    profile_picture = models.ImageField(null=True, upload_to='profile_images/',
+    profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',
                                         verbose_name='Картинка профиля')

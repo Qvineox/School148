@@ -25,3 +25,17 @@ def navbar_data(request):
     }
 
     return data
+
+
+class Tool(object):
+    def __init__(self, title, link):
+        self.title = title
+        self.link = link
+
+
+def toolbox_data(tools_list):
+    toolbox = []
+    for item in tools_list:
+        toolbox.append(Tool(item[0], item[1]))
+
+    return toolbox

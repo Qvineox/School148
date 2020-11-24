@@ -3,6 +3,7 @@ import logging
 from django.contrib.auth.models import User
 
 import accounts.models as models
+import journal.models as journal
 import statistic.services as statistics
 
 logger = logging.getLogger('database')
@@ -115,12 +116,15 @@ def get_user_group_numbers(user_id):
 
 # возвращает значения статистики для прфиля
 def get_profile_statistics(user_id):
-    user_profile_id = get_profile_from_user(user_id).id
-    # если пользователь школьник
-    if get_user_prior_group_number(user_id) == 1:
-        statistics_data = statistics.get_apprentice_non_attendance_score(
-            user_profile_id), statistics.get_apprentice_average_score(user_profile_id)
-    return statistics_data
+    if user_id:
+        user_profile_id = get_profile_from_user(user_id).id
+        # если пользователь школьник
+        if get_user_prior_group_number(user_id) == 1:
+            statistics_data = statistics.get_apprentice_non_attendance_score(
+                user_profile_id), statistics.get_apprentice_average_score(user_profile_id)
+        return statistics_data
+    else:
+        return None, None
 
 
 # возвращает словарь всех групп
@@ -160,3 +164,13 @@ def get_study_group_apprentices(study_group_id):
     group_apprentices = models.Apprentices.objects.filter(study_group_id=study_group_id).order_by('second_name')
     return list(group_apprentices)
 
+
+# возвращает словарь доступный изменений для учебной группы
+def get_available_study_group_settings(study_group_id):
+    available_settings = {
+        'available_methodists': None,
+        'available_supervisors': list(models.Teachers.objects.all()),
+        'available_specialisations': list(journal.Specialization.objects.all()),
+    }
+
+    return available_settings

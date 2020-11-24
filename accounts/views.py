@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 from accounts.forms import *
 from accounts.services import *
-from home.views import navbar_data
+from home.views import navbar_data, toolbox_data
 
 logger = logging.getLogger('auth')
 
@@ -115,9 +115,13 @@ def profile(request, user_id=None):
         user_data = get_profile_data(request.user.id)
 
     attendance_score, average_score = get_profile_statistics(user_id)
+    toolbox = toolbox_data([('Учебная группа', '/accounts/group/study/{0}'.format(user_data.study_group_id)),
+                            ('Редактировать', 'edit')])
+
     return render(request, 'profiles/apprentice_page.html', {'profile_data': user_data,
                                                              'average_score': average_score,
                                                              'attendance_score': attendance_score,
+                                                             'toolbox': toolbox,
                                                              'navbar': navbar_data(request)})
 
 
@@ -147,14 +151,15 @@ def edit_profile(request, user_id=None):
                 user_data.profile_picture = new_image
 
             user_data.save()
+            return profile(request, user_id)
 
     print(user_data.profile_picture)
     attendance_score, average_score = get_profile_statistics(user_id)
 
-    return render(request, 'profiles/editor/profile_editor.html', {'profile_data': user_data,
-                                                                   'average_score': average_score,
-                                                                   'attendance_score': attendance_score,
-                                                                   'navbar': navbar_data(request)})
+    return render(request, 'profiles/editors/profile_editor.html', {'profile_data': user_data,
+                                                                    'average_score': average_score,
+                                                                    'attendance_score': attendance_score,
+                                                                    'navbar': navbar_data(request)})
 
 
 def view_all_groups(request):
@@ -184,13 +189,19 @@ def view_study_group(request, group_id):
 
     methodist = group_data.methodist
 
-    supervisor = group_data.supervisor
-    try:
-        supervisor.__setattr__('stats', get_profile_statistics(methodist.account_id))
-    except AttributeError:
-        supervisor.__setattr__('stats', ('N/A', 'N/A', 'N/A'))
+    if group_data.supervisor:
+        supervisor = group_data.supervisor
+        try:
+            supervisor.__setattr__('stats', get_profile_statistics(supervisor.account_id))
+        except AttributeError:
+            supervisor.__setattr__('stats', ('N/A', 'N/A', 'N/A'))
+    else:
+        supervisor = None
 
-    print(len(apprentices_grid[0]))
+    toolbox = toolbox_data([('Все группы', '../../all'),
+                            ('Статистика', '/statistics/groups/{0}'.format(group_id)),
+                            ('Редактировать', 'edit/')])
+
     return render(request, 'profiles/groups/group_page.html', {'group_data': group_data,
                                                                'headman': headman,
                                                                'methodist': methodist,
@@ -198,4 +209,15 @@ def view_study_group(request, group_id):
                                                                'first_column': apprentices_grid[0],
                                                                'second_column': apprentices_grid[1],
                                                                'third_column': apprentices_grid[2],
+                                                               'toolbox': toolbox,
                                                                'navbar': navbar_data(request)})
+
+
+def edit_study_group(request, group_id):
+    group_data = get_study_group_data(group_id)
+    apprentices = get_study_group_apprentices(group_id)
+
+    return render(request, 'profiles/editors/group_editor.html', {'group_data': group_data,
+                                                                  'available_supervisors': None,
+                                                                  'apprentices': apprentices,
+                                                                  'navbar': navbar_data(request)})

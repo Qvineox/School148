@@ -1,0 +1,151 @@
+{% extends  'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ first_name }} {{ last_name }}</title>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile_style.css' %}">
+{% endblock %}
+
+{% block main %}
+    {% include 'navbar.html' %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container-lg"
+             style="padding-left: 1%;
+            padding-right: 1%;
+            margin-right: auto;
+            margin-left: -2%;
+            margin-top: -25px">
+            <div class="multi-button">
+                <button class="btn btn-toolbox"
+                        style="color: lightgreen; background-color: #333333; margin-right: 5px;"
+                        type="submit">
+                    Сохранить
+                </button>
+
+                <a class="btn btn-toolbox"
+                   style="color: lightcoral; background-color: #333333; margin-right: 5px;"
+                   href="/accounts/profile/{{ request.user.id }}">
+                    Вернуться
+                </a>
+            </div>
+        </div>
+        <div class="container-md emp-profile" style="padding: 2%; margin-left: -1%; margin-right: -1%; margin-top: 5px">
+            <div class="row">
+                <div class="col-md-2 border-right">
+                    <div class="row">
+                        <div class="profile-img"
+                             style="width: 250px; height: 250px; overflow: hidden; position: relative; border-radius: 10%; margin-left: auto;
+                       margin-right: auto">
+                            <img src="/media/{{ profile_data.profile_picture }}"
+                                 alt=""
+                                 class="rounded"
+                                 width="160"
+                                 height="160"
+                                 style="width: 160px; height: 160px; object-fit: cover;"/>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 5%">
+                        <input type="file" name="profile_image" id="profile_image" hidden alt=""/>
+                        <label for="profile_image" class="btn btn-outline-dark"
+                               style="margin-left: auto; margin-right: auto">
+                            Сменить аватар
+                        </label>
+                    </div>
+                </div>
+                <div class="col-lg-10" style="padding-left: 3%">
+                    <div class="row">
+                        <div class="profile-head">
+                            <h1>
+                                {{ group_data.grade }} "{{ group_data.symbol }}" класс
+                            </h1>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 1%">
+                        <div class="profile-head">
+                            <div class="container">
+                                <div class="row" style="margin-top: 5%">
+                                    <div class="col" style="padding-left: 0">
+                                        <h3>профиль</h3>
+                                        <div class="btn-group" role="group">
+                                            <div class="form-group">
+                                                <select id="inputState" class="form-control">
+                                                    {% if group_data.specialisation == None %}
+                                                        <option selected>Не выбран</option>
+                                                    {% else %}
+                                                        <option selected>{{ group_data.specialisation.title }}</option>
+                                                    {% endif %}
+                                                    <option>...</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 3px">
+                                    <div class="col" style="padding-left: 0">
+                                        <h3>куратор</h3>
+                                        <div class="btn-group" role="group">
+                                            <div class="form-group">
+                                                <select id="inputState" class="form-control">
+                                                    {% if group_data.supervisor == None %}
+                                                        <option selected>Не выбран</option>
+                                                    {% else %}
+                                                        <option selected>{{ group_data.supervisor.first_name }} {{ group_data.supervisor.last_name }}</option>
+                                                    {% endif %}
+                                                    {% for supervisor in available_supervisors %}
+                                                        <option>{{ supervisor.first_name }} {{ supervisor.last_name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 3px">
+                                    <div class="col" style="padding-left: 0">
+                                        <h3>староста</h3>
+                                        <div class="btn-group" role="group">
+                                            <div class="form-group">
+                                                <select id="inputState" class="form-control">
+                                                    {% if group_data.headman == None %}
+                                                        <option selected>Не выбран</option>
+                                                    {% else %}
+                                                        <option selected>{{ group_data.headman.first_name }} {{ group_data.headman.last_name }}</option>
+                                                    {% endif %}
+                                                    {% for apprentice in apprentices %}
+                                                        <option>{{ apprentice.first_name }} {{ apprentice.last_name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 3px">
+                                    <div class="col" style="padding-left: 0">
+                                        <h3>методист</h3>
+                                        <div class="btn-group" role="group">
+                                            <div class="form-group">
+                                                <select id="inputState" class="form-control">
+                                                    {% if group_data.methodist == None %}
+                                                        <option selected>Не выбран</option>
+                                                    {% else %}
+                                                        <option selected>{{ group_data.methodist.first_name }} {{ group_data.methodist.last_name }}</option>
+                                                    {% endif %}
+                                                    <option>...</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+{% endblock %}

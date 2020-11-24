@@ -58,8 +58,8 @@ class Marks(models.Model):
 
     weight = models.SmallIntegerField(choices=WEIGHT_CHOICES, null=True, default=1, verbose_name='Вес')
     comment = models.TextField(null=True, blank=False, verbose_name='Комментарий')
-    rating_date = models.DateTimeField(auto_now_add=True, null=False, verbose_name='Дата установки')
-    modify_date = models.DateTimeField(auto_now=True, null=False, verbose_name='Дата изменения')
+    rating_date = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Дата установки')
+    modify_date = models.DateTimeField(auto_now=True, null=True, verbose_name='Дата изменения')
 
     # отношения
     holder = models.ForeignKey('accounts.Apprentices', null=False, on_delete=models.CASCADE, verbose_name='Получатель')
