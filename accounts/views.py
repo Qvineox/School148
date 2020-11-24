@@ -217,7 +217,13 @@ def edit_study_group(request, group_id):
     group_data = get_study_group_data(group_id)
     apprentices = get_study_group_apprentices(group_id)
 
-    return render(request, 'profiles/editors/group_editor.html', {'group_data': group_data,
-                                                                  'available_supervisors': None,
-                                                                  'apprentices': apprentices,
-                                                                  'navbar': navbar_data(request)})
+    available_settings = get_available_study_group_settings(group_data)
+
+    return render(request,
+                  'profiles/editors/group_editor.html',
+                  {'group_data': group_data,
+                   'available_supervisors': available_settings['available_supervisors'],
+                   'available_specialisations': available_settings['available_specialisations'],
+                   'available_methodists': available_settings['available_methodists'],
+                   'apprentices': apprentices,
+                   'navbar': navbar_data(request)})

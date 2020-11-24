@@ -76,10 +76,11 @@
                                                 <select id="inputState" class="form-control">
                                                     {% if group_data.specialisation == None %}
                                                         <option selected>Не выбран</option>
-                                                    {% else %}
-                                                        <option selected>{{ group_data.specialisation.title }}</option>
                                                     {% endif %}
-                                                    <option>...</option>
+                                                    {% for specialisation in available_specialisations %}
+                                                        <option {% if specialisation == group_data.specialisation %}
+                                                            selected {% endif %}>{{ specialisation.title }}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
@@ -93,12 +94,15 @@
                                                 <select id="inputState" class="form-control">
                                                     {% if group_data.supervisor == None %}
                                                         <option selected>Не выбран</option>
+                                                    {% endif %}
+                                                    {% if available_supervisors|length > 0 %}
+                                                        {% for supervisor in available_supervisors %}
+                                                            <option {% if supervisor == group_data.supervisor %}
+                                                                selected {% endif %}>{{ supervisor.first_name }} {{ supervisor.last_name }}</option>
+                                                        {% endfor %}
                                                     {% else %}
                                                         <option selected>{{ group_data.supervisor.first_name }} {{ group_data.supervisor.last_name }}</option>
                                                     {% endif %}
-                                                    {% for supervisor in available_supervisors %}
-                                                        <option>{{ supervisor.first_name }} {{ supervisor.last_name }}</option>
-                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
@@ -112,11 +116,10 @@
                                                 <select id="inputState" class="form-control">
                                                     {% if group_data.headman == None %}
                                                         <option selected>Не выбран</option>
-                                                    {% else %}
-                                                        <option selected>{{ group_data.headman.first_name }} {{ group_data.headman.last_name }}</option>
                                                     {% endif %}
                                                     {% for apprentice in apprentices %}
-                                                        <option>{{ apprentice.first_name }} {{ apprentice.last_name }}</option>
+                                                        <option {% if apprentice == group_data.headman %}
+                                                            selected {% endif %}>{{ apprentice.first_name }} {{ apprentice.last_name }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -131,10 +134,11 @@
                                                 <select id="inputState" class="form-control">
                                                     {% if group_data.methodist == None %}
                                                         <option selected>Не выбран</option>
-                                                    {% else %}
-                                                        <option selected>{{ group_data.methodist.first_name }} {{ group_data.methodist.last_name }}</option>
                                                     {% endif %}
-                                                    <option>...</option>
+                                                    {% for methodist in available_methodists %}
+                                                        <option {% if methodist == group_data.methodist %}
+                                                            selected {% endif %}>{{ methodist.first_name }} {{ methodist.last_name }}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>

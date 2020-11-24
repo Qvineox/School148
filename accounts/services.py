@@ -166,11 +166,32 @@ def get_study_group_apprentices(study_group_id):
 
 
 # возвращает словарь доступный изменений для учебной группы
-def get_available_study_group_settings(study_group_id):
+def get_available_study_group_settings(study_group):
     available_settings = {
         'available_methodists': None,
-        'available_supervisors': list(models.Teachers.objects.all()),
-        'available_specialisations': list(journal.Specialization.objects.all()),
+        'available_supervisors': get_available_supervisors(),
+        'available_specialisations': get_available_specialisations(study_group.grade),
     }
 
     return available_settings
+
+
+# возвращает список доступных специализаций
+def get_available_specialisations(study_group_grade):
+    available_specialisations = list(journal.Specialization.objects.all())
+    for counter, item in enumerate(available_specialisations):
+        if item.main_disciple.start_grade > study_group_grade or item.main_disciple.end_grade < study_group_grade:
+            available_specialisations.pop(counter)
+
+    return available_specialisations
+
+
+# возвращает список доступных кураторов
+def get_available_supervisors():
+    available_supervisors = list(models.Teachers.objects.all())
+    unavailable_supervisors = list(
+        models.StudyGroups.objects.values_list('supervisor_id', flat=True).exclude(supervisor_id=None))
+
+    available_supervisors = [x for x in available_supervisors if x.id not in unavailable_supervisors]
+
+    return available_supervisors
