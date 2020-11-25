@@ -217,6 +217,18 @@ def edit_study_group(request, group_id):
     group_data = get_study_group_data(group_id)
     apprentices = get_study_group_apprentices(group_id)
 
+    if request.method == 'POST':
+        form = GroupEditForm(request.POST)
+
+        print(form.data)
+
+        new_specialisation = form.data.get('specialisation')
+        new_supervisor = form.data.get('supervisor')
+        new_headman = form.data.get('headman')
+        new_methodist = form.data.get('methodist')
+
+        set_study_group_settings(group_data, new_specialisation, new_headman, new_supervisor, new_methodist)
+
     available_settings = get_available_study_group_settings(group_data)
 
     return render(request,

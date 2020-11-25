@@ -35,3 +35,10 @@ class ProfileEditForm(forms.Form):
     status = forms.CharField(label='status', max_length=30, required=False)
 
     profile_image = forms.ImageField(label='profile_image', allow_empty_file=True, required=False)
+
+
+class GroupEditForm(forms.Form):
+    specialisation = forms.ChoiceField(label='specialisation', required=True)
+    supervisor = forms.ChoiceField(label='supervisor', required=True)
+    headman = forms.ChoiceField(label='headman', required=True)
+    methodist = forms.ChoiceField(label='methodist', required=True)

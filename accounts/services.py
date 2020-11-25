@@ -176,11 +176,31 @@ def get_available_study_group_settings(study_group):
     return available_settings
 
 
+# возвращает словарь доступный изменений для учебной группы
+def set_study_group_settings(study_group, specialisation=None, headman=None, supervisor=None, methodist=None):
+    if specialisation != 'None' and str(study_group.specialisation.id) != specialisation:
+        study_group.specialisation = journal.Specialization.objects.get(id=specialisation)
+
+    if headman != 'None' and str(study_group.headman.id) != specialisation:
+        study_group.headman = models.Apprentices.objects.get(id=headman)
+
+    if supervisor != 'None' and str(study_group.supervisor.id) != supervisor:
+        study_group.supervisor = models.Teachers.objects.get(id=supervisor)
+
+    if methodist != 'None' and str(study_group.methodist.id) != methodist:
+        # study_group.methodist = models.Teachers.objects.get(id=supervisor)
+        pass
+
+    study_group.save()
+
+
 # возвращает список доступных специализаций
 def get_available_specialisations(study_group_grade):
+    print(study_group_grade)
     available_specialisations = list(journal.Specialization.objects.all())
+    print(available_specialisations)
     for counter, item in enumerate(available_specialisations):
-        if item.main_disciple.start_grade > study_group_grade or item.main_disciple.end_grade < study_group_grade:
+        if study_group_grade not in range(item.main_disciple.start_grade, item.main_disciple.end_grade):
             available_specialisations.pop(counter)
 
     return available_specialisations
