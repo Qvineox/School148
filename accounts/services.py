@@ -181,15 +181,26 @@ def set_study_group_settings(study_group, specialisation=None, headman=None, sup
     if specialisation != 'None' and str(study_group.specialisation.id) != specialisation:
         study_group.specialisation = journal.Specialization.objects.get(id=specialisation)
 
-    if headman != 'None' and str(study_group.headman.id) != specialisation:
-        study_group.headman = models.Apprentices.objects.get(id=headman)
+    if headman != 'None':
+        if study_group.headman is not None:
+            if str(study_group.headman.id) != headman:
+                study_group.headman = models.Apprentices.objects.get(id=headman)
+        else:
+            study_group.headman = models.Apprentices.objects.get(id=headman)
 
-    if supervisor != 'None' and str(study_group.supervisor.id) != supervisor:
-        study_group.supervisor = models.Teachers.objects.get(id=supervisor)
+    if supervisor != 'None':
+        if study_group.supervisor is not None:
+            if str(study_group.supervisor.id) != headman:
+                study_group.supervisor = models.Teachers.objects.get(id=supervisor)
+        else:
+            study_group.supervisor = models.Teachers.objects.get(id=supervisor)
 
-    if methodist != 'None' and str(study_group.methodist.id) != methodist:
-        # study_group.methodist = models.Teachers.objects.get(id=supervisor)
-        pass
+    # if methodist != 'None':
+    #     if study_group.methodist is not None:
+    #         if str(study_group.methodist.id) != methodist:
+    #             study_group.methodist = models.Teachers.objects.get(id=methodist)
+    #     else:
+    #         study_group.supervisor = models.Teachers.objects.get(id=methodist)
 
     study_group.save()
 

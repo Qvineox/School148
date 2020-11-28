@@ -184,10 +184,23 @@ def view_study_group(request, group_id):
         item.__setattr__('stats', get_profile_statistics(item.account_id))
         apprentices_grid[counter % 3].append(item)
 
-    headman = group_data.headman
-    headman.__setattr__('stats', get_profile_statistics(headman.account_id))
+    if group_data.headman:
+        headman = group_data.headman
+        try:
+            headman.__setattr__('stats', get_profile_statistics(headman.account_id))
+        except AttributeError:
+            headman.__setattr__('stats', ('N/A', 'N/A', 'N/A'))
+    else:
+        headman = None
 
-    methodist = group_data.methodist
+    if group_data.methodist:
+        methodist = group_data.methodist
+        try:
+            methodist.__setattr__('stats', get_profile_statistics(methodist.account_id))
+        except AttributeError:
+            methodist.__setattr__('stats', ('N/A', 'N/A', 'N/A'))
+    else:
+        methodist = None
 
     if group_data.supervisor:
         supervisor = group_data.supervisor

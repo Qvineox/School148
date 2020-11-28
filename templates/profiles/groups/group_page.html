@@ -169,7 +169,7 @@
                                     class="rounded"
                                     width="160"
                                     height="160"
-                                    style="width: 160px; height: 160px; object-fit: cover;">
+                                    style="width: 160px; height: 160px; object-fit: cover; image-resolution: 100dpi">
                             </div>
                             <div class="ml-3 w-100">
                                 <h4 class="mb-0 mt-0">{{ headman.second_name }} {{ headman.first_name }} {{ headman.last_name }}</h4>
@@ -180,7 +180,7 @@
                                     </div>
                                     <div class="d-flex flex-column"><span class="followers">Посещаемость</span>
                                         <span
-                                                class="number2">{{ headman.stats.0 }}%</span></div>
+                                                class="number2">{{ headman.stats.0|default_if_none:"100" }}%</span></div>
                                     <div class="d-flex flex-column"><span class="rating">Допуск</span>
                                         <span class="number3">
                                     {% if headman.stats.1 > 3 and headman.stats.0 > 60 %}
