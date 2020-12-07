@@ -1,9 +1,11 @@
 import datetime
 import logging
 
-from accounts.models import Teachers
-from accounts.services import get_profile_from_user
-from journal.models import Lessons, Disciples
+from django.db import DatabaseError
+
+from accounts.models import Teachers, StudyGroups
+from accounts.services import get_profile_from_user, get_study_group_apprentices
+from journal.models import Lessons, Disciples, Marks
 
 logger = logging.getLogger('database')
 
@@ -71,7 +73,7 @@ def process_schedule_data_for_journal_view(lessons_queryset):
 
 
 # возвращает ифнормацию о уроке, по умолчанию возвращает краткую информацию
-def get_lesson_info(lesson_object, full=False):
+def get_lesson_info(lesson_object, full=False, students=False):
     lesson_teacher = Teachers.objects.get(id=lesson_object['teacher_id'])
     lesson_teacher_info = ("{0} {1}.{2}".format(lesson_teacher.second_name,
                                                 lesson_teacher.first_name[0],
@@ -92,10 +94,59 @@ def get_lesson_info(lesson_object, full=False):
     setattr(lesson_info, 'id', lesson_object['id'])
     setattr(lesson_info, 'active', lesson_object['active'])
     setattr(lesson_info, 'scheme', lesson_scheme)
+    setattr(lesson_info, 'teacher', lesson_teacher_info)
 
     if full:
-        setattr(lesson_info, 'teacher', lesson_teacher_info)
+        lesson_info.teacher = lesson_teacher
         setattr(lesson_info, 'auditory', lesson_auditory)
         setattr(lesson_info, 'has_homework', lesson_has_homework)
+        setattr(lesson_info, 'order', lesson_object['order'])
+        setattr(lesson_info, 'date', lesson_object['date'])
+
+        setattr(lesson_info, 'group', StudyGroups.objects.get(id=lesson_object['study_group_id']))
+
+        if students:
+            present_students, absent_students = get_on_lesson_students(lesson_info)
+
+            setattr(lesson_info, 'present_students', present_students)
+            setattr(lesson_info, 'absent_students', absent_students)
 
     return lesson_info
+
+
+def get_on_lesson_students(group_id, lesson_id):
+    present_students = get_study_group_apprentices(group_id)
+
+    absent_students_id = list(
+        Marks.objects.filter(lesson_id=lesson_id, value=0).values_list('holder_id', flat=True))
+
+    print(absent_students_id)
+    absent_students = []
+
+    for count, student in enumerate(present_students):
+        if student.id in absent_students_id:
+            absent_students.append(present_students.pop(count))
+
+    return present_students, absent_students
+
+
+# возвращает данные об уроке из id
+def get_lesson_data_from_id(lesson_id, students=False):
+    lesson = Lessons.objects.filter(id=lesson_id).values()[0]
+    return get_lesson_info(lesson, full=True, students=students)
+
+
+# отмечает отсутствие ученика на уроке
+def set_student_absence(student_id, lesson_id, teacher_id):
+    try:
+        Marks.objects.create(holder_id=student_id, lesson_id=lesson_id, appraiser_id=teacher_id, value=0)
+    except DatabaseError:
+        pass
+
+
+# отмечает присутствие ученика на уроке
+def set_student_presence(student_id, lesson_id):
+    try:
+        Marks.objects.filter(holder_id=student_id, lesson_id=lesson_id, value=0).delete()
+    except DatabaseError:
+        pass

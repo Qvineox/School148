@@ -30,7 +30,7 @@ def get_day_lessons(date, study_group):
     lessons = []
 
     for lesson in Lessons.objects.filter(date=date, study_group_id=study_group).order_by('order').values():
-        lessons.append(get_lesson_info(lesson, True))
+        lessons.append(get_lesson_info(lesson, False))
 
     if date > datetime.today():
         pretext = "Завтра"
