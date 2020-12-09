@@ -2,9 +2,10 @@ import datetime
 import logging
 
 from django.db import DatabaseError
+from django.utils import timezone
 
 from accounts.models import Teachers, StudyGroups
-from accounts.services import get_profile_from_user, get_study_group_apprentices
+from accounts.services import get_profile_from_user, get_study_group_apprentices, get_user_prior_group_number
 from journal.models import Lessons, Disciples, Marks
 
 logger = logging.getLogger('database')
@@ -95,13 +96,13 @@ def get_lesson_info(lesson_object, full=False, students=False):
     setattr(lesson_info, 'active', lesson_object['active'])
     setattr(lesson_info, 'scheme', lesson_scheme)
     setattr(lesson_info, 'teacher', lesson_teacher_info)
+    setattr(lesson_info, 'date', lesson_object['date'])
 
     if full:
         lesson_info.teacher = lesson_teacher
         setattr(lesson_info, 'auditory', lesson_auditory)
         setattr(lesson_info, 'has_homework', lesson_has_homework)
         setattr(lesson_info, 'order', lesson_object['order'])
-        setattr(lesson_info, 'date', lesson_object['date'])
 
         setattr(lesson_info, 'group', StudyGroups.objects.get(id=lesson_object['study_group_id']))
 
@@ -120,7 +121,6 @@ def get_on_lesson_students(group_id, lesson_id):
     absent_students_id = list(
         Marks.objects.filter(lesson_id=lesson_id, value=0).values_list('holder_id', flat=True))
 
-    print(absent_students_id)
     absent_students = []
 
     for count, student in enumerate(present_students):
@@ -150,3 +150,51 @@ def set_student_presence(student_id, lesson_id):
         Marks.objects.filter(holder_id=student_id, lesson_id=lesson_id, value=0).delete()
     except DatabaseError:
         pass
+
+
+# возвращает список уроков пользователя
+def get_lesson_history_for_user(user_id):
+    user_group = get_user_prior_group_number(user_id)
+    profile_data = get_profile_from_user(user_id)
+
+    scheduled_lessons = []
+    latest_lessons = []
+    # archived_lessons = []
+
+    # если пользователь - школьник
+    if user_group == 1:
+        current_date = timezone.now().date()
+        time_point = current_date - datetime.timedelta(days=7)
+        # получаем список всех уроков за определенный период времени назад
+        lessons_queryset = Lessons.objects.filter(study_group_id=profile_data.study_group_id,
+                                                  date__gt=time_point,
+                                                  date__lte=current_date + datetime.timedelta(days=1))
+
+        for lesson in lessons_queryset.order_by('date', 'order').values():
+            new_lesson = get_lesson_info(lesson, full=False)
+            if new_lesson.date >= current_date:
+                scheduled_lessons.append(new_lesson)
+            else:
+                latest_lessons.append(new_lesson)
+
+    return scheduled_lessons, latest_lessons
+
+
+# возвращает все оценки пользователя
+def get_all_marks_from_user(user_id):
+    user_group = get_user_prior_group_number(user_id)
+    profile_data = get_profile_from_user(user_id)
+
+    # если пользователь - школьник
+    if user_group == 1:
+        all_marks = Marks.objects.filter(holder_id=profile_data.id).exclude(value=0).values()
+        return all_marks
+    else:
+        return False
+
+
+# распределение оценок по предметам
+def sort_marks_by_subject(marks_queryset):
+    marks_dict = {}
+    for mark in marks_queryset:
+        print(mark.lesson.subject)

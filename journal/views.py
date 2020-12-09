@@ -6,8 +6,35 @@ from journal.services import *
 
 
 def show_journal(request):
+    toolbox = toolbox_data([('История занятий', '/journal/lessons/history'),
+                            ('Все оценки', '/journal/marks')])
+
     return render(request, 'journal/apprentice_journal.html',
-                  {'navbar': navbar_data(request), 'lessons': get_schedule_for_user(request.user)})
+                  {'navbar': navbar_data(request),
+                   'lessons': get_schedule_for_user(request.user),
+                   'toolbox': toolbox})
+
+
+def show_marks(request, user_id=None):
+    toolbox = toolbox_data([('Расписание', '/journal/'),
+                            ('История занятий', '/journal/marks')])
+
+    return render(request, 'journal/apprentice_marks.html',
+                  {'navbar': navbar_data(request),
+                   'toolbox': toolbox})
+
+
+def lesson_history(request):
+    scheduled_lessons, latest_lessons = get_lesson_history_for_user(request.user.id)
+
+    toolbox = toolbox_data([('Расписание', '/journal/'),
+                            ('Все оценки', '/journal/marks')])
+
+    return render(request, 'journal/journal_history.html',
+                  {'navbar': navbar_data(request),
+                   'scheduled_lessons': scheduled_lessons,
+                   'latest_lessons': latest_lessons,
+                   'toolbox': toolbox})
 
 
 def lesson_panel(request, lesson_id=None):

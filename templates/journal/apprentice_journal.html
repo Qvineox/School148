@@ -42,140 +42,144 @@
 {% endblock %}
 
 {% block main %}
-    <table>
-        <tr>
-            <td style="width: 7%;">
-                <b>Неделя</b>
-            </td>
-            <td>
-                <b>I урок<br>8:30-9:15</b>
-            </td>
-            <td>
-                <b>II урок<br>9:25-10:10</b>
-            </td>
-            <td>
-                <b>III урок<br>10:20-12:05</b>
-            </td>
-            <td style="width: 4%;">
-                <b>12:05-12:25</b>
-            </td>
-            <td>
-                <b>IV урок<br>12:25-13:10</b>
-            </td>
-            <td>
-                <b>V урок<br>13:20-14:05</b>
-            </td>
-            <td>
-                <b>VI урок<br>14:15-15:00</b>
-            </td>
-            <td style="width: 4%;">
-                <b>15:00-15:15</b>
-            </td>
-            <td>
-                <b>VII урок<br>15:15-16:00</b>
-            </td>
-            <td>
-                <b>IIX урок<br>16:10-16:55</b>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <b>Понедельник</b>
-            </td>
-            {% for lesson in lessons.monday %}
-                {% if forloop.counter != 4 and forloop.counter != 7 %}
-                    {% if lesson.active %}
-                        <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+    <div class="container-lg" style="margin-top: -50px">
+        {% include 'toolbox.html' %}
+
+        <table style="margin-top: 10px">
+            <tr>
+                <td style="width: 7%;">
+                    <b>Неделя</b>
+                </td>
+                <td>
+                    <b>I урок<br>8:30-9:15</b>
+                </td>
+                <td>
+                    <b>II урок<br>9:25-10:10</b>
+                </td>
+                <td>
+                    <b>III урок<br>10:20-12:05</b>
+                </td>
+                <td style="width: 4%;">
+                    <b>12:05-12:25</b>
+                </td>
+                <td>
+                    <b>IV урок<br>12:25-13:10</b>
+                </td>
+                <td>
+                    <b>V урок<br>13:20-14:05</b>
+                </td>
+                <td>
+                    <b>VI урок<br>14:15-15:00</b>
+                </td>
+                <td style="width: 4%;">
+                    <b>15:00-15:15</b>
+                </td>
+                <td>
+                    <b>VII урок<br>15:15-16:00</b>
+                </td>
+                <td>
+                    <b>IIX урок<br>16:10-16:55</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Понедельник</b>
+                </td>
+                {% for lesson in lessons.monday %}
+                    {% if forloop.counter != 4 and forloop.counter != 7 %}
+                        {% if lesson.active %}
+                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
                     {% else %}
-                        <td></td>
-                    {% endif %}
-                {% else %}
-                    <td rowspan="6">
-                        <h2>О<br>Б<br>Е<br>Д</h2>
-                    </td>
-                    <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>
-                <b>Вторник</b>
-            </td>
-            {% for lesson in lessons.tuesday %}
-                {% if forloop.counter != 4 and forloop.counter != 7 %}
-                    {% if lesson.active %}
+                        <td rowspan="6">
+                            <h2>О<br>Б<br>Е<br>Д</h2>
+                        </td>
                         <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                    {% else %}
-                        <td></td>
                     {% endif %}
-                {% else %}
-                    <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>
-                <b>Среда</b>
-            </td>
-            {% for lesson in lessons.wednesday %}
-                {% if forloop.counter != 4 and forloop.counter != 7 %}
-                    {% if lesson.active %}
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    <b>Вторник</b>
+                </td>
+                {% for lesson in lessons.tuesday %}
+                    {% if forloop.counter != 4 and forloop.counter != 7 %}
+                        {% if lesson.active %}
+                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% else %}
                         <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                    {% else %}
-                        <td></td>
                     {% endif %}
-                {% else %}
-                    <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>
-                <b>Четверг</b>
-            </td>
-            {% for lesson in lessons.thursday %}
-                {% if forloop.counter != 4 and forloop.counter != 7 %}
-                    {% if lesson.active %}
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    <b>Среда</b>
+                </td>
+                {% for lesson in lessons.wednesday %}
+                    {% if forloop.counter != 4 and forloop.counter != 7 %}
+                        {% if lesson.active %}
+                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% else %}
                         <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                    {% else %}
-                        <td></td>
                     {% endif %}
-                {% else %}
-                    <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>
-                <b>Пятница</b>
-            </td>
-            {% for lesson in lessons.friday %}
-                {% if forloop.counter != 4 and forloop.counter != 7 %}
-                    {% if lesson.active %}
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    <b>Четверг</b>
+                </td>
+                {% for lesson in lessons.thursday %}
+                    {% if forloop.counter != 4 and forloop.counter != 7 %}
+                        {% if lesson.active %}
+                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% else %}
                         <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                    {% else %}
-                        <td></td>
                     {% endif %}
-                {% else %}
-                    <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>
-                <b>Суббота</b>
-            </td>
-            {% for lesson in lessons.saturday %}
-                {% if forloop.counter != 4 and forloop.counter != 7 %}
-                    {% if lesson.active %}
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    <b>Пятница</b>
+                </td>
+                {% for lesson in lessons.friday %}
+                    {% if forloop.counter != 4 and forloop.counter != 7 %}
+                        {% if lesson.active %}
+                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% else %}
                         <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                    {% else %}
-                        <td></td>
                     {% endif %}
-                {% else %}
-                    <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-    </table>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    <b>Суббота</b>
+                </td>
+                {% for lesson in lessons.saturday %}
+                    {% if forloop.counter != 4 and forloop.counter != 7 %}
+                        {% if lesson.active %}
+                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% else %}
+                        <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
 {% endblock %}
