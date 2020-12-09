@@ -82,6 +82,10 @@
 {% endblock %}
 
 {% block main %}
+    {# Скрипты для работы popup #}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     {% include 'toolbox.html' %}
     <form action="#" method="get">
         <div class="row-12">
@@ -145,9 +149,17 @@
                                 <button type="submit" class="btn btn-danger" style="margin-left: auto; color: white"
                                         value="{{ student.id }}" name="remove-student">Отметить отсутствие
                                 </button>
-                                <a type="button" class="btn btn-info" style="margin-left: 5px; color: white">Установить
-                                    оценку
-                                </a>
+                            {# атрибутами назначаем цель .. не получилось с тегом а, заменил на кнопку #}
+                                <button type="button" class="btn btn-info" style="margin-left: 5px; color: white"
+                                                      id='grade_btn' data-toggle="modal" data-target="#exampleModal">
+                                        Установить оценку
+                                </button>
+{#                                <a type="button" class="btn btn-info" id="grade_btn" style="margin-left: 5px; color: white"#}
+{#                                   data-toggle="modal" data-target="#exampleModal">#}
+{#                                    Установить#}
+{#                                    оценку#}
+{#                                </a>#}
+
                                 {% if student.account_id == None %}
                                     <button
                                             class="btn btn-light disabled"
@@ -164,10 +176,44 @@
                                     </a>
                                 {% endif %}
                             </div>
+
                         </li>
+                        {# Див popup можно заменить на любой другой тег, главное оставить все атрибуты #}
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                <div class="modal-dialog" role="document" >
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5>Поставить оценку</h5>
+                                            <hr>
+                                        </div>
+                                        <div class="modal-body">
+                                                <p>Предмет: {{ lesson_data.subject }}</p>
+                                                <p>Ученик: {{ student.second_name }} {{ student.first_name }} {{ student.last_name }}</p>
+                                                <p>Оценка:</p>
+                                                <button type="button" class="btn btn-success">5</button>
+                                                <button type="button" class="btn btn-info">4</button>
+                                                <button type="button" class="btn btn-warning">3</button>
+                                                <button type="button" class="btn btn-danger">2</button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                            <button type="submit" class="btn btn-info">Подтвердить</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     {% endfor %}
                 </ul>
             </div>
+            {# Скрипт для работы popup #}
+            <script type="text/javascript">
+                let grade_btn = document.querySelectorAll('#grade_btn');
+                let pops = document.querySelectorAll('#exampleModal');
+                for(let i = 0; i < grade_btn.length; i++) {
+                    grade_btn[i].setAttribute('data-target','#' + i);
+                    pops[i].setAttribute('id', i);
+                }
+            </script>
             <div class="row" style="margin-top: 2%">
                 <div class="col">
                     <h2>Отсутствующие учащиеся</h2>
@@ -204,4 +250,5 @@
             </div>
         </div>
     </form>
+
 {% endblock %}
