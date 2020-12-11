@@ -25,7 +25,7 @@
             border-radius: 20px;">
 
         {% for lesson in lessons %}
-            <div class="card">
+            <div class="card" style="cursor: pointer;" onclick="window.location='/journal/lessons/{{ lesson.id }}/panel';">
 
             {% if lesson.active %}
                 <div class="container" style="padding: 8%">

@@ -3,7 +3,7 @@
 
 {% block title %}
     <title>
-        Урок
+        Панель урока
     </title>
 {% endblock %}
 
@@ -23,7 +23,10 @@
         }
 
         .students li:first-child, .students li:last-child, .student {
-            padding: 8px;
+            padding-top: 5px;
+            padding-bottom: 2px;
+            padding-left: 5px;
+            padding-right: 5px;
             border-radius: 0.5rem;
             margin-top: 5px;
         }
@@ -81,82 +84,109 @@
 
 {% block main %}
     {# Скрипты для работы popup #}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    {% include 'toolbox.html' %}
-    <form action="#" method="get">
-        <div class="row-12">
-            <div class="container-lg panel" style="margin-top: 10px">
-                <div class="row">
-                    <div class="col">
-                        <h1 style="font-size: 350%" class="{{ lesson_data.scheme }}"> {{ lesson_data.subject }} </h1>
-                    </div>
-                </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
 
-                <div class="row" style="margin-top: -0.5%">
-                    <div class="col">
-                        <h2 style="font-style: italic; opacity: 50%;"> {{ lesson_data.date|date:"l, j F" }}. {{ lesson_data.order }}
-                            урок.
-                            {% if lesson_data.order == 1 %}
-                                8:30-9:15
-                            {% elif lesson_data.order == 2 %}
-                                9:25-10:10
-                            {% elif lesson_data.order == 3 %}
-                                10:20-12:05
-                            {% elif lesson_data.order == 4 %}
-                                12:25-13:10
-                            {% elif lesson_data.order == 5 %}
-                                13:20-14:05
-                            {% elif lesson_data.order == 6 %}
-                                14:15-15:00
-                            {% elif lesson_data.order == 7 %}
-                                15:15-16:00
-                            {% elif lesson_data.order == 8 %}
-                                16:10-16:55
-                            {% endif %}
-                        </h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" style="margin-top: 10px; margin-left: 0; margin-right: 0">
-            <div class="col-6 panel">
-                <div class="row" style="margin-left: 0; margin-right: 0">
-                    <h2>Домашнее задание на этот урок</h2>
-                </div>
-            </div>
-            <div class="col-6 panel" style="margin-left: auto;">
-                <div class="row" style="margin-left: 0; margin-right: 0">
-                    <h2>Домашнее задание на следующий урок</h2>
-                </div>
-            </div>
-        </div>
+    {% include 'toolbox.html' %}
+    <div class="row-12">
         <div class="container-lg panel" style="margin-top: 10px">
             <div class="row">
                 <div class="col">
-                    <h2>Учащиеся {{ lesson_data.group.grade }}{{ lesson_data.group.symbol }} класса</h2>
+                    <h1 style="font-size: 350%" class="{{ lesson_data.scheme }}"> {{ lesson_data.subject }} </h1>
                 </div>
             </div>
-            <div class="row-lg">
-                <ul class="list-group students">
-                    {% for student in present_students %}
-                        <li class="list-group-item student hvr-bounce-to-right">
-                            <div class="row" style="margin-left: 0.5%; margin-right: 0.3%">
-                                <h3>{{ student.second_name }} {{ student.first_name }} {{ student.last_name }}</h3>
+
+            <div class="row" style="margin-top: -0.5%">
+                <div class="col">
+                    <h2 style="font-style: italic; opacity: 50%;"> {{ lesson_data.date|date:"l, j F" }}. {{ lesson_data.order }}
+                        урок.
+                        {% if lesson_data.order == 1 %}
+                            8:30-9:15
+                        {% elif lesson_data.order == 2 %}
+                            9:25-10:10
+                        {% elif lesson_data.order == 3 %}
+                            10:20-12:05
+                        {% elif lesson_data.order == 4 %}
+                            12:25-13:10
+                        {% elif lesson_data.order == 5 %}
+                            13:20-14:05
+                        {% elif lesson_data.order == 6 %}
+                            14:15-15:00
+                        {% elif lesson_data.order == 7 %}
+                            15:15-16:00
+                        {% elif lesson_data.order == 8 %}
+                            16:10-16:55
+                        {% endif %}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-lg panel" style="margin-top: 10px">
+        <div class="row">
+            <div class="col">
+                <h2>Оценки на этом уроке</h2>
+            </div>
+
+        </div>
+        <div class="col" style="margin-left: -1%; margin-top: -2px">
+            <form action="" method="get">
+                {% csrf_token %}
+                {% for mark in lesson_marks %}
+                    <button type="submit" class="btn btn-light" style="margin-left: auto; border-color: black"
+                            value="{{ mark.id }}"
+                            name="remove-mark">{{ mark.holder.second_name }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
+                    </button>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 10px; margin-left: 0; margin-right: 0">
+        <div class="col-6 panel">
+            <div class="row" style="margin-left: 0; margin-right: 0">
+                <h2>Домашнее задание на этот урок</h2>
+            </div>
+        </div>
+
+        <div class="col-6 panel" style="margin-left: auto;">
+            <div class="row" style="margin-left: 0; margin-right: 0">
+                <h2>Домашнее задание на следующий урок</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-lg panel" style="margin-top: 10px">
+        <div class="row">
+            <div class="col">
+                <h2>Учащиеся {{ lesson_data.group.grade }}{{ lesson_data.group.symbol }} класса</h2>
+            </div>
+        </div>
+        <div class="row-lg">
+            <ul class="list-group students">
+                {% for student in present_students %}
+                    <li class="list-group-item student hvr-bounce-to-right">
+                        <div class="row" style="margin-left: 0.5%; margin-right: 0.3%">
+                            <h3>{{ student.second_name }} {{ student.first_name }} {{ student.last_name }}</h3>
+                            <form style="margin-left: auto; vertical-align: middle" action="" method="get">
+                                {% csrf_token %}
                                 <button type="submit" class="btn btn-danger" style="margin-left: auto; color: white"
                                         value="{{ student.id }}" name="remove-student">Отметить отсутствие
                                 </button>
-                            {# атрибутами назначаем цель .. не получилось с тегом а, заменил на кнопку #}
+
+
                                 <button type="button" class="btn btn-info" style="margin-left: 5px; color: white"
-                                                      id='grade_btn' data-toggle="modal" data-target="#exampleModal">
-                                        Установить оценку
+                                        id='grade_btn' data-toggle="modal" data-target="#exampleModal">
+                                    Установить оценку
                                 </button>
-{#                                <a type="button" class="btn btn-info" id="grade_btn" style="margin-left: 5px; color: white"#}
-{#                                   data-toggle="modal" data-target="#exampleModal">#}
-{#                                    Установить#}
-{#                                    оценку#}
-{#                                </a>#}
 
                                 {% if student.account_id == None %}
                                     <button
@@ -173,80 +203,124 @@
                                         Профиль
                                     </a>
                                 {% endif %}
-                            </div>
+                            </form>
+                        </div>
 
-                        </li>
-                        {# Див popup можно заменить на любой другой тег, главное оставить все атрибуты #}
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-                                <div class="modal-dialog" role="document" >
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5>Поставить оценку</h5>
-                                            <hr>
+                    </li>
+
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h2 style="margin: auto">Установка оценки</h2>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <h4>{{ lesson_data.subject }}</h4>
+                                        <h5 style="opacity: 50%; margin-top: -5px">предмет</h5>
+
+                                        <h4>{{ student.second_name }} {{ student.first_name }} {{ student.last_name }}</h4>
+                                        <h5 style="opacity: 50%; margin-top: -5px">ученик</h5>
+
+                                        <input type="number" name="holder" value="{{ student.id }}" hidden>
+
+                                        <h4 style="margin-top: 10%">Комментарий</h4>
+                                        <input type="text" class="form-control" name="comment" maxlength="50">
+                                        <small id="commentHelpBlock" class="form-text text-muted">
+                                            Комментарий к оценке ограничен 50 символами.
+                                        </small>
+
+                                        <div class="row" style="margin-top: 5px">
+                                            <div class="col">
+                                                <h4>Оценка</h4>
+                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
+                                                        name="value">
+                                                    <option value="5" selected>Отлично</option>
+                                                    <option value="4">Хорошо</option>
+                                                    <option value="3">Удовлетворительно</option>
+                                                    <option value="2">Неудовлетворительно</option>
+                                                    <option value="1">Плохо</option>
+                                                </select>
+                                            </div>
+                                            <div class="col">
+                                                <h4>Вес</h4>
+                                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
+                                                        name="weight">
+                                                    <option value="4">Экзамен (4)</option>
+                                                    <option value="3">Самостоятельная работа (3)</option>
+                                                    <option value="2" selected>Классная работа (2)</option>
+                                                    <option value="1">Домашняя работа (1)</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="modal-body">
-                                                <p>Предмет: {{ lesson_data.subject }}</p>
-                                                <p>Ученик: {{ student.second_name }} {{ student.first_name }} {{ student.last_name }}</p>
-                                                <p>Оценка:</p>
-                                                <button type="button" class="btn btn-success">5</button>
-                                                <button type="button" class="btn btn-info">4</button>
-                                                <button type="button" class="btn btn-warning">3</button>
-                                                <button type="button" class="btn btn-danger">2</button>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                            <button type="submit" class="btn btn-info">Подтвердить</button>
-                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                        </button>
+                                        <button type="submit" class="btn btn-success">Подтвердить</button>
                                     </div>
                                 </div>
                             </div>
-                    {% endfor %}
-                </ul>
-            </div>
-            {# Скрипт для работы popup #}
-            <script type="text/javascript">
-                let grade_btn = document.querySelectorAll('#grade_btn');
-                let pops = document.querySelectorAll('#exampleModal');
-                for(let i = 0; i < grade_btn.length; i++) {
-                    grade_btn[i].setAttribute('data-target','#' + i);
-                    pops[i].setAttribute('id', i);
-                }
-            </script>
-            <div class="row" style="margin-top: 2%">
-                <div class="col">
-                    <h2>Отсутствующие учащиеся</h2>
-                </div>
-            </div>
-            <div class="row-lg">
-                <ul class="list-group students">
-                    {% for student in absent_students %}
-                        <li class="list-group-item student hvr-bounce-to-right">
-                            <div class="row" style="margin-left: 0.5%; margin-right: 0.3%">
-                                <h3>{{ student.second_name }} {{ student.first_name }} {{ student.last_name }}</h3>
-                                <button type="submit" class="btn btn-success" style="margin-left: auto; color: white"
-                                        value="{{ student.id }}" name="move-student">Отметить присутствие
-                                </button>
-                                {% if student.account_id == None %}
-                                    <button
-                                            class="btn btn-light disabled"
-                                            style="margin-left: 5px"
-                                            aria-label="Пользователь еще не зарегистрирован!"
-                                            data-balloon-pos="down">
-                                        Профиль
-                                    </button>
-                                {% else %}
-                                    <a href="/accounts/profile/{{ student.account_id }}"
-                                       class="btn btn-light"
-                                       style="margin-left: 5px">
-                                        Профиль
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
+                        </div>
+                    </form>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {# Скрипт для работы popup #}
+        <script type="text/javascript">
+            let grade_btn = document.querySelectorAll('#grade_btn');
+            let pops = document.querySelectorAll('#exampleModal');
+            for (let i = 0; i < grade_btn.length; i++) {
+                grade_btn[i].setAttribute('data-target', '#' + i);
+                pops[i].setAttribute('id', i);
+            }
+        </script>
+
+        <div class="row" style="margin-top: 2%">
+            <div class="col">
+                <h2>Отсутствующие учащиеся</h2>
             </div>
         </div>
-    </form>
+        <div class="row-lg">
+            <ul class="list-group students">
+                {% for student in absent_students %}
+                    <li class="list-group-item student hvr-bounce-to-right">
+                        <div class="row" style="margin-left: 0.5%; margin-right: 0.3%">
+                            <h3>{{ student.second_name }} {{ student.first_name }} {{ student.last_name }}</h3>
+                            <form style="margin-left: auto" action="" method="get">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success" style="color: white;"
+                                        value="{{ student.id }}" name="move-student">Отметить присутствие
+                                </button>
+                            </form>
+                            {% if student.account_id == None %}
+                                <button
+                                        class="btn btn-light disabled"
+                                        style="margin-left: 5px"
+                                        aria-label="Пользователь еще не зарегистрирован!"
+                                        data-balloon-pos="down">
+                                    Профиль
+                                </button>
+                            {% else %}
+                                <a href="/accounts/profile/{{ student.account_id }}"
+                                   class="btn btn-light"
+                                   style="margin-left: 5px">
+                                    Профиль
+                                </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
 
 {% endblock %}

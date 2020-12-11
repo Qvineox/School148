@@ -4,7 +4,7 @@ import logging
 from django.db import DatabaseError
 from django.utils import timezone
 
-from accounts.models import Teachers, StudyGroups
+from accounts.models import Teachers, StudyGroups, Apprentices
 from accounts.services import get_profile_from_user, get_study_group_apprentices, get_user_prior_group_number
 from journal.models import Lessons, Disciples, Marks
 
@@ -136,10 +136,16 @@ def get_lesson_data_from_id(lesson_id, students=False):
     return get_lesson_info(lesson, full=True, students=students)
 
 
+# возвращает все оценки этого урока
+def get_lesson_marks(lesson_id):
+    marks = Marks.objects.filter(lesson_id=lesson_id).exclude(value=0)
+    return marks
+
+
 # отмечает отсутствие ученика на уроке
 def set_student_absence(student_id, lesson_id, teacher_id):
     try:
-        Marks.objects.create(holder_id=student_id, lesson_id=lesson_id, appraiser_id=teacher_id, value=0)
+        Marks.objects.create(holder_id=student_id, lesson_id=lesson_id, appraiser_id=teacher_id, value=0, weight=None)
     except DatabaseError:
         pass
 
@@ -150,6 +156,27 @@ def set_student_presence(student_id, lesson_id):
         Marks.objects.filter(holder_id=student_id, lesson_id=lesson_id, value=0).delete()
     except DatabaseError:
         pass
+
+
+# устанавливает оценку ученику
+def set_student_mark(lesson_id, student_id, value, weight, appraiser=None, comment=None):
+    if appraiser is None:
+        appraiser = Lessons.objects.get(id=lesson_id).teacher
+
+    new_mark = Marks.objects.create(value=value,
+                                    weight=weight,
+                                    lesson=Lessons.objects.get(id=lesson_id),
+                                    holder=Apprentices.objects.get(id=student_id),
+                                    comment=comment,
+                                    appraiser=appraiser)
+
+    new_mark.save()
+
+
+# удаляет оценку ученика
+def remove_student_mark(mark_id):
+    delete_mark = Marks.objects.get(id=mark_id)
+    delete_mark.delete()
 
 
 # возвращает список уроков пользователя
@@ -187,14 +214,37 @@ def get_all_marks_from_user(user_id):
 
     # если пользователь - школьник
     if user_group == 1:
-        all_marks = Marks.objects.filter(holder_id=profile_data.id).exclude(value=0).values()
+        all_marks = Marks.objects.filter(holder_id=profile_data.id).exclude(value=0)
         return all_marks
     else:
         return False
 
 
 # распределение оценок по предметам
+# возвращает словарь, где ключи - имена предметов, а значения - оценки
 def sort_marks_by_subject(marks_queryset):
-    marks_dict = {}
+    user_marks = {}
     for mark in marks_queryset:
-        print(mark.lesson.subject)
+        mark_subject = mark.lesson.subject
+        if mark_subject in user_marks.keys():
+            user_marks[mark_subject].append(mark)
+        else:
+            user_marks.update({mark_subject: [mark]})
+
+    return user_marks
+
+
+def add_avg_score_to_sorted_marks(user_marks):
+    for subject in user_marks:
+        amount, count = 0, 0
+        for mark in user_marks[subject]:
+            amount += mark.value * mark.weight
+            count += mark.weight
+
+        avg_score = Lesson()
+        setattr(avg_score, 'value', amount / count)
+        setattr(avg_score, 'amount', amount)
+        setattr(avg_score, 'count', count)
+
+        user_marks[subject].append(avg_score)
+    return user_marks

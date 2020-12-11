@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from home.views import navbar_data, toolbox_data
 from journal.forms import MarkPlacementForm
@@ -17,10 +17,13 @@ def show_journal(request):
 
 def show_marks(request, user_id=None):
     toolbox = toolbox_data([('Расписание', '/journal/'),
-                            ('История занятий', '/journal/marks')])
+                            ('История занятий', '/journal/lessons/history')])
+
+    marks_dict = add_avg_score_to_sorted_marks(sort_marks_by_subject(get_all_marks_from_user(request.user.id)))
 
     return render(request, 'journal/apprentice_marks.html',
                   {'navbar': navbar_data(request),
+                   'marks': marks_dict,
                    'toolbox': toolbox})
 
 
@@ -44,10 +47,27 @@ def lesson_panel(request, lesson_id=None):
     # отметить отсутсвие
     if request.GET.get('remove-student'):
         set_student_absence(int(request.GET.get('remove-student')), lesson_id, teacher.id)
+        return redirect('/journal/lessons/{0}/panel'.format(lesson_id))
 
     # отметить присутсвие
     if request.GET.get('move-student'):
         set_student_presence(int(request.GET.get('move-student')), lesson_id)
+        return redirect('/journal/lessons/{0}/panel'.format(lesson_id))
+
+    # удаление оценки
+    if request.GET.get('remove-mark'):
+        remove_student_mark(int(request.GET.get('remove-mark')))
+        return redirect('/journal/lessons/{0}/panel'.format(lesson_id))
+
+    # уставновка оценки
+    if request.POST:
+        form = MarkPlacementForm(request.POST)
+        if form.is_valid():
+            set_student_mark(lesson_id,
+                             form.cleaned_data['holder'],
+                             form.cleaned_data['value'],
+                             form.cleaned_data['weight'])
+            return redirect('/journal/lessons/{0}/panel'.format(lesson_id))
 
     present_students, absent_students = get_on_lesson_students(lesson_data.group.id, lesson_id)
 
@@ -60,14 +80,7 @@ def lesson_panel(request, lesson_id=None):
                   {'navbar': navbar_data(request),
                    'toolbox': toolbox,
                    'lesson_data': lesson_data,
+                   'lesson_marks': get_lesson_marks(lesson_id),
                    'present_students': present_students,
                    'absent_students': absent_students,
                    })
-
-
-def mark_placement_handler(request):
-    if request.method == 'POST':
-        print('form received')
-        form = MarkPlacementForm(request.post)
-    else:
-        print('no form received')
