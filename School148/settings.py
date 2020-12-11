@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'journal',
     'library',
     'schedule',
-    'statistic'
+    'statistic',
 
 ]
 

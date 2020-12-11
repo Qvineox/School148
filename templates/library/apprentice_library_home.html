@@ -81,12 +81,13 @@
             {% for my_book in my_books %}
                     <li class="book_table">
                         <div class="book">
-                            <h5>{{ my_book.title }}</h5>
-                            <h6>{{ my_book.author }}</h6>
+                            {% for book in all_books %}
+                                {% if my_book.book == book.ISBN_number %}
+                                    <h5>book.title</h5>
+                                {% endif %}
+                            {% endfor %}
                         </div>
-
                     </li>
-                {
             {% endfor %}
         </ul>
     {% else %}
@@ -102,7 +103,8 @@
                             <h6>{{ book.author }}</h6>
                         </div>
                     </li>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                    <form  method="post" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                        {% csrf_token %}
                           <div class="modal-dialog" role="document" >
                             <div class="modal-content">
                               <div class="modal-header">
@@ -110,21 +112,20 @@
                               </div>
                               <div class="modal-body">
                                   <p>Название: {{ book.title }}</p>
-                                <p>Автор: {{ book.author }}</p>
+                                  <p>Автор: {{ book.author }}</p>
                                   <hr>
-                                  <h5>Дата выдачи:</h5>
-                                  <input class="form-control" type="date" value="2020-09-01" id="example-datetime-local-input">
+
+                                    {{ add_book_form.as_p }}
+
                                   <hr>
-                                  <h5>Дата возврата:</h5>
-                                  <input class="form-control" type="date" value="2021-06-01" id="example-datetime-local-input">
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                <button type="button" class="btn btn-info">Оформить</button>
+                                <button type="submit" class="btn btn-info">Оформить</button>
                               </div>
                             </div>
                           </div>
-                        </div>
+                    </form>
             {% endfor %}
         </ul>
         <script type="text/javascript">

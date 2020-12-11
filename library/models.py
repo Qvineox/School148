@@ -25,9 +25,10 @@ class LoanReceipts(models.Model):
     book = models.ForeignKey('library.Books', null=False, blank=False, on_delete=models.CASCADE,
                              verbose_name='ISBN книги')
 
-    borrow_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата заема')
-    recall_date = models.DateTimeField(null=True, verbose_name='Дата возврата')
+    borrow_date = models.DateTimeField(auto_now_add=True, editable=True, verbose_name='Дата заема')
+
+    recall_date = models.DateTimeField(null=True, editable=True, verbose_name='Дата возврата')
 
     # отношения
-    borrower = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, on_delete=models.CASCADE,
+    borrower = models.ForeignKey(settings.AUTH_USER_MODEL,  null=False, blank=False, on_delete=models.CASCADE,
                                  verbose_name='Аккаунт заемщика')
