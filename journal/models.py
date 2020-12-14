@@ -89,6 +89,10 @@ class Homeworks(models.Model):
                                         related_name='+', verbose_name='Урок сдачи')
     deadline_time = models.DateTimeField(null=False, blank=False, verbose_name='Срок сдачи')
 
+    # вспомогательные поля
+    target_group = models.ForeignKey('accounts.StudyGroups', null=True, blank=False, on_delete=models.CASCADE,
+                                     verbose_name='Учебная группа')
+
 
 class Specialization(models.Model):
     title = models.CharField(max_length=30, null=False, blank=False, verbose_name='Название')

@@ -9,13 +9,29 @@
 {% block style %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/lesson_schemas.css' %}">
     <link rel='stylesheet' href="{% static 'css/home_style.css' %}">
+    <style>
+        .panel {
+            border-radius: 0.5rem;
+            background: whitesmoke;
+            padding-left: 30px;
+            padding-right: 30px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    </style>
 {% endblock %}
 
 {% block main %}
-    <h1 style="color: whitesmoke; user-select: none;">{{ pretext }}</h1>
-    <h2 style="color: whitesmoke; font-weight: lighter; user-select: none;">{{ date|date:"l, j F" }}</h2>
-    <div class="container-md"
-         style="
+    <div class="col-lg">
+        <div class="row">
+            <h1 style="color: whitesmoke; user-select: none;">{{ pretext }}</h1>
+        </div>
+        <div class="row">
+            <h2 style="color: whitesmoke; font-weight: lighter; user-select: none;">{{ date|date:"l, j F" }}</h2>
+        </div>
+        <div class="row">
+            <div class="container-md"
+                 style="
             width: 100%;
             top: 60px;
             display: inline-flex;
@@ -24,27 +40,57 @@
             border: 3px solid darkgray;
             border-radius: 20px;">
 
-        {% for lesson in lessons %}
-            <div class="card" style="cursor: pointer;" onclick="window.location='/journal/lessons/{{ lesson.id }}/panel';">
+                {% for lesson in lessons %}
+                    <div class="card" style="cursor: pointer;"
+                         onclick="window.location='/journal/lessons/{{ lesson.id }}/panel';">
 
-            {% if lesson.active %}
-                <div class="container" style="padding: 8%">
-            {% else %}
-                <div class="container" style="padding: 8%; opacity: 0.3">
-            {% endif %}
+                    {% if lesson.active %}
+                        <div class="container" style="padding: 8%">
+                    {% else %}
+                        <div class="container" style="padding: 8%; opacity: 0.3">
+                    {% endif %}
 
-        <h2 class="title {{ lesson.scheme }}" style="color: whitesmoke; user-select: none;">{{ lesson.subject }}</h2>
-        <h3 class="title" style="color: darkgray; font-weight: lighter; user-select: none;">{{ lesson.teacher }}</h3>
-        <h4 class="title" style="color: dimgray; font-weight: lighter; user-select: none;">
-            Ауд. {{ lesson.auditory|default:"не указана" }}</h4>
-        <div class="container-md">
-        <div class="button"></div>
+                <h2 class="title {{ lesson.scheme }}"
+                    style="color: whitesmoke; user-select: none;">{{ lesson.subject }}</h2>
+                <h3 class="title"
+                    style="color: darkgray; font-weight: lighter; user-select: none;">{{ lesson.teacher }}</h3>
+                <h4 class="title" style="color: dimgray; font-weight: lighter; user-select: none;">
+                    Ауд. {{ lesson.auditory|default:"не указана" }}</h4>
+                <div class="container-md">
+                    <div class="button"></div>
+                </div>
+                </div>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
         </div>
-        </div>
-        </div>
-        {% endfor %}
 
-
+        <div class="row" style="margin-top: 10px; padding-left: 0.7%; padding-right: 0.7%">
+            <div class="col-7 panel" style="margin-left: 0%">
+                <div class="row">
+                    <h2>Домашние задания</h2>
+                </div>
+            </div>
+            <div class="col panel" style="margin-left: 10px">
+                <div class="row">
+                    <h2>Последние оценки</h2>
+                </div>
+                <div class="row">
+                    {% for mark in marks %}
+                        {% if mark.value <= 3 %}
+                            <button class="btn btn-danger"
+                        {% else %}
+                            <button class="btn btn-dark"
+                        {% endif %}
+                                    style="border-radius: 0.5rem; margin-left: 5px; margin-top: 2px"
+                                    value="{{ mark.id }}"
+                                    name="remove-mark">{{ mark.lesson.subject.title }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
+                    </button>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
+    </div>
 
 {% endblock %}

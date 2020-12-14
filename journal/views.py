@@ -40,6 +40,31 @@ def lesson_history(request):
                    'toolbox': toolbox})
 
 
+def lesson_page(request, lesson_id=None):
+    lesson_data = get_lesson_data_from_id(lesson_id)
+    teacher = lesson_data.teacher
+
+    present_students, absent_students = get_on_lesson_students(lesson_data.group.id, lesson_id)
+
+    if get_user_prior_group_number(request.user.id) > 1:
+        toolbox = toolbox_data([('Редактировать', 'panel/'),
+                                ('Добавить домашнее задание', 'edit/'),
+                                ('Удалить', '#'),
+                                ('Вернуться', '/journal/lessons/history')])
+    else:
+        toolbox = toolbox_data([('Вернуться', '/journal/lessons/history'),
+                                ('Редактировать', '{0}/panel'.format(lesson_id))])
+
+    return render(request, 'journal/lesson_page.html',
+                  {'navbar': navbar_data(request),
+                   'toolbox': toolbox,
+                   'lesson_data': lesson_data,
+                   'lesson_marks': get_lesson_marks(lesson_id),
+                   'present_students': present_students,
+                   'absent_students': absent_students,
+                   })
+
+
 def lesson_panel(request, lesson_id=None):
     lesson_data = get_lesson_data_from_id(lesson_id)
     teacher = lesson_data.teacher

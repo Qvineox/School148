@@ -2,16 +2,18 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 import accounts.services as account_services
-from home.services import get_homepage_lessons
+from home.services import get_apprentice_home_data
 
 
 @login_required
 def home(request):
-    lessons, pretext, date = get_homepage_lessons(request.user.id)
+    home_apprentice_data = get_apprentice_home_data(request.user.id)
+
     return render(request, 'home/apprentice_home.html', {'navbar': navbar_data(request),
-                                                         'lessons': lessons,
-                                                         'pretext': pretext,
-                                                         'date': date})
+                                                         'lessons': home_apprentice_data['lessons'],
+                                                         'pretext': home_apprentice_data['pretext'],
+                                                         'date': home_apprentice_data['date'],
+                                                         'marks': home_apprentice_data['marks']})
 
 
 def navbar_data(request):
