@@ -25,7 +25,7 @@ def get_schedule_for_user(user):
     if user.groups.values_list('id', flat=True).order_by('-id').first() == 1:
         date = datetime.date.today()
         start_week = date - datetime.timedelta(date.weekday())
-        end_week = start_week + datetime.timedelta(7)
+        end_week = start_week + datetime.timedelta(6)
         this_week_lessons = Lessons.objects.filter(date__range=[start_week, end_week],
                                                    study_group_id=get_profile_from_user(user.id).study_group_id,
                                                    )
@@ -61,6 +61,8 @@ def process_schedule_data_for_journal_view(lessons_queryset):
             lessons.friday.append(get_lesson_info(lesson))
         elif lesson['date'].weekday() == 5:
             lessons.saturday.append(get_lesson_info(lesson))
+        elif lesson['date'].weekday() == 6:
+            continue
 
     # не спрашивайте что это
     lessons.monday = lessons.monday + [None] * (8 - len(lessons.monday))

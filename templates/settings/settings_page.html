@@ -1,0 +1,95 @@
+{% extends  'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Панель управления</title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .panel {
+            border-radius: 0.5rem;
+            background: whitesmoke;
+            padding-left: 30px;
+            padding-right: 30px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <form style="margin-left: auto; vertical-align: middle" action="" method="get">
+        {% csrf_token %}
+        <div class="col">
+            <div class="row">
+                <div class="col panel">
+                    <div class="row">
+                        <h2>Заполнение расписания</h2>
+                    </div>
+                    <div class="row" style="margin-top: 5px">
+                        <button type="submit" class="btn btn-success"
+                                value="today" name="fill_schedule">Сегодня
+                        </button>
+                        <button type="submit" class="btn btn-success" style="margin-left: 5px"
+                                value="week" name="fill_schedule">Текущая неделя
+                        </button>
+                        <button type="submit" class="btn btn-success" style="margin-left: 5px"
+                                value="month" name="fill_schedule">Текущий месяц
+                        </button>
+                    </div>
+                    <div class="row" style="margin-top: 5px">
+                        <button type="submit" class="btn btn-primary"
+                                value="tomorrow" name="fill_schedule">Завтра
+                        </button>
+                        <button type="submit" class="btn btn-primary" style="margin-left: 5px"
+                                value="next_week" name="fill_schedule">Следующая неделя
+                        </button>
+                        <button type="submit" class="btn btn-primary" style="margin-left: 5px"
+                                value="next_month" name="fill_schedule">Следующий месяц
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px">
+                <div class="col panel">
+                    <div class="row">
+                        <h2>Очистка расписания</h2>
+                    </div>
+                    <div class="row" style="margin-top: 5px">
+                        <button type="submit" class="btn btn-warning"
+                                value="today" name="clear_schedule">Очистить сегодня
+                        </button>
+                        <button type="submit" class="btn btn-warning" style="margin-left: 5px"
+                                value="week" name="clear_schedule">Очистить неделю
+                        </button>
+                        <button type="submit" class="btn btn-warning" style="margin-left: 5px"
+                                value="month" name="clear_schedule">Очистить месяц
+                        </button>
+                    </div>
+                    <div class="row" style="margin-top: 5px">
+                        <button type="submit" class="btn btn-danger"
+                                value="all" name="clear_schedule">Полная очистка
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px">
+                <div class="col panel">
+                    <div class="row">
+                        <h2>Загрузка расписания</h2>
+                    </div>
+                    <div class="row" style="margin-top: 5px">
+                        <button type="submit" class="btn btn-success"
+                                value="download" name="load_schedule">Скачать расписание
+                        </button>
+                        <button type="submit" class="btn btn-primary" style="margin-left: 5px"
+                                value="upload" name="load_schedule">Загрузить расписание
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

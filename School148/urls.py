@@ -18,7 +18,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.staticfiles.urls import static
 from django.urls import path, include
 
-from School148 import settings
+from School148 import settings, views
 
 urlpatterns = [
     # path(),
@@ -27,7 +27,8 @@ urlpatterns = [
     path('home/', include('home.urls')),
     path('schedule/', include('schedule.urls')),
     path('journal/', include('journal.urls')),
-    path('library/', include('library.urls'))
+    path('library/', include('library.urls')),
+    path('settings/', views.settings_page, name='settings')
 ]
 
 urlpatterns += staticfiles_urlpatterns()

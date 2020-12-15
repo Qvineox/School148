@@ -61,24 +61,41 @@ def start_week_replenish(start_date=None):
 
 
 # заполнение определенного промежутка времени
-def start_interval_replenish(start_date, end_date):
+def start_interval_replenish(start_date, end_date=None):
     parsed_schedule_data = parse_schedule_from_yaml()
     validation_result = schedule_data_validation(parsed_schedule_data)
+    days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
     if validation_result:
         # получаем список всех дат между началом и концом
         dates = []
-        delta = end_date - start_date
+        if end_date is not None:
+            delta = end_date - start_date
+            for i in range(delta.days):
+                dates.append(start_date + datetime.timedelta(days=i))
 
-        for i in range(delta.days + 1):
-            dates.append(start_date + datetime.timedelta(days=i))
-
-        for date in dates:
-            start_day_replenish(parsed_schedule_data[str(date.weekday())], date)
-
-        return validate_lessons_activity(start_date, end_date)
+            for date in dates:
+                if date.weekday() == 6:
+                    continue
+                start_day_replenish(parsed_schedule_data[days[date.weekday()]], date)
+            return validate_lessons_activity(start_date, end_date)
+        else:
+            start_day_replenish(parsed_schedule_data[days[start_date.weekday()]], start_date)
     else:
         return validation_result
+
+
+# очищает определенный интервал времени
+def start_interval_cleanup(start_date, end_date=None):
+    if end_date is not None:
+        Lessons.objects.filter(date__range=(start_date, end_date)).delete()
+    else:
+        Lessons.objects.filter(date=start_date).delete()
+
+
+# полная очистка таблицы с уроками
+def start_full_cleanup():
+    Lessons.objects.all().delete()
 
 
 # заполнение конкретного дня недели (функция для потока)
