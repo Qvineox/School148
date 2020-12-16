@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>
+        Статистика
+    </title>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lesson_schemas.css' %}">
+
+    <style>
+        .panel {
+            border-radius: 0.5rem;
+            background: whitesmoke;
+            padding-left: 30px;
+            padding-right: 30px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-left: -1%;
+            margin-right: -1%;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+{% include 'toolbox.html' %}
+
+
+{% endblock %}

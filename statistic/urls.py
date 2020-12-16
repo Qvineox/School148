@@ -1,7 +1,7 @@
 from django.urls import path
 
-from accounts import views
+from statistic import views
 
 urlpatterns = [
-    path('statistics/', views.basic_statistics, name='statistics')
+    path('', views.overall_statistics, name='statistics main page')
 ]
