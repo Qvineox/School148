@@ -14,6 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.contrib import messages
+from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -199,7 +200,7 @@ STATICFILES_DIRS = [
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-LOGIN_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/home/'
 LOGIN_URL = '/accounts/login/'
 
 MESSAGE_TAGS = {

@@ -101,74 +101,97 @@
             margin-left: -2%;
             margin-top: -25px">
         <div class="multi-button">
-            <a class="btn btn-toolbox"
-               style="color: lightcoral; background-color: #333333; margin-right: 5px;"
-               href="#">
-                Закончить урок
-            </a>
-            <a class="btn btn-toolbox"
-               style="color: whitesmoke; background-color: #333333; margin-right: 5px;"
-               href="#">
-                Редактировать
-            </a>
-            <button type="button" class="btn btn-toolbox" style="color: lightgreen; background-color: #333333; margin-right: 5px;"
-                                        id='hw_btn' data-toggle="modal" data-target="#hw_set_btn">
-                                    Добавить домашнее задание
-            </button>
-             <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="modal fade" id="hw_set_btn" tabindex="-1" role="dialog"
-                             aria-labelledby="hw_btnLabely" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
+            <form action="" method="post">
+                {% csrf_token %}
+                <a class="btn btn-toolbox"
+                   style="color: lightcoral; background-color: #333333; margin-right: 5px;"
+                   href="#">
+                    Закончить урок
+                </a>
+                <a class="btn btn-toolbox"
+                   style="color: whitesmoke; background-color: #333333; margin-right: 5px;"
+                   href="#">
+                    Редактировать
+                </a>
+                <button type="button" class="btn btn-toolbox"
+                        style="color: lightgreen; background-color: #333333; margin-right: 5px;"
+                        id='hw_btn' data-toggle="modal" data-target="#hw_set_btn">
+                    Добавить домашнее задание
+                </button>
+                <div class="modal fade" id="hw_set_btn" tabindex="-1" role="dialog"
+                     aria-labelledby="hw_btnLabely" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
 
-                                    <div class="modal-header">
-                                        <h2 style="margin: auto">Домашнее задание</h2>
+                            <div class="modal-header">
+                                <h2 style="margin: auto">Домашнее задание</h2>
+                            </div>
+
+                            <div class="modal-body">
+                                <h4>{{ lesson_data.subject }}</h4>
+                                <h5 style="opacity: 50%; margin-top: -5px">предмет</h5>
+
+                                <h4 style="margin-top: 10%">Текст задания</h4>
+                                <input type="text" class="form-control" name="comment" maxlength="150">
+                                <small id="commentHelpBlock" class="form-text text-muted">
+                                    Текст ограничен 150 символами.
+                                </small>
+
+                                <div class="row" style="margin-top: 5px">
+                                    <div class="col" style="display: inline-block;">
+                                        <h4 style="margin-top: 10%">Обязательность</h4>
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                               style="width: 30px; height: 30px; margin-left: 0%">
                                     </div>
-
-                                    <div class="modal-body">
-
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
-                                        </button>
-                                        <button type="submit" class="btn btn-success">Подтвердить</button>
+                                    <div class="col">
+                                        <h4 style="margin-top: 10%">Дата сдачи</h4>
+                                        <input type="date" class="form-control" name="comment" maxlength="50">
+                                        <small id="commentHelpBlock" class="form-text text-muted">
+                                            Закрепляется за уроком.
+                                        </small>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
 
-
-            <button type="button" class="btn btn-toolbox" style="color: lightgreen; background-color: #333333; margin-right: 5px;"
-                                        id='pr_btn' data-toggle="modal" data-target="#pr_set_btn">
-                                    Добавить проверочную работу
-            </button>
-             <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="modal fade" id="pr_set_btn" tabindex="-1" role="dialog"
-                             aria-labelledby="hw_btnLabely" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-
-                                    <div class="modal-header">
-                                        <h2 style="margin: auto">Проверочная работа</h2>
-                                    </div>
-
-                                    <div class="modal-body">
-
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
-                                        </button>
-                                        <button type="submit" class="btn btn-success">Подтвердить</button>
-                                    </div>
-                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                </button>
+                                <button type="submit" class="btn btn-success">Подтвердить</button>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-toolbox"
+                        style="color: lightgreen; background-color: #333333; margin-right: 5px;"
+                        id='pr_btn' data-toggle="modal" data-target="#pr_set_btn">
+                    Добавить проверочную работу
+                </button>
+            </form>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="modal fade" id="pr_set_btn" tabindex="-1" role="dialog"
+                     aria-labelledby="hw_btnLabely" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h2 style="margin: auto">Проверочная работа</h2>
+                            </div>
+
+                            <div class="modal-body">
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                </button>
+                                <button type="submit" class="btn btn-success">Подтвердить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="row-12">

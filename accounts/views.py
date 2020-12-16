@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 
@@ -22,6 +22,7 @@ def account_login(request):
 
             if user is not None:
                 login(request, user)
+                return redirect('home')
                 logger.info('User logged: {0}'.format(user_login))
             else:
                 if User.objects.filter(username=user_login).count() > 0:
@@ -37,6 +38,11 @@ def account_login(request):
             logger.warning('Invalid form received from user.')
 
     return render(request, 'registration/login.html')
+
+
+def account_logout(request):
+    logout(request)
+    return redirect('login')
 
 
 def account_preregister(request):
@@ -116,7 +122,8 @@ def profile(request, user_id=None):
 
     attendance_score, average_score = get_profile_statistics(user_id)
     toolbox = toolbox_data([('Учебная группа', '/accounts/group/study/{0}'.format(user_data.study_group_id)),
-                            ('Редактировать', 'edit')])
+                            ('Редактировать', 'edit'),
+                            ('Выйти', '/accounts/logout/')])
 
     return render(request, 'profiles/apprentice_page.html', {'profile_data': user_data,
                                                              'average_score': average_score,

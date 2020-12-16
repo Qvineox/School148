@@ -10,6 +10,7 @@ logger = logging.getLogger('database')
 
 
 def check_account_availability(role, first_name, second_name, last_name=None):
+    print(role, first_name, second_name, last_name)
     logger.debug('Querying registration availability data.')
     if role == '1':
         available_accounts = models.Apprentices.objects.filter(first_name=first_name, second_name=second_name)
@@ -122,6 +123,8 @@ def get_profile_statistics(user_id):
         if get_user_prior_group_number(user_id) == 1:
             statistics_data = statistics.get_apprentice_non_attendance_score(
                 user_profile_id), statistics.get_apprentice_average_score(user_profile_id)
+        else:
+            statistics_data = None
         return statistics_data
     else:
         return None, None

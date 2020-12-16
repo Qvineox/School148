@@ -22,3 +22,11 @@ class MarkPlacementForm(forms.Form):
     weight = forms.ChoiceField(label='weight', required=False, choices=WEIGHT_CHOICES)
 
     comment = forms.CharField(label='comment', required=False)
+
+
+class HomeworkPlacementForm(forms.Form):
+    content = forms.CharField(label='content', required=True)
+    file = forms.FileField(label='file', required=False)
+
+    required = forms.BooleanField(label='requirement')
+    deadline_date = forms.DateField(label='deadline_date')
