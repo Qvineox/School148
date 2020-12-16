@@ -111,16 +111,64 @@
                href="#">
                 Редактировать
             </a>
-            <a class="btn btn-toolbox"
-               style="color: lightgreen; background-color: #333333; margin-right: 5px;"
-               href="#">
-                Добавить домашнее задание
-            </a>
-            <a class="btn btn-toolbox"
-               style="color: lightgreen; background-color: #333333; margin-right: 5px;"
-               href="#">
-                Добавить проверочную работу
-            </a>
+            <button type="button" class="btn btn-toolbox" style="color: lightgreen; background-color: #333333; margin-right: 5px;"
+                                        id='hw_btn' data-toggle="modal" data-target="#hw_set_btn">
+                                    Добавить домашнее задание
+            </button>
+             <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="modal fade" id="hw_set_btn" tabindex="-1" role="dialog"
+                             aria-labelledby="hw_btnLabely" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h2 style="margin: auto">Домашнее задание</h2>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                        </button>
+                                        <button type="submit" class="btn btn-success">Подтвердить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+            <button type="button" class="btn btn-toolbox" style="color: lightgreen; background-color: #333333; margin-right: 5px;"
+                                        id='pr_btn' data-toggle="modal" data-target="#pr_set_btn">
+                                    Добавить проверочную работу
+            </button>
+             <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="modal fade" id="pr_set_btn" tabindex="-1" role="dialog"
+                             aria-labelledby="hw_btnLabely" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h2 style="margin: auto">Проверочная работа</h2>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                        </button>
+                                        <button type="submit" class="btn btn-success">Подтвердить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
         </div>
     </div>
     <div class="row-12">
@@ -240,7 +288,7 @@
                         {% csrf_token %}
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
