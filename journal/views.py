@@ -69,6 +69,7 @@ def lesson_panel(request, lesson_id=None):
     lesson_data = get_lesson_data_from_id(lesson_id)
     teacher = lesson_data.teacher
 
+
     # отметить отсутсвие
     if request.GET.get('remove-student'):
         set_student_absence(int(request.GET.get('remove-student')), lesson_id, teacher.id)
@@ -94,7 +95,19 @@ def lesson_panel(request, lesson_id=None):
                              form.cleaned_data['weight'])
             return redirect('/journal/lessons/{0}/panel'.format(lesson_id))
 
+    # добавление домашнего задания
+    if request.POST:
+        homework_content = request.POST.get('content')
+        homework_deadline = datetime.datetime.strptime(request.POST.get('deadline_date').replace('-', ' '), '%Y %m %d')
+        homework_required = bool(request.POST.get('required'))
+
+        print(homework_content, homework_deadline, homework_required)
+        set_homework(homework_content, homework_deadline, homework_required, lesson_data)
+
+        return redirect('/journal/lessons/{0}/panel'.format(lesson_id))
+
     present_students, absent_students = get_on_lesson_students(lesson_data.group.id, lesson_id)
+    placed_lesson_homeworks = get_lesson_homework(lesson_id)
 
     toolbox = toolbox_data([('Завершить урок', '../../all'),
                             ('Редактировать', 'edit/'),
@@ -106,6 +119,7 @@ def lesson_panel(request, lesson_id=None):
                    'toolbox': toolbox,
                    'lesson_data': lesson_data,
                    'lesson_marks': get_lesson_marks(lesson_id),
+                   'lesson_homeworks': placed_lesson_homeworks,
                    'present_students': present_students,
-                   'absent_students': absent_students,
+                   'absent_students': absent_students
                    })

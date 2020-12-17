@@ -13,6 +13,7 @@ def home(request):
                                                          'lessons': home_apprentice_data['lessons'],
                                                          'pretext': home_apprentice_data['pretext'],
                                                          'date': home_apprentice_data['date'],
+                                                         'homeworks': home_apprentice_data['homeworks'],
                                                          'marks': home_apprentice_data['marks']})
 
 

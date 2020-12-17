@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from accounts.models import Teachers, StudyGroups, Apprentices
 from accounts.services import get_profile_from_user, get_study_group_apprentices, get_user_prior_group_number
-from journal.models import Lessons, Disciples, Marks
+from journal.models import Lessons, Disciples, Marks, Homeworks
 
 logger = logging.getLogger('database')
 
@@ -144,6 +144,12 @@ def get_lesson_marks(lesson_id):
     return marks
 
 
+# возвращает домашнее задание на этот урок
+def get_lesson_homework(lesson_id):
+    homeworks = Homeworks.objects.filter(placement_lesson_id=lesson_id)
+    return homeworks
+
+
 # отмечает отсутствие ученика на уроке
 def set_student_absence(student_id, lesson_id, teacher_id):
     try:
@@ -181,6 +187,16 @@ def remove_student_mark(mark_id):
     delete_mark.delete()
 
 
+# установка домашнего задания
+def set_homework(content, deadline, required, placement_lesson):
+    Homeworks.objects.create(text=content,
+                             required=required,
+                             deadline_time=deadline,
+                             author_id=placement_lesson.teacher.id,
+                             placement_lesson_id=placement_lesson.id,
+                             target_group_id=placement_lesson.group.id)
+
+
 # возвращает список уроков пользователя
 def get_lesson_history_for_user(user_id):
     user_group = get_user_prior_group_number(user_id)
@@ -188,7 +204,6 @@ def get_lesson_history_for_user(user_id):
 
     scheduled_lessons = []
     latest_lessons = []
-    # archived_lessons = []
 
     # если пользователь - школьник
     if user_group == 1:

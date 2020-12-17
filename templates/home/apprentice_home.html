@@ -71,6 +71,27 @@
                 <div class="row">
                     <h2>Домашние задания</h2>
                 </div>
+                <div class="row">
+                    {% for homework in homeworks %}
+                        <div class="container list-group-item" style="border-radius: 10px; padding-left: 3%; width: 100%">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row">
+                                        <h4 class="{{ homework.placement_lesson.subject.scheme }}">{{ homework.placement_lesson.subject.title }}</h4>
+                                    </div>
+                                    <div class="row" style="margin-top: -5px">
+                                        <h5 style="opacity: 50%">до {{ homework.deadline_time|date }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <h5>{{ homework.text }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="col panel" style="margin-left: 10px">
                 <div class="row">
@@ -83,9 +104,8 @@
                         {% else %}
                             <button class="btn btn-dark"
                         {% endif %}
-                                    style="border-radius: 0.5rem; margin-left: 5px; margin-top: 2px"
-                                    value="{{ mark.id }}"
-                                    name="remove-mark">{{ mark.lesson.subject.title }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
+                                    style="border-radius: 0.5rem; margin-left: 5px; margin-top: 2px">
+                        {{ mark.lesson.subject.title }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
                     </button>
                     {% endfor %}
                 </div>

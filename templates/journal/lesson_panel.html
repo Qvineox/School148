@@ -101,25 +101,26 @@
             margin-left: -2%;
             margin-top: -25px">
         <div class="multi-button">
-            <form action="" method="post">
-                {% csrf_token %}
-                <a class="btn btn-toolbox"
-                   style="color: lightcoral; background-color: #333333; margin-right: 5px;"
-                   href="#">
-                    Закончить урок
-                </a>
-                <a class="btn btn-toolbox"
-                   style="color: whitesmoke; background-color: #333333; margin-right: 5px;"
-                   href="#">
-                    Редактировать
-                </a>
-                <button type="button" class="btn btn-toolbox"
-                        style="color: lightgreen; background-color: #333333; margin-right: 5px;"
-                        id='hw_btn' data-toggle="modal" data-target="#hw_set_btn">
-                    Добавить домашнее задание
-                </button>
-                <div class="modal fade" id="hw_set_btn" tabindex="-1" role="dialog"
-                     aria-labelledby="hw_btnLabely" aria-hidden="true">
+
+            <a class="btn btn-toolbox"
+               style="color: lightcoral; background-color: #333333; margin-right: 5px;"
+               href="#">
+                Закончить урок
+            </a>
+            <a class="btn btn-toolbox"
+               style="color: whitesmoke; background-color: #333333; margin-right: 5px;"
+               href="#">
+                Редактировать
+            </a>
+            <button type="button" class="btn btn-toolbox"
+                    style="color: lightgreen; background-color: #333333; margin-right: 5px;"
+                    id='hw_btn' data-toggle="modal" data-target="#hw_set_btn">
+                Добавить домашнее задание
+            </button>
+            <div class="modal fade" id="hw_set_btn" tabindex="-1" role="dialog">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    aria-labelledby="hw_btnLabely" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
 
@@ -132,7 +133,7 @@
                                 <h5 style="opacity: 50%; margin-top: -5px">предмет</h5>
 
                                 <h4 style="margin-top: 10%">Текст задания</h4>
-                                <input type="text" class="form-control" name="comment" maxlength="150">
+                                <input type="text" class="form-control" name="content" maxlength="150" required>
                                 <small id="commentHelpBlock" class="form-text text-muted">
                                     Текст ограничен 150 символами.
                                 </small>
@@ -140,12 +141,14 @@
                                 <div class="row" style="margin-top: 5px">
                                     <div class="col" style="display: inline-block;">
                                         <h4 style="margin-top: 10%">Обязательность</h4>
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                                               style="width: 30px; height: 30px; margin-left: 0%">
+                                        <input class="form-check-input" type="checkbox" value="true"
+                                               id="flexCheckDefault"
+                                               style="width: 30px; height: 30px; margin-left: 0%" name="required">
                                     </div>
                                     <div class="col">
                                         <h4 style="margin-top: 10%">Дата сдачи</h4>
-                                        <input type="date" class="form-control" name="comment" maxlength="50">
+                                        <input type="date" class="form-control" name="deadline_date"
+                                               value="{% now "Y-m-d" %}">
                                         <small id="commentHelpBlock" class="form-text text-muted">
                                             Закрепляется за уроком.
                                         </small>
@@ -160,14 +163,15 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
+            </div>
 
-                <button type="button" class="btn btn-toolbox"
-                        style="color: lightgreen; background-color: #333333; margin-right: 5px;"
-                        id='pr_btn' data-toggle="modal" data-target="#pr_set_btn">
-                    Добавить проверочную работу
-                </button>
-            </form>
+            <button type="button" class="btn btn-toolbox"
+                    style="color: lightgreen; background-color: #333333; margin-right: 5px;"
+                    id='pr_btn' data-toggle="modal" data-target="#pr_set_btn">
+                Добавить проверочную работу
+            </button>
+
             <form action="" method="post">
                 {% csrf_token %}
                 <div class="modal fade" id="pr_set_btn" tabindex="-1" role="dialog"
@@ -234,7 +238,6 @@
             <div class="col">
                 <h2>Оценки на этом уроке</h2>
             </div>
-
         </div>
         <div class="col" style="margin-left: -1%; margin-top: -2px">
             <form action="" method="get">
@@ -259,6 +262,11 @@
         <div class="col-6 panel" style="margin-left: auto;">
             <div class="row" style="margin-left: 0; margin-right: 0">
                 <h2>Домашнее задание на следующий урок</h2>
+            </div>
+            <div class="col" style="margin-left: -1%; margin-top: -2px">
+                {% for homework in lesson_homeworks %}
+                    <li class="list-group-item student">{{ homework.text }}</li>
+                {% endfor %}
             </div>
         </div>
     </div>
