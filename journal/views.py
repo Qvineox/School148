@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 
+from accounts.services import get_user_prior_group_number
 from home.views import navbar_data, toolbox_data
 from journal.forms import MarkPlacementForm
 from journal.services import *
@@ -9,9 +10,17 @@ def show_journal(request):
     toolbox = toolbox_data([('История занятий', '/journal/lessons/history'),
                             ('Все оценки', '/journal/marks')])
 
+    privilege_level = get_user_prior_group_number(request.user.id)
+
+    if privilege_level == 1:
+        lessons = get_schedule_for_student(request.user.id)
+
+    elif privilege_level == 3:
+        lessons = get_schedule_for_teacher(request.user.id)
+
     return render(request, 'journal/apprentice_journal.html',
                   {'navbar': navbar_data(request),
-                   'lessons': get_schedule_for_user(request.user),
+                   'lessons': lessons,
                    'toolbox': toolbox})
 
 
@@ -19,16 +28,32 @@ def show_marks(request, user_id=None):
     toolbox = toolbox_data([('Расписание', '/journal/'),
                             ('История занятий', '/journal/lessons/history')])
 
-    marks_dict = add_avg_score_to_sorted_marks(sort_marks_by_subject(get_all_marks_from_user(request.user.id)))
+    privilege_level = get_user_prior_group_number(request.user.id)
 
-    return render(request, 'journal/apprentice_marks.html',
-                  {'navbar': navbar_data(request),
-                   'marks': marks_dict,
-                   'toolbox': toolbox})
+    if privilege_level == 1:
+        marks_dict = add_avg_score_to_sorted_marks(sort_marks_by_subject(get_all_marks_for_student(request.user.id)))
+        return render(request, 'journal/apprentice_marks.html',
+                      {'navbar': navbar_data(request),
+                       'marks': marks_dict,
+                       'toolbox': toolbox})
+
+    elif privilege_level == 3:
+        marks_list = sort_all_marks_for_teacher(get_all_marks_for_teacher(request.user.id))
+
+        return render(request, 'journal/teacher_marks.html',
+                      {'navbar': navbar_data(request),
+                       'all_marks': marks_list,
+                       'toolbox': toolbox})
 
 
 def lesson_history(request):
-    scheduled_lessons, latest_lessons = get_lesson_history_for_user(request.user.id)
+    privilege_level = get_user_prior_group_number(request.user.id)
+
+    if privilege_level == 1:
+        scheduled_lessons, latest_lessons = get_lesson_history_for_student(request.user.id)
+
+    elif privilege_level == 3:
+        scheduled_lessons, latest_lessons = get_lesson_history_for_teacher(request.user.id)
 
     toolbox = toolbox_data([('Расписание', '/journal/'),
                             ('Все оценки', '/journal/marks')])
@@ -69,7 +94,6 @@ def lesson_panel(request, lesson_id=None):
     lesson_data = get_lesson_data_from_id(lesson_id)
     teacher = lesson_data.teacher
 
-
     # отметить отсутсвие
     if request.GET.get('remove-student'):
         set_student_absence(int(request.GET.get('remove-student')), lesson_id, teacher.id)
@@ -88,7 +112,9 @@ def lesson_panel(request, lesson_id=None):
     # уставновка оценки
     if request.POST:
         form = MarkPlacementForm(request.POST)
+        print('nice')
         if form.is_valid():
+            print('cool')
             set_student_mark(lesson_id,
                              form.cleaned_data['holder'],
                              form.cleaned_data['value'],

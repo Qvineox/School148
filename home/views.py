@@ -2,19 +2,35 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 import accounts.services as account_services
-from home.services import get_apprentice_home_data
+from home.services import get_apprentice_home_data, get_teacher_home_data
 
 
 @login_required
 def home(request):
-    home_apprentice_data = get_apprentice_home_data(request.user.id)
+    privilege_level = account_services.get_user_prior_group_number(request.user.id)
 
-    return render(request, 'home/apprentice_home.html', {'navbar': navbar_data(request),
-                                                         'lessons': home_apprentice_data['lessons'],
-                                                         'pretext': home_apprentice_data['pretext'],
-                                                         'date': home_apprentice_data['date'],
-                                                         'homeworks': home_apprentice_data['homeworks'],
-                                                         'marks': home_apprentice_data['marks']})
+    # уровень ученика
+    if privilege_level == 1:
+        home_data = get_apprentice_home_data(request.user.id)
+        return render(request, 'home/apprentice_home.html', {'navbar': navbar_data(request),
+                                                             'lessons': home_data['lessons'],
+                                                             'pretext': home_data['pretext'],
+                                                             'date': home_data['date'],
+                                                             'homeworks': home_data['homeworks'],
+                                                             'marks': home_data['marks']})
+
+    # уровень преподавателя
+    elif privilege_level == 3:
+        home_data = get_teacher_home_data(request.user.id)
+        return render(request, 'home/teacher_home.html', {'navbar': navbar_data(request),
+                                                          'lessons': home_data['lessons'],
+                                                          'pretext': home_data['pretext'],
+                                                          'date': home_data['date'],
+                                                          'homeworks': home_data['homeworks'],
+                                                          'marks': home_data['marks']})
+
+    else:
+        home_data = None
 
 
 def navbar_data(request):

@@ -5,7 +5,7 @@ from django.db import DatabaseError
 from django.utils import timezone
 
 from accounts.models import Teachers, StudyGroups, Apprentices
-from accounts.services import get_profile_from_user, get_study_group_apprentices, get_user_prior_group_number
+from accounts.services import get_profile_from_user, get_study_group_apprentices
 from journal.models import Lessons, Disciples, Marks, Homeworks
 
 logger = logging.getLogger('database')
@@ -17,20 +17,29 @@ def get_lessons_for_study_group(study_group_id, schedule_date):
     return data
 
 
-# возвращает недельное расписание
-def get_schedule_for_user(user):
-    this_week_lessons = None
+# возвращает недельное расписание для ученика
+def get_schedule_for_student(user_id):
+    student_group_id = get_profile_from_user(user_id).study_group_id
+    date = datetime.date.today()
+    start_week = date - datetime.timedelta(date.weekday())
+    end_week = start_week + datetime.timedelta(6)
+    this_week_lessons = Lessons.objects.filter(date__range=[start_week, end_week],
+                                               study_group_id=student_group_id,
+                                               )
 
-    # если пользователь школьник
-    if user.groups.values_list('id', flat=True).order_by('-id').first() == 1:
-        date = datetime.date.today()
-        start_week = date - datetime.timedelta(date.weekday())
-        end_week = start_week + datetime.timedelta(6)
-        this_week_lessons = Lessons.objects.filter(date__range=[start_week, end_week],
-                                                   study_group_id=get_profile_from_user(user.id).study_group_id,
-                                                   )
+    logger.info('Weekly schedule received for user: {0}'.format(user_id))
+    return process_schedule_data_for_journal_view(this_week_lessons)
 
-    logger.info('Weekly schedule received for user: {0}'.format(user.id))
+
+# возвращает недельное расписание для учителя
+def get_schedule_for_teacher(user_id):
+    teacher_id = get_profile_from_user(user_id).id
+    date = datetime.date.today()
+    start_week = date - datetime.timedelta(date.weekday())
+    end_week = start_week + datetime.timedelta(6)
+    this_week_lessons = Lessons.objects.filter(date__range=[start_week, end_week],
+                                               teacher_id=teacher_id,
+                                               )
     return process_schedule_data_for_journal_view(this_week_lessons)
 
 
@@ -197,44 +206,133 @@ def set_homework(content, deadline, required, placement_lesson):
                              target_group_id=placement_lesson.group.id)
 
 
-# возвращает список уроков пользователя
-def get_lesson_history_for_user(user_id):
-    user_group = get_user_prior_group_number(user_id)
+# возвращает список уроков школьника
+def get_lesson_history_for_student(user_id):
     profile_data = get_profile_from_user(user_id)
 
     scheduled_lessons = []
     latest_lessons = []
 
-    # если пользователь - школьник
-    if user_group == 1:
-        current_date = timezone.now().date()
-        time_point = current_date - datetime.timedelta(days=7)
-        # получаем список всех уроков за определенный период времени назад
-        lessons_queryset = Lessons.objects.filter(study_group_id=profile_data.study_group_id,
-                                                  date__gt=time_point,
-                                                  date__lte=current_date + datetime.timedelta(days=1))
+    current_date = timezone.now().date()
+    time_point = current_date - datetime.timedelta(days=7)
+    # получаем список всех уроков за определенный период времени назад
+    lessons_queryset = Lessons.objects.filter(study_group_id=profile_data.study_group_id,
+                                              date__gt=time_point,
+                                              date__lte=current_date + datetime.timedelta(days=1))
 
-        for lesson in lessons_queryset.order_by('date', 'order').values():
-            new_lesson = get_lesson_info(lesson, full=False)
-            if new_lesson.date >= current_date:
-                scheduled_lessons.append(new_lesson)
-            else:
-                latest_lessons.append(new_lesson)
+    for lesson in lessons_queryset.order_by('date', 'order').values():
+        new_lesson = get_lesson_info(lesson, full=False)
+        if new_lesson.date >= current_date:
+            scheduled_lessons.append(new_lesson)
+        else:
+            latest_lessons.append(new_lesson)
+
+    return scheduled_lessons, latest_lessons
+
+
+# возвращает список уроков учителя
+def get_lesson_history_for_teacher(user_id):
+    profile_data = get_profile_from_user(user_id)
+
+    scheduled_lessons = []
+    latest_lessons = []
+
+    current_date = timezone.now().date()
+    time_point = current_date - datetime.timedelta(days=7)
+    # получаем список всех уроков за определенный период времени назад
+    lessons_queryset = Lessons.objects.filter(teacher=profile_data.id,
+                                              date__gt=time_point,
+                                              date__lte=current_date + datetime.timedelta(days=1))
+
+    for lesson in lessons_queryset.order_by('date', 'order').values():
+        new_lesson = get_lesson_info(lesson, full=False)
+        if new_lesson.date >= current_date:
+            scheduled_lessons.append(new_lesson)
+        else:
+            latest_lessons.append(new_lesson)
 
     return scheduled_lessons, latest_lessons
 
 
 # возвращает все оценки пользователя
-def get_all_marks_from_user(user_id):
-    user_group = get_user_prior_group_number(user_id)
+def get_all_marks_for_student(user_id):
     profile_data = get_profile_from_user(user_id)
 
-    # если пользователь - школьник
-    if user_group == 1:
-        all_marks = Marks.objects.filter(holder_id=profile_data.id).exclude(value=0)
-        return all_marks
-    else:
-        return False
+    all_marks = Marks.objects.filter(holder_id=profile_data.id).exclude(value=0)
+    return all_marks
+
+
+# возвращает все оценки по всем предметам учителя
+def get_all_marks_for_teacher(user_id):
+    profile_data = get_profile_from_user(user_id)
+
+    all_marks = Marks.objects.filter(appraiser_id=profile_data.id).exclude(value=0)
+    return all_marks
+
+
+# возвращает сортированный по предметам, классам и ученикам список оценок для учителя
+def sort_all_marks_for_teacher(all_marks_queryset):
+    disciples = []
+    marks_by_disciples = []
+
+    # сортировка по дисциплинам
+    for mark in all_marks_queryset:
+        if mark.lesson.subject in disciples:
+            marks_by_disciples[disciples.index(mark.lesson.subject)].append(mark)
+        else:
+            disciples.append(mark.lesson.subject)
+            marks_by_disciples.append([mark])
+
+    disciples_result = []
+    # объединение
+    for position in range(len(disciples)):
+        disciples_result.append((disciples[position], marks_by_disciples[position]))
+
+    groups_result = []
+    # сортировка по группам
+    for disciple_tuple in disciples_result:
+        groups = []
+        marks_by_groups = []
+
+        for mark in disciple_tuple[1]:
+            if mark.holder.study_group in groups:
+                marks_by_groups[groups.index(mark.holder.study_group)].append(mark)
+            else:
+                groups.append(mark.holder.study_group)
+                marks_by_groups.append([mark])
+
+        for i in range(len(groups)):
+            groups_result.append((groups[i], marks_by_groups[i]))
+
+    students_result = []
+    # сортировка по ученикам
+    for group_tuple in groups_result:
+        students = []
+        marks_by_students = []
+
+        for mark in group_tuple[1]:
+            if mark.holder in students:
+                marks_by_students[students.index(mark.holder)].append(mark)
+            else:
+                students.append(mark.holder)
+                marks_by_students.append([mark])
+
+        for i in range(len(students)):
+            students_result.append((students[i], marks_by_students[i]))
+
+    result_by_groups = []
+    print(students_result)
+    # объединение студентов в группы
+    for i in range(len(groups_result)):
+        result_by_groups.append((groups_result[i][0], students_result))
+
+    result = []
+    # объединение группы в дисциплины
+    for i in range(len(disciples_result)):
+        result.append((disciples_result[i][0], result_by_groups))
+
+    print(result)
+    return result
 
 
 # распределение оценок по предметам

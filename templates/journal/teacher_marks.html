@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Все оценки</title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .panel {
+            border-radius: 0.5rem;
+            background: whitesmoke;
+            padding-left: 30px;
+            padding-right: 30px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-left: -1%;
+            margin-right: -1%;
+        }
+
+        .hvr-bounce-to-right {
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-transform: perspective(1px) translateZ(0);
+            transform: perspective(1px) translateZ(0);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+            position: relative;
+            -webkit-transition-property: color;
+            transition-property: color;
+            -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+            border-radius: 0.5rem;
+        }
+
+        .hvr-bounce-to-right:before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #585858;
+            -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+            -webkit-transform-origin: 0 50%;
+            transform-origin: 0 50%;
+            -webkit-transition-property: transform;
+            transition-property: transform;
+            -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+            -webkit-transition-timing-function: ease-out;
+            transition-timing-function: ease-out;
+            border-radius: 0.5rem;
+        }
+
+        .hvr-bounce-to-right:hover, .hvr-bounce-to-right:focus, .hvr-bounce-to-right:active {
+            color: white;
+            border-radius: 0.5rem;
+        }
+
+        .hvr-bounce-to-right:hover:before, .hvr-bounce-to-right:focus:before, .hvr-bounce-to-right:active:before {
+            -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+            -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+            transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+            border-radius: 0.5rem;
+        }
+
+        .math:before {
+            background-image: linear-gradient(120deg, #4facfe 0%, #8ec5fc 100%);
+        }
+
+        .russian:before {
+            background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+        }
+
+        .math:before {
+            background-image: linear-gradient(120deg, #4facfe 0%, #8ec5fc 100%);
+        }
+
+        .russian:before {
+            background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+        }
+
+        .nature:before {
+            background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+        }
+
+        .nature:hover, .nature:focus, .nature:active {
+            color: black;
+        }
+
+        .reading:before {
+            background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+        }
+
+        .reading:hover, .reading:focus, .reading:active {
+            color: black;
+        }
+
+        .algebra:before {
+            background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);
+        }
+
+        .literature:before {
+            background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+        }
+
+        .geometry:before {
+            background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
+        }
+
+        .physics:before {
+            background-image: linear-gradient(to right, #00dbde 0%, #fc00ff 100%);
+        }
+
+        .chemistry:before {
+            background-image: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+        }
+
+        .biology:before {
+            background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+        }
+
+        .geography:before {
+            background-image: linear-gradient(-20deg, #d558c8 0%, #24d292 100%);
+        }
+
+        .history:before {
+            background-image: linear-gradient(to right, #c1c161 0%, #c1c161 0%, #d4d4b1 100%);
+        }
+
+        .history:hover, .history:focus, .history:active {
+            color: black;
+        }
+
+        .it:before {
+            background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
+        }
+
+        .pe:before {
+            background-image: linear-gradient(to right, #00dbde 0%, #fc00ff 100%);
+        }
+
+        .art:before {
+            background-image: linear-gradient(to top, #df89b5 0%, #bfd9fe 100%);
+        }
+
+        .english:before {
+            background-image: linear-gradient(to top, #3b41c5 0%, #a981bb 49%, #ffc8a9 100%);
+        }
+
+        .economics:before {
+            background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    {% include 'toolbox.html' %}
+    <div class="row-12">
+        <div class="container-lg panel" style="margin-top: 10px">
+            <div class="row" style="margin-left: -0.2%">
+                <h2>Оценки по Вашим предметам</h2>
+            </div>
+            <div class="row-lg">
+                <ul class="list-group lessons" style="margin-left: -0.2%">
+
+                    {% for subject in all_marks %}
+                        <li class="{{ subject.0.scheme }} list-group-item hvr-bounce-to-right" style="margin-top: 5px">
+                            <div class="row-lg">
+                                <h2>{{ subject.0.title }}</h2>
+                            </div>
+
+                            {% for group in subject.1 %}
+                                <ul class="list-group lessons">
+                                    <li class="list-group-item"
+                                        style="margin-top: 5px">
+                                        <div class="row-lg">
+                                            <h3>{{ group.0.grade }}{{ group.0.symbol }} класс</h3>
+                                        </div>
+                                        <ul class="list-group lessons">
+                                            {% for student in group.1 %}
+                                                <li class="list-group-item">
+                                                    <div class="row" style="margin-left: 0">
+                                                        <h4>
+                                                            {{ student.0.second_name }} {{ student.0.first_name }} {{ student.0.last_name }}
+                                                        </h4>
+                                                    </div>
+                                                    <div class="row" style="margin-left: 0">
+                                                        {% for mark in student.1 %}
+                                                            <button class="btn btn-light"
+                                                                    data-balloon-length="large"
+                                                                    aria-label="Получено: {{ mark.rating_date }} Комментарий: {{ mark.comment|default_if_none:"Пусто" }}"
+                                                                    data-balloon-pos="down"
+                                                                    style="margin-left: 5px">
+                                                                {{ mark.value }}<sub>{{ mark.weight }}</sub>
+                                                            </button>
+                                                        {% endfor %}
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                </ul>
+                            {% endfor %}
+
+                            <div class="row-lg">
+                                {% for mark in value %}
+                                    <button class="btn btn-light"
+                                            data-balloon-length="large"
+                                            aria-label="Получено: {{ mark.rating_date }}
+                                            Комментарий: {{ mark.comment|default_if_none:"Пусто" }}"
+                                            data-balloon-pos="down">
+                                        {{ mark.value }}<sub>{{ mark.weight }}</sub>
+                                    </button>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
