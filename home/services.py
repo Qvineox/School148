@@ -51,13 +51,15 @@ def get_teacher_homepage_homework(teacher_id, period=7):
 
 def get_student_homepage_marks(profile_id, period=7):
     marks = Marks.objects.filter(holder_id=profile_id,
-                                 rating_date__gte=timezone.now() - timedelta(days=period)).order_by('rating_date')
+                                 rating_date__gte=timezone.now() - timedelta(days=period)).order_by(
+        'rating_date').exclude(value=0)
     return marks
 
 
 def get_teacher_homepage_marks(teacher_id, period=7):
     marks = Marks.objects.filter(appraiser_id=teacher_id,
-                                 rating_date__gte=timezone.now() - timedelta(days=period)).order_by('rating_date')
+                                 rating_date__gte=timezone.now() - timedelta(days=period)).order_by(
+        'rating_date').exclude(value=0)
     return marks
 
 

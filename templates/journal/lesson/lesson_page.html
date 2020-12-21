@@ -94,110 +94,7 @@
             integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
             crossorigin="anonymous"></script>
 
-    <div class="container-lg"
-         style="padding-left: 1%;
-            padding-right: 1%;
-            margin-right: auto;
-            margin-left: -2%;
-            margin-top: -25px">
-        <div class="multi-button">
-
-            <a class="btn btn-toolbox"
-               style="color: lightcoral; background-color: #333333; margin-right: 5px;"
-               href="#">
-                Закончить урок
-            </a>
-            <a class="btn btn-toolbox"
-               style="color: whitesmoke; background-color: #333333; margin-right: 5px;"
-               href="#">
-                Редактировать
-            </a>
-            <button type="button" class="btn btn-toolbox"
-                    style="color: lightgreen; background-color: #333333; margin-right: 5px;"
-                    id='hw_btn' data-toggle="modal" data-target="#hw_set_btn">
-                Добавить домашнее задание
-            </button>
-            <div class="modal fade" id="hw_set_btn" tabindex="-1" role="dialog">
-                <form action="" method="post">
-                    {% csrf_token %}
-                    aria-labelledby="hw_btnLabely" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-
-                            <div class="modal-header">
-                                <h2 style="margin: auto">Домашнее задание</h2>
-                            </div>
-
-                            <div class="modal-body">
-                                <h4>{{ lesson_data.subject }}</h4>
-                                <h5 style="opacity: 50%; margin-top: -5px">предмет</h5>
-
-                                <h4 style="margin-top: 10%">Текст задания</h4>
-                                <input type="text" class="form-control" name="content" maxlength="150" required>
-                                <small id="commentHelpBlock" class="form-text text-muted">
-                                    Текст ограничен 150 символами.
-                                </small>
-
-                                <div class="row" style="margin-top: 5px">
-                                    <div class="col" style="display: inline-block;">
-                                        <h4 style="margin-top: 10%">Обязательность</h4>
-                                        <input class="form-check-input" type="checkbox" value="true"
-                                               id="flexCheckDefault"
-                                               style="width: 30px; height: 30px; margin-left: 0%" name="required">
-                                    </div>
-                                    <div class="col">
-                                        <h4 style="margin-top: 10%">Дата сдачи</h4>
-                                        <input type="date" class="form-control" name="deadline_date"
-                                               value="{% now "Y-m-d" %}">
-                                        <small id="commentHelpBlock" class="form-text text-muted">
-                                            Закрепляется за уроком.
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
-                                </button>
-                                <button type="submit" class="btn btn-success">Подтвердить</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <button type="button" class="btn btn-toolbox"
-                    style="color: lightgreen; background-color: #333333; margin-right: 5px;"
-                    id='pr_btn' data-toggle="modal" data-target="#pr_set_btn">
-                Добавить проверочную работу
-            </button>
-
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="modal fade" id="pr_set_btn" tabindex="-1" role="dialog"
-                     aria-labelledby="hw_btnLabely" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-
-                            <div class="modal-header">
-                                <h2 style="margin: auto">Проверочная работа</h2>
-                            </div>
-
-                            <div class="modal-body">
-
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
-                                </button>
-                                <button type="submit" class="btn btn-success">Подтвердить</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+    {% include 'toolbox.html' %}
     <div class="row-12">
         <div class="container-lg panel" style="margin-top: 10px">
             <div class="row">
@@ -238,6 +135,7 @@
             <div class="col">
                 <h2>Оценки на этом уроке</h2>
             </div>
+
         </div>
         <div class="col" style="margin-left: -1%; margin-top: -2px">
             <form action="" method="get">
@@ -247,6 +145,8 @@
                             value="{{ mark.id }}"
                             name="remove-mark">{{ mark.holder.second_name }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
                     </button>
+                {% empty %}
+                    <h3 style="opacity: 50%">Нет оценок</h3>
                 {% endfor %}
             </form>
         </div>
@@ -263,11 +163,6 @@
             <div class="row" style="margin-left: 0; margin-right: 0">
                 <h2>Домашнее задание на следующий урок</h2>
             </div>
-            <div class="col" style="margin-left: -1%; margin-top: -2px">
-                {% for homework in lesson_homeworks %}
-                    <li class="list-group-item student">{{ homework.text }}</li>
-                {% endfor %}
-            </div>
         </div>
     </div>
 
@@ -283,34 +178,22 @@
                     <li class="list-group-item student hvr-bounce-to-right">
                         <div class="row" style="margin-left: 0.5%; margin-right: 0.3%">
                             <h3>{{ student.second_name }} {{ student.first_name }} {{ student.last_name }}</h3>
-                            <form style="margin-left: auto; vertical-align: middle" action="" method="get">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger" style="margin-left: auto; color: white"
-                                        value="{{ student.id }}" name="remove-student">Отметить отсутствие
+
+                            {% if student.account_id == None %}
+                                <button
+                                        class="btn btn-light disabled"
+                                        style="margin-left: auto"
+                                        aria-label="Пользователь еще не зарегистрирован!"
+                                        data-balloon-pos="down">
+                                    Профиль
                                 </button>
-
-
-                                <button type="button" class="btn btn-info" style="margin-left: 5px; color: white"
-                                        id='grade_btn' data-toggle="modal" data-target="#exampleModal">
-                                    Установить оценку
-                                </button>
-
-                                {% if student.account_id == None %}
-                                    <button
-                                            class="btn btn-light disabled"
-                                            style="margin-left: 5px"
-                                            aria-label="Пользователь еще не зарегистрирован!"
-                                            data-balloon-pos="down">
-                                        Профиль
-                                    </button>
-                                {% else %}
-                                    <a href="/accounts/profile/{{ student.account_id }}"
-                                       class="btn btn-light"
-                                       style="margin-left: 5px">
-                                        Профиль
-                                    </a>
-                                {% endif %}
-                            </form>
+                            {% else %}
+                                <a href="/accounts/profile/{{ student.account_id }}"
+                                   class="btn btn-light"
+                                   style="margin-left: auto">
+                                    Профиль
+                                </a>
+                            {% endif %}
                         </div>
 
                     </li>
@@ -319,7 +202,7 @@
                         {% csrf_token %}
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-dialog" role="document">
                                 <div class="modal-content">
 
                                     <div class="modal-header">

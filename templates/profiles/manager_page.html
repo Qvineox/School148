@@ -1,0 +1,153 @@
+{% extends  'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ first_name }} {{ last_name }}</title>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile_style.css' %}">
+    <style>
+        a.btn-outline-dark {
+            box-shadow: 0 3px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            padding: 10px 15px;
+            letter-spacing: 1px;
+            margin-left: auto;
+            border-radius: 0.9rem;
+        }
+
+        btn-link.btn-outline-dark {
+            box-shadow: 0 3px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            padding: 10px 15px;
+            letter-spacing: 1px;
+            margin-left: auto;
+            border-radius: 0.9rem;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    {% include 'toolbox.html' %}
+    <div class="container-md emp-profile" style="padding: 2%; margin-left: -1%; margin-right: -1%; margin-top: 5px">
+        <div class="row">
+            <div class="col-md-2 border-right">
+                <div class="row">
+                    <div class="profile-img"
+                         style="width: 250px; height: 250px; overflow: hidden; position: relative; border-radius: 10%; margin-left: auto;
+                       margin-right: auto">
+                        <img src="/media/{{ profile_data.profile_picture }}"
+                             alt=""
+                             class="rounded"
+                             width="160"
+                             height="160"
+                             style="width: 160px; height: 160px; object-fit: cover;"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 border-right" style="padding-left: 3%">
+                <div class="row" style="height: 150px">
+                    <div class="profile-head">
+                        <h1>
+                            {{ profile_data.first_name }} {{ profile_data.second_name }} {{ profile_data.last_name }}
+                        </h1>
+                        <h5>
+                            {{ profile_data.get_position_display  }}
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="profile-head">
+                        <h2>
+                            Личная информация
+                        </h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>пол</h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>{{ profile_data.gender }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>дата рождения</h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>{{ profile_data.birth_date|date:"j.n.Y" }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>документ</h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>{{ profile_data.civ_id }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top: 3%">
+                    <div class="profile-head">
+                        <h2>
+                            Контактная информация
+                        </h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>почта</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>{{ profile_data.email }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>телефон</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>{{ profile_data.phone }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" style="padding-left: 3%">
+                <div class="row" style="height: 150px">
+                </div>
+                <div class="row">
+                    <div class="profile-head">
+                        <h2>
+                            Общая информация
+                        </h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>творческая группа</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>N/A</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm" style="padding-left: 0">
+                                    <h5>проектная группа</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>N/A</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
