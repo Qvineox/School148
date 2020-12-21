@@ -37,7 +37,7 @@ class Parents(models.Model):
     # учетные данные
     account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, unique=True,
                                    verbose_name='Аккаунт')
-    registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
+    active = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
     # медиа
     profile_picture = models.ImageField(null=True, upload_to='profile_images/',
@@ -100,7 +100,6 @@ class Teachers(models.Model):
     # учетные данные
     account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, unique=True,
                                    verbose_name='Аккаунт')
-    registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
     # медиа
     profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',
@@ -122,7 +121,7 @@ class Staff(models.Model):
     # учетные данные
     account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,
                                    verbose_name='Аккаунт')
-    registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
+    active = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
     # медиа
     profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',
@@ -181,7 +180,7 @@ class Managers(models.Model):
     # учетные данные
     account = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, unique=False,
                                    verbose_name='Аккаунт')
-    registered = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
+    active = models.BooleanField(null=False, default=False, verbose_name='Зарегистрирован')
 
     # медиа
     profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',

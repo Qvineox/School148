@@ -1,11 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 
 from accounts.forms import *
 from accounts.services import *
 from home.views import navbar_data, toolbox_data
+from statistic.services import get_teacher_average_score, get_apprentice_average_score, \
+    get_apprentice_attendance_score, get_group_statistics, get_all_teacher_lessons
 
 logger = logging.getLogger('auth')
 
@@ -22,7 +26,10 @@ def account_login(request):
 
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                if get_user_prior_group_number(user.id) > 4:
+                    return redirect('settings')
+                else:
+                    return redirect('home')
                 logger.info('User logged: {0}'.format(user_login))
             else:
                 if User.objects.filter(username=user_login).count() > 0:
@@ -114,22 +121,85 @@ def account_register(request):
                                                           'user_last_name': user_data['last_name']})
 
 
+@login_required(login_url='/accounts/login/')
+def user_profile(request):
+    user_id = request.user.id
+    user_data = get_profile_data(user_id)
+    privilege_level = get_user_prior_group_number(user_id)
+    tools = [('Редактировать', '../{0}/edit'.format(user_id)), ('Выйти', '/accounts/logout/')]
+
+    if privilege_level == 1:
+        average_score = get_apprentice_average_score(user_data.id)
+        attendance_score = get_apprentice_attendance_score(user_data.id)
+
+        tools.append(('Учебная группа', '/accounts/group/study/{0}'.format(user_data.study_group_id)))
+
+        toolbox = toolbox_data(tools)
+        return render(request, 'profiles/apprentice_page.html', {'profile_data': user_data,
+                                                                 'average_score': average_score,
+                                                                 'attendance_score': attendance_score,
+                                                                 'toolbox': toolbox,
+                                                                 'navbar': navbar_data(request)})
+    elif privilege_level == 4:
+        supervision_group = get_supervision_group(user_data.id)
+        if supervision_group:
+            tools.append(('Учебная группа', '/accounts/group/study/{0}'.format(supervision_group.id)))
+
+        average_score = get_teacher_average_score(user_data.id)
+        lessons_passed = get_all_teacher_lessons(user_data.id)
+
+        toolbox = toolbox_data(tools)
+        return render(request, 'profiles/teacher_page.html', {'profile_data': user_data,
+                                                              'supervision_group': supervision_group,
+                                                              'average_score': average_score,
+                                                              'lessons_passed': lessons_passed,
+                                                              'toolbox': toolbox,
+                                                              'navbar': navbar_data(request)})
+
+
+@login_required(login_url='/accounts/login/')
 def profile(request, user_id=None):
     if user_id is not None:
         user_data = get_profile_data(user_id)
     else:
         user_data = get_profile_data(request.user.id)
 
-    attendance_score, average_score = get_profile_statistics(user_id)
-    toolbox = toolbox_data([('Учебная группа', '/accounts/group/study/{0}'.format(user_data.study_group_id)),
-                            ('Редактировать', 'edit'),
-                            ('Выйти', '/accounts/logout/')])
+    user_group = get_user_prior_group_number(user_id)
+    tools = list()
 
-    return render(request, 'profiles/apprentice_page.html', {'profile_data': user_data,
-                                                             'average_score': average_score,
-                                                             'attendance_score': attendance_score,
-                                                             'toolbox': toolbox,
-                                                             'navbar': navbar_data(request)})
+    if user_group == 1:
+        average_score = get_apprentice_average_score(user_data.id)
+        attendance_score = get_apprentice_attendance_score(user_data.id)
+
+        tools.append(('Учебная группа', '/accounts/group/study/{0}'.format(user_data.study_group_id)))
+
+        if request.user.has_perm('accounts.change_apprentice'):
+            tools.append(('Редактировать', 'edit'))
+
+        toolbox = toolbox_data(tools)
+        return render(request, 'profiles/apprentice_page.html', {'profile_data': user_data,
+                                                                 'average_score': average_score,
+                                                                 'attendance_score': attendance_score,
+                                                                 'toolbox': toolbox,
+                                                                 'navbar': navbar_data(request)})
+    elif user_group == 4:
+        if request.user.has_perm('accounts.change_teachers'):
+            tools.append(('Редактировать', 'edit'))
+
+        average_score = get_teacher_average_score(user_data.id)
+        lessons_passed = get_all_teacher_lessons(user_data.id)
+
+        supervision_group = get_supervision_group(user_data.id)
+        if supervision_group:
+            tools.append(('Учебная группа', '/accounts/group/study/{0}'.format(supervision_group.id)))
+
+        toolbox = toolbox_data(tools)
+        return render(request, 'profiles/teacher_page.html', {'profile_data': user_data,
+                                                              'supervision_group': supervision_group,
+                                                              'average_score': average_score,
+                                                              'lessons_passed': lessons_passed,
+                                                              'toolbox': toolbox,
+                                                              'navbar': navbar_data(request)})
 
 
 def edit_profile(request, user_id=None):
@@ -138,8 +208,22 @@ def edit_profile(request, user_id=None):
     else:
         user_data = get_profile_data(request.user.id)
 
-    if request.method == 'POST':
+    user_group = get_user_prior_group_number(user_id)
+    if request.user.id != user_id:
+        if user_group == 1:
+            if not request.user.has_perm('accounts.change_apprentice'):
+                return HttpResponseForbidden()
+        elif user_group == 4:
+            if not request.user.has_perm('accounts.change_teachers'):
+                return HttpResponseForbidden()
+        elif user_group == 3:
+            if not request.user.has_perm('accounts.change_teachers'):
+                return HttpResponseForbidden()
+        elif user_group == 2:
+            if not request.user.has_perm('accounts.change_parents'):
+                return HttpResponseForbidden()
 
+    if request.method == 'POST':
         form = ProfileEditForm(request.POST, request.FILES)
 
         if form.is_valid():
@@ -160,15 +244,19 @@ def edit_profile(request, user_id=None):
             user_data.save()
             return profile(request, user_id)
 
-    print(user_data.profile_picture)
-    attendance_score, average_score = get_profile_statistics(user_id)
+    if user_group == 1:
+        return render(request, 'profiles/editors/apprentice_editor.html', {'profile_data': user_data,
+                                                                           'navbar': navbar_data(request)})
+    elif user_group == 4:
+        return render(request, 'profiles/editors/teacher_editor.html', {'profile_data': user_data,
+                                                                        'navbar': navbar_data(request)})
+    elif user_group == 3:
+        return None
+    elif user_group == 2:
+        return None
 
-    return render(request, 'profiles/editors/profile_editor.html', {'profile_data': user_data,
-                                                                    'average_score': average_score,
-                                                                    'attendance_score': attendance_score,
-                                                                    'navbar': navbar_data(request)})
 
-
+@permission_required('accounts.view_studygroups', raise_exception=True)
 def view_all_groups(request):
     groups_data = get_all_groups()
     separated_study_groups = separate_study_groups(groups_data['study_groups'])
@@ -181,15 +269,12 @@ def view_all_groups(request):
                                                                'navbar': navbar_data(request)})
 
 
+@permission_required('accounts.view_studygroup', raise_exception=True)
 def view_study_group(request, group_id):
     group_data = get_study_group_data(group_id)
     apprentices = get_study_group_apprentices(group_id)
 
-    apprentices_grid = [[], [], []]
-
-    for counter, item in enumerate(apprentices):
-        item.__setattr__('stats', get_profile_statistics(item.account_id))
-        apprentices_grid[counter % 3].append(item)
+    apprentices_grid = get_group_statistics(apprentices, group_data.id)
 
     if group_data.headman:
         headman = group_data.headman
@@ -233,6 +318,7 @@ def view_study_group(request, group_id):
                                                                'navbar': navbar_data(request)})
 
 
+@permission_required('accounts.change_studygroup', raise_exception=True)
 def edit_study_group(request, group_id):
     group_data = get_study_group_data(group_id)
     apprentices = get_study_group_apprentices(group_id)

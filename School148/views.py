@@ -1,13 +1,18 @@
 from datetime import timedelta
 
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
+from accounts.services import get_user_prior_group_number
 from home.views import navbar_data
 from schedule.services import start_interval_replenish, start_interval_cleanup, start_full_cleanup
 
 
 def settings_page(request):
+    if get_user_prior_group_number(request.user.id) < 5:
+        return HttpResponseForbidden()
+
     if request.GET.get('fill_schedule'):
         command = request.GET.get('fill_schedule')
         today = timezone.now().date()

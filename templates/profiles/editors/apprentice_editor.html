@@ -28,7 +28,7 @@
 
                 <a class="btn btn-toolbox"
                    style="color: lightcoral; background-color: #333333; margin-right: 5px;"
-                   href="/accounts/profile/{{ request.user.id }}">
+                   href="./">
                     Вернуться
                 </a>
             </div>
@@ -136,32 +136,6 @@
                                                id="phone"
                                                name="phone"
                                                value="{{ profile_data.phone }}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row" style="margin-top: 3%">
-                        <div class="profile-head">
-                            <h2>
-                                Родители
-                            </h2>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm" style="padding-left: 0">
-                                        <h5>отец</h5>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h5>{{ profile_data.father_id.name }}</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm" style="padding-left: 0">
-                                        <h5>мать</h5>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <h5>{{ profile_data.mother_id.name }}</h5>
                                     </div>
                                 </div>
                             </div>

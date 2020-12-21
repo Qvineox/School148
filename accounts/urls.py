@@ -7,6 +7,7 @@ urlpatterns = [
     path('logout/', views.account_logout, name='logout'),
     path('preregistration/', views.account_preregister, name='preregistration'),
     path('registration/', views.account_register, name='registration'),
+    path('profile/me/', views.user_profile, name='my profile'),
     path('profile/<int:user_id>/', views.profile, name='profile'),
     path('profile/<int:user_id>/edit', views.edit_profile, name='edit profile'),
     path('group/all/', views.view_all_groups, name='view all groups'),

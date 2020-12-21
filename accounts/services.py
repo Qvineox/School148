@@ -54,9 +54,9 @@ def connect_account_to_record(role, account_id, record_id):
     elif role == '2':
         connect_account = models.Parents.objects.filter(id=record_id).first()
     elif role == '3':
-        connect_account = models.Teachers.objects.filter(id=record_id).first()
-    elif role == '4':
         connect_account = models.Staff.objects.filter(id=record_id).first()
+    elif role == '4':
+        connect_account = models.Teachers.objects.filter(id=record_id).first()
     elif role == '5':
         connect_account = models.Managers.objects.filter(id=record_id).first()
     elif role == '6':
@@ -87,9 +87,9 @@ def get_profile_from_user(user_id):
     elif group == 2:
         school_profile = models.Parents.objects.filter(account_id=user_id).first()
     elif group == 3:
-        school_profile = models.Teachers.objects.filter(account_id=user_id).first()
-    elif group == 4:
         school_profile = models.Staff.objects.filter(account_id=user_id).first()
+    elif group == 4:
+        school_profile = models.Teachers.objects.filter(account_id=user_id).first()
     elif group == 5:
         school_profile = models.Managers.objects.filter(account_id=user_id).first()
     elif group == 6:
@@ -119,10 +119,16 @@ def get_user_group_numbers(user_id):
 def get_profile_statistics(user_id):
     if user_id:
         user_profile_id = get_profile_from_user(user_id).id
+        privilege_level = get_user_prior_group_number(user_id)
         # если пользователь школьник
-        if get_user_prior_group_number(user_id) == 1:
-            statistics_data = statistics.get_apprentice_non_attendance_score(
+        if privilege_level == 1:
+            statistics_data = statistics.get_apprentice_attendance_score(
                 user_profile_id), statistics.get_apprentice_average_score(user_profile_id)
+        elif privilege_level == 4:
+            statistics_data = (
+                statistics.get_teacher_average_score(user_profile_id),
+                statistics.get_all_teacher_lessons(user_profile_id),
+                'N/A')
         else:
             statistics_data = None
         return statistics_data
@@ -229,3 +235,9 @@ def get_available_supervisors():
     available_supervisors = [x for x in available_supervisors if x.id not in unavailable_supervisors]
 
     return available_supervisors
+
+
+# возвращает группу, которую курирует указанный преподаватель
+def get_supervision_group(teacher_id):
+    supervision_group = models.StudyGroups.objects.get(supervisor=teacher_id)
+    return supervision_group

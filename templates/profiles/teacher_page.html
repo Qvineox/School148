@@ -52,56 +52,16 @@
                             <a href="">Средний балл</a>
                         </div>
                         <div class="col">
-                            <a href="">{{ average_score|floatformat:2|default:"Нет оценок" }}</a>
+                            <a href="">{{ average_score|default_if_none:"Нет оценок"|floatformat:2 }}</a>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-6">
-                            <a href="">Посещаемость</a>
+                            <a href="">Занятия</a>
                         </div>
                         <div class="col">
-                            <a href="">{{ attendance_score|floatformat:1 }}%</a>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="">Успеваемость</a>
-                        </div>
-                        <div class="col">
-                            <a href="">N/A</a>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="">План работ</a>
-                        </div>
-                        <div class="col">
-                            <a href="">N/A</a>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="">Активность</a>
-                        </div>
-                        <div class="col">
-                            <a href="">N/A</a>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="">Допуск</a>
-                        </div>
-                        <div class="col">
-                            {% if average_score > 3 and attendance_score > 60 %}
-                                <a href="" style="color: green">Да</a>
-                            {% else %}
-                                <a href="" style="color: red">Нет</a>
-                            {% endif %}
+                            <a href="">{{ lessons_passed|default_if_none:"Нет оценок" }}</a>
                         </div>
                     </div>
 
@@ -117,12 +77,15 @@
                             {{ profile_data.first_name }} {{ profile_data.second_name }} {{ profile_data.last_name }}
                         </h1>
                         <h5>
-                            {% if profile_data.study_group.headman == profile_data %}
-                                Староста
+                            {% if supervision_group is not None %}
+                                Куратор {{ supervision_group.grade }}"{{ supervision_group.symbol }}" класса
                             {% else %}
-                                Ученик
+                                {% if profile_data.disciple.title is not None %}
+                                    Профильный преподаватель ({{ profile_data.disciple.title }})
+                                {% else %}
+                                    Непрофильный преподаватель
+                                {% endif %}
                             {% endif %}
-                            {{ profile_data.study_group.grade }}{{ profile_data.study_group.symbol }} класса
                         </h5>
                     </div>
                 </div>
@@ -187,33 +150,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row" style="margin-top: 3%">
-                    <div class="profile-head">
-                        <h2>
-                            Родители
-                        </h2>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm" style="padding-left: 0">
-                                    <h5>отец</h5>
-                                </div>
-                                <div class="col-md-5">
-                                    <h5>{{ profile_data.father_id.name }}</h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm" style="padding-left: 0">
-                                    <h5>мать</h5>
-                                </div>
-                                <div class="col-md-5">
-                                    <h5>{{ profile_data.mother_id.name }}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
             <div class="col-md-4" style="padding-left: 3%">
                 <div class="row" style="height: 150px">
@@ -226,11 +162,11 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-sm" style="padding-left: 0">
-                                    <h5>учебная группа</h5>
+                                    <h5>куратор группы</h5>
                                 </div>
                                 <div class="col-md-4">
                                     <h5 href="../../">
-                                        {{ profile_data.study_group.grade }}{{ profile_data.study_group.symbol }}</h5>
+                                        {{ supervision_group.grade|default:'Нет' }}{{ supervision_group.symbol }}</h5>
                                 </div>
                             </div>
                             <div class="row">
@@ -238,15 +174,7 @@
                                     <h5>специализация</h5>
                                 </div>
                                 <div class="col-md-4">
-                                    <h5>{{ profile_data.study_group.specialisation.title }}</h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm" style="padding-left: 0">
-                                    <h5>куратор</h5>
-                                </div>
-                                <div class="col-md-4">
-                                    <h5>{{ profile_data.study_group.supervisor.first_name }} {{ profile_data.study_group.supervisor.last_name }}</h5>
+                                    <h5>{{ profile_data.disciple.title|default:'Нет' }}</h5>
                                 </div>
                             </div>
                             <div class="row">

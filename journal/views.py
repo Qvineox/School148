@@ -15,7 +15,7 @@ def show_journal(request):
     if privilege_level == 1:
         lessons = get_schedule_for_student(request.user.id)
 
-    elif privilege_level == 3:
+    elif privilege_level == 4:
         lessons = get_schedule_for_teacher(request.user.id)
 
     return render(request, 'journal/apprentice_journal.html',
@@ -37,7 +37,7 @@ def show_marks(request, user_id=None):
                        'marks': marks_dict,
                        'toolbox': toolbox})
 
-    elif privilege_level == 3:
+    elif privilege_level == 4:
         marks_list = sort_all_marks_for_teacher(get_all_marks_for_teacher(request.user.id))
 
         return render(request, 'journal/teacher_marks.html',
@@ -52,7 +52,7 @@ def lesson_history(request):
     if privilege_level == 1:
         scheduled_lessons, latest_lessons = get_lesson_history_for_student(request.user.id)
 
-    elif privilege_level == 3:
+    elif privilege_level == 4:
         scheduled_lessons, latest_lessons = get_lesson_history_for_teacher(request.user.id)
 
     toolbox = toolbox_data([('Расписание', '/journal/'),
@@ -72,7 +72,7 @@ def lesson_page(request, lesson_id=None):
     present_students, absent_students = get_on_lesson_students(lesson_data.group.id, lesson_id)
 
     if get_user_prior_group_number(request.user.id) > 1:
-        toolbox = toolbox_data([('Редактировать', 'panel/'),
+        toolbox = toolbox_data([('Редактировать', '/journal/lessons/{0}/panel'.format(lesson_id)),
                                 ('Добавить домашнее задание', 'edit/'),
                                 ('Удалить', '#'),
                                 ('Вернуться', '/journal/lessons/history')])

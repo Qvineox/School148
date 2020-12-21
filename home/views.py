@@ -5,7 +5,7 @@ import accounts.services as account_services
 from home.services import get_apprentice_home_data, get_teacher_home_data
 
 
-@login_required
+@login_required(login_url='/accounts/login/')
 def home(request):
     privilege_level = account_services.get_user_prior_group_number(request.user.id)
 
@@ -20,7 +20,7 @@ def home(request):
                                                              'marks': home_data['marks']})
 
     # уровень преподавателя
-    elif privilege_level == 3:
+    elif privilege_level == 4:
         home_data = get_teacher_home_data(request.user.id)
         return render(request, 'home/teacher_home.html', {'navbar': navbar_data(request),
                                                           'lessons': home_data['lessons'],
@@ -40,6 +40,7 @@ def navbar_data(request):
         'first_name': data.first_name,
         'second_name': data.second_name,
         'last_name': data.last_name,
+        'privilege': account_services.get_user_prior_group_number(request.user.id),
         'id': data.id
     }
 
@@ -54,6 +55,9 @@ class Tool(object):
 
 def toolbox_data(tools_list):
     toolbox = []
+    # сортировка инстурментов-пузырьков по длине
+    tools_list.sort(key=lambda t: len(t[0]), reverse=True)
+
     for item in tools_list:
         toolbox.append(Tool(item[0], item[1]))
 
