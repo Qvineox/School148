@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from accounts.services import get_user_prior_group_number
+from accounts.services import get_user_prior_group_number, get_all_groups
 from home.views import navbar_data, toolbox_data
 from journal.forms import MarkPlacementForm
 from journal.services import *
@@ -18,13 +18,20 @@ def show_journal(request):
     elif privilege_level == 4:
         lessons = get_schedule_for_teacher(request.user.id)
 
+    elif privilege_level > 4:
+        all_groups = get_all_groups()
+        return render(request, 'journal/manager_journal.html',
+                      {'study_groups': all_groups['study_groups'],
+                       'navbar': navbar_data(request),
+                       'toolbox': toolbox})
+
     return render(request, 'journal/apprentice_journal.html',
                   {'navbar': navbar_data(request),
                    'lessons': lessons,
                    'toolbox': toolbox})
 
 
-def show_marks(request, user_id=None):
+def show_marks(request):
     toolbox = toolbox_data([('Расписание', '/journal/'),
                             ('История занятий', '/journal/lessons/history')])
 
@@ -32,7 +39,7 @@ def show_marks(request, user_id=None):
 
     if privilege_level == 1:
         marks_dict = add_avg_score_to_sorted_marks(sort_marks_by_subject(get_all_marks_for_student(request.user.id)))
-        return render(request, 'journal/apprentice_marks.html',
+        return render(request, 'journal/marks/apprentice_marks.html',
                       {'navbar': navbar_data(request),
                        'marks': marks_dict,
                        'toolbox': toolbox})
@@ -40,7 +47,17 @@ def show_marks(request, user_id=None):
     elif privilege_level == 4:
         marks_list = sort_all_marks_for_teacher(get_all_marks_for_teacher(request.user.id))
 
-        return render(request, 'journal/teacher_marks.html',
+        return render(request, 'journal/marks/teacher_marks.html',
+                      {'navbar': navbar_data(request),
+                       'all_marks': marks_list,
+                       'toolbox': toolbox})
+
+    elif privilege_level > 4:
+        marks_list = sort_all_marks_for_manager(get_all_marks())
+        toolbox = toolbox_data([('Список групп', '/journal/'),
+                                ('Все занятия', '/journal/lessons/history')])
+
+        return render(request, 'journal/marks/manager_marks.html',
                       {'navbar': navbar_data(request),
                        'all_marks': marks_list,
                        'toolbox': toolbox})
@@ -51,14 +68,17 @@ def lesson_history(request):
 
     if privilege_level == 1:
         scheduled_lessons, latest_lessons = get_lesson_history_for_student(request.user.id)
-
+        tools = [('Расписание', '/journal/'), ('Все оценки', '/journal/marks')]
     elif privilege_level == 4:
         scheduled_lessons, latest_lessons = get_lesson_history_for_teacher(request.user.id)
+        tools = [('Расписание', '/journal/'), ('Все оценки', '/journal/marks')]
+    elif privilege_level > 4:
+        scheduled_lessons, latest_lessons = get_lesson_history_for_manager()
+        tools = [('Все группы', '/journal/'), ('Все оценки', '/journal/marks')]
 
-    toolbox = toolbox_data([('Расписание', '/journal/'),
-                            ('Все оценки', '/journal/marks')])
+    toolbox = toolbox_data(tools)
 
-    return render(request, 'journal/journal_history.html',
+    return render(request, 'journal/history/journal_history.html',
                   {'navbar': navbar_data(request),
                    'scheduled_lessons': scheduled_lessons,
                    'latest_lessons': latest_lessons,
@@ -67,20 +87,17 @@ def lesson_history(request):
 
 def lesson_page(request, lesson_id=None):
     lesson_data = get_lesson_data_from_id(lesson_id)
-    teacher = lesson_data.teacher
 
     present_students, absent_students = get_on_lesson_students(lesson_data.group.id, lesson_id)
+    privilege_level = get_user_prior_group_number(request.user.id)
+    tools = [('Вернуться', '/journal/lessons/history')]
 
-    if get_user_prior_group_number(request.user.id) > 1:
-        toolbox = toolbox_data([('Редактировать', '/journal/lessons/{0}/panel'.format(lesson_id)),
-                                ('Добавить домашнее задание', 'edit/'),
-                                ('Удалить', '#'),
-                                ('Вернуться', '/journal/lessons/history')])
-    else:
-        toolbox = toolbox_data([('Вернуться', '/journal/lessons/history'),
-                                ('Редактировать', '{0}/panel'.format(lesson_id))])
+    if privilege_level > 3:
+        tools += [('Редактировать', '/journal/lessons/{0}/panel'.format(lesson_id)),
+                  ('Удалить', '#')]
 
-    return render(request, 'journal/lesson_page.html',
+    toolbox = toolbox_data(tools)
+    return render(request, 'journal/lesson/lesson_page.html',
                   {'navbar': navbar_data(request),
                    'toolbox': toolbox,
                    'lesson_data': lesson_data,
@@ -112,9 +129,8 @@ def lesson_panel(request, lesson_id=None):
     # уставновка оценки
     if request.POST:
         form = MarkPlacementForm(request.POST)
-        print('nice')
+
         if form.is_valid():
-            print('cool')
             set_student_mark(lesson_id,
                              form.cleaned_data['holder'],
                              form.cleaned_data['value'],
@@ -127,7 +143,6 @@ def lesson_panel(request, lesson_id=None):
         homework_deadline = datetime.datetime.strptime(request.POST.get('deadline_date').replace('-', ' '), '%Y %m %d')
         homework_required = bool(request.POST.get('required'))
 
-        print(homework_content, homework_deadline, homework_required)
         set_homework(homework_content, homework_deadline, homework_required, lesson_data)
 
         return redirect('/journal/lessons/{0}/panel'.format(lesson_id))
@@ -135,14 +150,8 @@ def lesson_panel(request, lesson_id=None):
     present_students, absent_students = get_on_lesson_students(lesson_data.group.id, lesson_id)
     placed_lesson_homeworks = get_lesson_homework(lesson_id)
 
-    toolbox = toolbox_data([('Завершить урок', '../../all'),
-                            ('Редактировать', 'edit/'),
-                            ('Добавить домашнее задание', 'edit/'),
-                            ('Добавить проверочную работу', 'edit/')])
-
-    return render(request, 'journal/lesson_panel.html',
+    return render(request, 'journal/lesson/lesson_panel.html',
                   {'navbar': navbar_data(request),
-                   'toolbox': toolbox,
                    'lesson_data': lesson_data,
                    'lesson_marks': get_lesson_marks(lesson_id),
                    'lesson_homeworks': placed_lesson_homeworks,

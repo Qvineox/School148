@@ -10,7 +10,6 @@ logger = logging.getLogger('database')
 
 
 def check_account_availability(role, first_name, second_name, last_name=None):
-    print(role, first_name, second_name, last_name)
     logger.debug('Querying registration availability data.')
     if role == '1':
         available_accounts = models.Apprentices.objects.filter(first_name=first_name, second_name=second_name)
@@ -216,9 +215,7 @@ def set_study_group_settings(study_group, specialisation=None, headman=None, sup
 
 # возвращает список доступных специализаций
 def get_available_specialisations(study_group_grade):
-    print(study_group_grade)
     available_specialisations = list(journal.Specialization.objects.all())
-    print(available_specialisations)
     for counter, item in enumerate(available_specialisations):
         if study_group_grade not in range(item.main_disciple.start_grade, item.main_disciple.end_grade):
             available_specialisations.pop(counter)

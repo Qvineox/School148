@@ -144,37 +144,37 @@ class Managers(models.Model):
     position = models.CharField(max_length=30, null=False, blank=False,
                                 choices=[
                                     # директор
-                                    ('PR', 'Principal'),
+                                    ('PR', 'Директор'),
                                     # заместитель по воспитательной работе
-                                    ('DEW', 'Deputy of Educational Work'),
+                                    ('DEW', 'Заместитель по Воспитательной Работе'),
                                     # заместитель по безопасности
-                                    ('DS', 'Deputy of Security'),
+                                    ('DS', 'Заместитель по Безопасности'),
                                     # заместитель по административно-хозяйственной части
-                                    ('DEA', 'Deputy of Administration and Economics'),
+                                    ('DEA', 'Заместитель по Административно-хозяйственной Части'),
                                     # предметный методист
-                                    ('SM', 'Subject Methodist'),
+                                    ('SM', 'Предметный Методист'),
                                     # методист общего образовательного процесса
-                                    ('GM', 'General Methodist'),
+                                    ('GM', 'Методист Общего Образовательного Процесса'),
                                     # работник бухгалтерии
-                                    ('ADM', 'Accounting Department Member'),
+                                    ('ADM', 'Работник Бухгалтерии'),
                                     # глава бухгалтерии
-                                    ('ADH', 'Head of Accounting Department'),
+                                    ('ADH', 'Глава Бухгалтерии'),
                                     # член педагогического совета
-                                    ('EDM', 'Education Department Member'),
+                                    ('EDM', 'Член Педагогического Совета'),
                                     # глава педагогического совета
-                                    ('EDH', 'Head of Education Department'),
+                                    ('EDH', 'Глава Педагогического Совета'),
                                     # глава родительского комитета
-                                    ('HPAC', 'Head of Parental Advice Council'),
+                                    ('HPAC', 'Глава Родительского Комитета'),
                                     # глава управляющего совета
-                                    ('GBM', 'Governing Council Member'),
+                                    ('GBM', 'Глава Управляющего Совета'),
                                     # глава управляющего совета
-                                    ('GBH', 'Head of Governing Council'),
+                                    ('GBH', 'Глава Управляющего Совета'),
                                     # агент профсоюза
-                                    ('LUA', 'Labor Union Agent'),
+                                    ('LUA', 'Агент Профсоюза'),
                                     # главный библиотекарь
-                                    ('CL', 'Chief Librarian'),
+                                    ('CL', 'Главный Библиотекарь'),
                                     # наемный сотрудник
-                                    ('THW', 'Temporary Hired Worker')
+                                    ('THW', 'Наемный Сотрудник')
                                 ], default='THW')
 
     # учетные данные
@@ -185,3 +185,7 @@ class Managers(models.Model):
     # медиа
     profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',
                                         verbose_name='Картинка профиля')
+
+    # методы
+    def __str__(self):
+        return self.get_position_display()

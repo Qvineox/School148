@@ -156,6 +156,12 @@ def user_profile(request):
                                                               'toolbox': toolbox,
                                                               'navbar': navbar_data(request)})
 
+    elif privilege_level == 5:
+        toolbox = toolbox_data(tools)
+        return render(request, 'profiles/manager_page.html', {'profile_data': user_data,
+                                                              'toolbox': toolbox,
+                                                              'navbar': navbar_data(request)})
+
 
 @login_required(login_url='/accounts/login/')
 def profile(request, user_id=None):
@@ -198,6 +204,14 @@ def profile(request, user_id=None):
                                                               'supervision_group': supervision_group,
                                                               'average_score': average_score,
                                                               'lessons_passed': lessons_passed,
+                                                              'toolbox': toolbox,
+                                                              'navbar': navbar_data(request)})
+    elif user_group == 5:
+        if request.user.has_perm('accounts.change_managers'):
+            tools.append(('Редактировать', 'edit'))
+
+        toolbox = toolbox_data(tools)
+        return render(request, 'profiles/manager_page.html', {'profile_data': user_data,
                                                               'toolbox': toolbox,
                                                               'navbar': navbar_data(request)})
 
@@ -254,6 +268,9 @@ def edit_profile(request, user_id=None):
         return None
     elif user_group == 2:
         return None
+    elif user_group == 5:
+        return render(request, 'profiles/editors/manager_editor.html', {'profile_data': user_data,
+                                                                        'navbar': navbar_data(request)})
 
 
 @permission_required('accounts.view_studygroups', raise_exception=True)
@@ -325,8 +342,6 @@ def edit_study_group(request, group_id):
 
     if request.method == 'POST':
         form = GroupEditForm(request.POST)
-
-        print(form.data)
 
         new_specialisation = form.data.get('specialisation')
         new_supervisor = form.data.get('supervisor')

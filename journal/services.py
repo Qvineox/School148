@@ -253,6 +253,26 @@ def get_lesson_history_for_teacher(user_id):
 
     return scheduled_lessons, latest_lessons
 
+# возвращает список прошедших уроков для менеджера
+def get_lesson_history_for_manager():
+    latest_lessons = []
+    scheduled_lessons = []
+
+    current_date = timezone.now().date()
+    time_point = current_date - datetime.timedelta(days=7)
+    # получаем список всех уроков за определенный период времени назад
+    lessons_queryset = Lessons.objects.filter(date__gt=time_point,
+                                              date__lte=current_date + datetime.timedelta(days=1))
+
+    for lesson in lessons_queryset.order_by('date', 'order').values():
+        new_lesson = get_lesson_info(lesson, full=False)
+        if new_lesson.date >= current_date:
+            scheduled_lessons.append(new_lesson)
+        else:
+            latest_lessons.append(new_lesson)
+
+    return scheduled_lessons, latest_lessons
+
 
 # возвращает все оценки пользователя
 def get_all_marks_for_student(user_id):
@@ -260,6 +280,11 @@ def get_all_marks_for_student(user_id):
 
     all_marks = Marks.objects.filter(holder_id=profile_data.id).exclude(value=0)
     return all_marks
+
+
+# возвращает все действительные оценки
+def get_all_marks():
+    return Marks.objects.all().exclude(value=0)
 
 
 # возвращает все оценки по всем предметам учителя
@@ -321,7 +346,7 @@ def sort_all_marks_for_teacher(all_marks_queryset):
             students_result.append((students[i], marks_by_students[i]))
 
     result_by_groups = []
-    print(students_result)
+
     # объединение студентов в группы
     for i in range(len(groups_result)):
         result_by_groups.append((groups_result[i][0], students_result))
@@ -331,7 +356,70 @@ def sort_all_marks_for_teacher(all_marks_queryset):
     for i in range(len(disciples_result)):
         result.append((disciples_result[i][0], result_by_groups))
 
-    print(result)
+    return result
+
+
+# возвращает сортированный по классам, предметам и ученикам список оценок для менеджера
+def sort_all_marks_for_manager(all_marks_queryset):
+    groups = []
+    marks_by_groups = []
+
+    # сортировка по дисциплинам
+    for mark in all_marks_queryset:
+        if mark.holder.study_group in groups:
+            marks_by_groups[groups.index(mark.holder.study_group)].append(mark)
+        else:
+            groups.append(mark.holder.study_group)
+            marks_by_groups.append([mark])
+
+    groups_result = []
+    # объединение
+    for position in range(len(groups)):
+        groups_result.append((groups[position], marks_by_groups[position]))
+
+    disciple_result = []
+    # сортировка по группам
+    for group_tuple in groups_result:
+        subjects = []
+        marks_by_subjects = []
+
+        for mark in group_tuple[1]:
+            if mark.lesson.subject in subjects:
+                marks_by_subjects[subjects.index(mark.lesson.subject)].append(mark)
+            else:
+                subjects.append(mark.lesson.subject)
+                marks_by_subjects.append([mark])
+
+        for i in range(len(subjects)):
+            disciple_result.append((subjects[i], marks_by_subjects[i]))
+
+    students_result = []
+    # сортировка по ученикам
+    for disciple_tuple in disciple_result:
+        students = []
+        marks_by_students = []
+
+        for mark in disciple_tuple[1]:
+            if mark.holder in students:
+                marks_by_students[students.index(mark.holder)].append(mark)
+            else:
+                students.append(mark.holder)
+                marks_by_students.append([mark])
+
+        for i in range(len(students)):
+            students_result.append((students[i], marks_by_students[i]))
+
+    result_by_disciples = []
+
+    # объединение студентов в группы
+    for i in range(len(groups_result)):
+        result_by_disciples.append((disciple_result[i][0], students_result))
+
+    result = []
+    # объединение группы в дисциплины
+    for i in range(len(groups_result)):
+        result.append((groups_result[i][0], result_by_disciples))
+
     return result
 
 

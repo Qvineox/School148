@@ -42,7 +42,7 @@
 
                 {% for lesson in lessons %}
                     <div class="card" style="cursor: pointer;"
-                         onclick="window.location='/journal/lessons/{{ lesson.id }}/panel';">
+                         onclick="window.location='/journal/lessons/{{ lesson.id }}';">
 
                     {% if lesson.active %}
                         <div class="container" style="padding: 8%">
@@ -61,56 +61,78 @@
                 </div>
                 </div>
                 </div>
+                {% empty %}
+                    <div class="card" style="cursor: pointer;">
+
+                    {% if lesson.active %}
+                        <div class="container" style="padding: 8%">
+                    {% else %}
+                        <div class="container" style="padding: 8%; opacity: 0.3">
+                    {% endif %}
+
+                <h2 class="title"
+                    style="color: whitesmoke; user-select: none;">Уроков нет</h2>
+
+                <div class="container-md">
+                    <div class="button"></div>
+                </div>
+                </div>
+                </div>
                 {% endfor %}
                 </div>
-            </div>
-        </div>
-
-        <div class="row" style="margin-top: 10px; padding-left: 0.7%; padding-right: 0.7%">
-            <div class="col-7 panel" style="margin-left: 0%">
-                <div class="row">
-                    <h2>Домашние задания</h2>
                 </div>
-                <div class="row">
-                    {% for homework in homeworks %}
-                        <div class="container list-group-item" style="border-radius: 10px; padding-left: 3%; width: 100%">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row">
-                                        <h4 class="{{ homework.placement_lesson.subject.scheme }}">{{ homework.placement_lesson.subject.title }}</h4>
+            </div>
+
+            <div class="row" style="margin-top: 10px; padding-left: 0.7%; padding-right: 0.7%">
+                <div class="col-7 panel" style="margin-left: 0%">
+                    <div class="row">
+                        <h2>Домашние задания</h2>
+                    </div>
+                    <div class="row">
+                        {% for homework in homeworks %}
+                            <div class="container list-group-item"
+                                 style="border-radius: 10px; padding-left: 3%; width: 100%">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <h4 class="{{ homework.placement_lesson.subject.scheme }}">{{ homework.placement_lesson.subject.title }}</h4>
+                                        </div>
+                                        <div class="row" style="margin-top: -5px">
+                                            <h5 style="opacity: 50%">до {{ homework.deadline_time|date }}</h5>
+                                        </div>
                                     </div>
-                                    <div class="row" style="margin-top: -5px">
-                                        <h5 style="opacity: 50%">до {{ homework.deadline_time|date }}</h5>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="row">
-                                        <h5>{{ homework.text }}</h5>
+                                    <div class="col">
+                                        <div class="row">
+                                            <h5>{{ homework.text }}</h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% empty %}
+                            <h3 style="opacity: 50%">Домашнего задания нет</h3>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            <div class="col panel" style="margin-left: 10px">
-                <div class="row">
-                    <h2>Последние оценки</h2>
-                </div>
-                <div class="row">
-                    {% for mark in marks %}
-                        {% if mark.value <= 3 %}
-                            <button class="btn btn-danger"
-                        {% else %}
-                            <button class="btn btn-dark"
-                        {% endif %}
-                                    style="border-radius: 0.5rem; margin-left: 5px; margin-top: 2px">
-                        {{ mark.lesson.subject.title }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
-                    </button>
-                    {% endfor %}
+                <div class="col panel" style="margin-left: 10px">
+                    <div class="row">
+                        <h2>Последние оценки</h2>
+                    </div>
+                    <div class="row">
+                        {% for mark in marks %}
+                            {% if mark.value <= 3 %}
+                                <button class="btn btn-danger"
+                            {% else %}
+                                <button class="btn btn-dark"
+                            {% endif %}
+                                        style="border-radius: 0.5rem; margin-left: 5px; margin-top: 2px">
+                            {{ mark.lesson.subject.title }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
+                        </button>
+                        {% empty %}
+                            <h3 style="opacity: 50%">Оценок нет</h3>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 {% endblock %}

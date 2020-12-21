@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav">
-            {% if navbar.privilege < 4 %}
+            {% if navbar.privilege <= 4 %}
                 <li class="nav-item">
                     {% if 'home' in request.path %}
                         <a class="nav-link active" href="/home">Главная</a>
@@ -54,7 +54,7 @@
             </li>
         </ul>
         <ul class="navbar-nav  ml-auto">
-            {% if navbar.privilege < 4 %}
+            {% if navbar.privilege < 5 %}
                 {% if current_lesson is None %}
                     <a class="btn btn-outline-light disabled"
                        style="margin-right: 2%; color: whitesmoke">
