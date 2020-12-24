@@ -55,14 +55,19 @@
         </ul>
         <ul class="navbar-nav  ml-auto">
             {% if navbar.privilege < 5 %}
-                {% if current_lesson is None %}
+                {% if navbar.current_lesson is None %}
                     <a class="btn btn-outline-light disabled"
                        style="margin-right: 2%; color: whitesmoke">
                     Урок не идет
                 {% else %}
+
                     <a class="btn btn-success"
                        style="margin-right: 2%; color: whitesmoke"
-                       href="/current_lesson">
+                       {% if navbar.privilege < 4 %}
+                       href="/journal/lessons/{{ navbar.current_lesson.id }}">
+                       {% else %}
+                       href="/journal/lessons/{{ navbar.current_lesson.id }}/panel">
+                       {% endif %}
                     Текущий урок
                 {% endif %}
             </a>

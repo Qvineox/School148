@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 import accounts.services as account_services
-from home.services import get_apprentice_home_data, get_teacher_home_data
+from home.services import get_apprentice_home_data, get_teacher_home_data, check_current_lesson
 
 
 @login_required(login_url='/accounts/login/')
@@ -36,11 +36,19 @@ def home(request):
 def navbar_data(request):
     data = account_services.get_profile_data(request.user.id)
 
+    privilege = account_services.get_user_prior_group_number(request.user.id)
+
+    if privilege < 3:
+        current_lesson = check_current_lesson(group_id=data.study_group_id)
+    elif privilege == 4:
+        current_lesson = check_current_lesson(teacher_id=data.id)
+
     data = {
         'first_name': data.first_name,
         'second_name': data.second_name,
         'last_name': data.last_name,
-        'privilege': account_services.get_user_prior_group_number(request.user.id),
+        'privilege': privilege,
+        'current_lesson': current_lesson,
         'id': data.id
     }
 

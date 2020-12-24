@@ -253,6 +253,7 @@ def get_lesson_history_for_teacher(user_id):
 
     return scheduled_lessons, latest_lessons
 
+
 # возвращает список прошедших уроков для менеджера
 def get_lesson_history_for_manager():
     latest_lessons = []

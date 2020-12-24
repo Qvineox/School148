@@ -122,3 +122,24 @@ def get_teacher_home_data(user_id):
     }
 
     return result
+
+
+def check_current_lesson(group_id=None, teacher_id=None):
+    if group_id:
+        now = datetime.now()
+        if datetime.strptime('17', "%H").hour > now.hour > datetime.strptime('8', "%H").hour:
+            lessons = Lessons.objects.filter(study_group_id=group_id, date=timezone.now().date()).order_by('order')
+            if lessons:
+                timings = [(9, 25),
+                           (10, 20),
+                           (12, 25),
+                           (13, 20),
+                           (14, 15),
+                           (15, 15),
+                           (16, 10)]
+
+                for i in range(len(lessons)):
+                    if timings[i] > (now.hour, now.minute):
+                        return lessons[i]
+            else:
+                return None
