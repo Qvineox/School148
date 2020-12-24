@@ -18,21 +18,17 @@
 
     <div class="panel panel-default" style="background-color: white;">
       <div class="panel-heading">
-        <h3 class="panel-title">Подробная информация о книге: "{{ book_detail.title }}"</h3>
+        <h3 class="panel-title">Подробная информация о книге: "{{ book_detail.book.title }}"</h3>
       </div>
       <div class="panel-body">
-        <p style="font-size: 20px;"><strong>Автор: </strong>{{ book_detail.author }}</p>
+        <p style="font-size: 20px;"><strong>Автор: </strong>{{ book_detail.book.author }}</p>
 
-        <p style="font-size: 20px;"><strong>Целевая аудитория: </strong> ученики {{ book_detail.grade_number }} класса</p>
-            {% if book_detail.available  %}
-                <p style="font-size: 20px;"> <strong>Наличие:</strong> Есть в наличии, осталось {{ book_detail.stock }} шт</p>
-            {% else %}
-                <p style="font-size: 20px;"> <strong>Наличие:</strong> Нет в наличии</p>
-            {% endif %}
+        <p style="font-size: 20px;"><strong>Целевая аудитория: </strong> ученики {{ book_detail.book.grade_number }} класса</p>
+          <p style="font-size: 20px;"> <strong>Вернуть до: </strong> {{book_detail.recall_date}}</p>
       </div>
       <div class="panel-footer">
            <button type="button" class="btn btn-secondary"><a href="/library" style="text-decoration: none; color: white">Отмена</a></button>
-          <button type="submit" class="btn btn-info"  data-toggle="modal" data-target="#bor_book_btn">Оформить заем</button>
+          <button type="submit" class="btn btn-info"  data-toggle="modal" data-target="#bor_book_btn">Вернуть книгу</button>
       </div>
         <form action="" method="post">
                 {% csrf_token %}
@@ -42,12 +38,9 @@
                         <div class="modal-content">
 
                             <div class="modal-header">
-                                <h2 style="margin: auto">Заем книги</h2>
+                                <h2 style="margin: auto">Возврат книги</h2>
                             </div>
-
-                            <div class="modal-body">
-                                <p>Выберете дату возврата: {{ add_book_form.as_p }}</p>
-                            </div>
+                            <p style="font-size: 20px; margin-left: 5px">Подтвердите действие</p>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
