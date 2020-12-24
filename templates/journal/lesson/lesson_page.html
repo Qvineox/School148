@@ -138,17 +138,16 @@
 
         </div>
         <div class="col" style="margin-left: -1%; margin-top: -2px">
-            <form action="" method="get">
-                {% csrf_token %}
-                {% for mark in lesson_marks %}
-                    <button type="submit" class="btn btn-light" style="margin-left: auto; border-color: black"
-                            value="{{ mark.id }}"
-                            name="remove-mark">{{ mark.holder.second_name }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
-                    </button>
-                {% empty %}
-                    <h3 style="opacity: 50%">Нет оценок</h3>
-                {% endfor %}
-            </form>
+
+            {% for mark in lesson_marks %}
+                <button class="btn btn-light" style="margin-left: auto; border-color: black; cursor: default"
+                        value="{{ mark.id }}"
+                        name="remove-mark">{{ mark.holder.second_name }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
+                </button>
+            {% empty %}
+                <h3 style="opacity: 50%">Нет оценок</h3>
+            {% endfor %}
+
         </div>
     </div>
 

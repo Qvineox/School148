@@ -42,7 +42,7 @@
 
                 {% for lesson in lessons %}
                     <div class="card" style="cursor: pointer;"
-                         onclick="window.location='/journal/lessons/{{ lesson.id }}/panel';">
+                         onclick="window.location='/journal/lessons/{{ lesson.id }}';">
 
                     {% if lesson.active %}
                         <div class="container" style="padding: 8%">
@@ -86,9 +86,9 @@
             <div class="row" style="margin-top: 10px; padding-left: 0.7%; padding-right: 0.7%">
                 <div class="col-7 panel" style="margin-left: 0%">
                     <div class="row">
-                        <h2>Домашние задания</h2>
+                        <h2 style="cursor: default">Домашние задания</h2>
                     </div>
-                    <div class="row">
+                    <div class="row" style="cursor: default">
                         {% for homework in homeworks %}
                             <div class="container list-group-item"
                                  style="border-radius: 10px; padding-left: 3%; width: 100%">
@@ -125,18 +125,22 @@
                 </div>
                 <div class="col panel" style="margin-left: 10px">
                     <div class="row">
-                        <h2>Последние оценки</h2>
+                        <h2 style="cursor: default">Последние оценки</h2>
                     </div>
                     <div class="row">
                         {% for mark in marks %}
-                            {% if mark.value <= 3 %}
-                                <button class="btn btn-danger"
-                            {% else %}
-                                <button class="btn btn-dark"
-                            {% endif %}
-                                        style="border-radius: 0.5rem; margin-left: 5px; margin-top: 2px">
-                            {{ mark.holder.second_name }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
-                        </button>
+                            <button aria-label="{{ mark.rating_date }} Предмет: {{ mark.lesson.subject.title }}"
+                                    data-balloon-length="large"
+                                    data-balloon-pos="down"
+                                    onclick="window.location='/journal/lessons/{{ mark.lesson.id }}';"
+                                    {% if mark.value <= 3 %}
+                                    class="btn btn-danger"
+                                    {% else %}
+                                    class="btn btn-dark"
+                                    {% endif %}
+                                    style="border-radius: 0.5rem; margin-left: 5px; margin-top: 2px">
+                                {{ mark.holder.second_name }}: {{ mark.value }}<sub>{{ mark.weight }}</sub>
+                            </button>
                         {% empty %}
                             <h3 style="opacity: 50%">Оценок нет</h3>
                         {% endfor %}

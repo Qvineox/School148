@@ -30,7 +30,7 @@ class Parents(models.Model):
     second_name = models.CharField(max_length=30, null=False, blank=False, verbose_name='Фамилия')
     last_name = models.CharField(max_length=30, null=True, blank=False, verbose_name='Отчество')
     gender = models.CharField(max_length=5, null=False, blank=False,
-                              choices=[('M', 'Male'), ('Fe', 'Female'), ('Etc', 'Other')], default=OTHER)
+                              choices=[('M', 'Муж'), ('F', 'Жен'), ('Etc', '???')], default=OTHER)
     phone = models.TextField(null=True, blank=False, max_length=20, verbose_name='Телефон')
     email = models.TextField(null=False, blank=False, max_length=30, verbose_name='Электронная почта')
 
@@ -43,6 +43,10 @@ class Parents(models.Model):
     profile_picture = models.ImageField(null=True, upload_to='profile_images/',
                                         verbose_name='Картинка профиля')
 
+    # методы
+    def __str__(self):
+        return self.get_gender_display()
+
 
 # данные школьников
 class Apprentices(models.Model):
@@ -51,7 +55,7 @@ class Apprentices(models.Model):
     second_name = models.CharField(max_length=30, null=False, blank=False, verbose_name='Фамилия')
     last_name = models.CharField(max_length=30, null=True, blank=False, verbose_name='Отчество')
     gender = models.CharField(max_length=5, null=False, blank=False,
-                              choices=[('M', 'Male'), ('Fe', 'Female'), ('Etc', 'Other')], default=OTHER)
+                              choices=[('M', 'Муж'), ('F', 'Жен'), ('Etc', '???')], default=OTHER)
     birth_date = models.DateField(null=False, blank=False, verbose_name='Дата рождения')
     phone = models.TextField(null=True, blank=False, max_length=20, verbose_name='Телефон')
     email = models.TextField(null=True, blank=False, max_length=30, verbose_name='Электронная почта')
@@ -77,6 +81,10 @@ class Apprentices(models.Model):
                                    verbose_name='Аккаунт')
     register_date = models.DateField(null=True, auto_now_add=True, verbose_name='Дата регистрации')
 
+    # методы
+    def __str__(self):
+        return self.get_gender_display()
+
 
 # данные учителей
 class Teachers(models.Model):
@@ -85,7 +93,7 @@ class Teachers(models.Model):
     second_name = models.CharField(max_length=30, null=False, blank=False, verbose_name='Фамилия')
     last_name = models.CharField(max_length=30, null=True, blank=False, verbose_name='Отчество')
     gender = models.CharField(max_length=5, null=False, blank=False,
-                              choices=[('M', 'Male'), ('Fe', 'Female'), ('Etc', 'Other')], default=OTHER)
+                              choices=[('M', 'Муж'), ('F', 'Жен'), ('Etc', '???')], default=OTHER)
     birth_date = models.DateField(null=False, blank=False, verbose_name='Дата рождения')
     phone = models.TextField(null=False, blank=False, max_length=20, verbose_name='Телефон')
     email = models.TextField(null=False, blank=False, max_length=30, verbose_name='Электронная почта')
@@ -105,6 +113,10 @@ class Teachers(models.Model):
     profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',
                                         verbose_name='Картинка профиля')
 
+    # методы
+    def __str__(self):
+        return self.get_gender_display()
+
 
 # данные персонала
 class Staff(models.Model):
@@ -112,7 +124,7 @@ class Staff(models.Model):
     second_name = models.CharField(max_length=30, null=False, blank=False, verbose_name='Фамилия')
     last_name = models.CharField(max_length=30, null=True, blank=False, verbose_name='Отчество')
     gender = models.CharField(max_length=5, null=False, blank=False,
-                              choices=[('M', 'Male'), ('Fe', 'Female'), ('Etc', 'Other')], default=OTHER)
+                              choices=[('M', 'Муж'), ('F', 'Жен'), ('Etc', '???')], default=OTHER)
     birth_date = models.DateField(null=False, blank=False, verbose_name='Дата рождения')
     phone = models.TextField(null=True, blank=False, max_length=20, verbose_name='Телефон')
     email = models.TextField(null=False, blank=False, max_length=30, verbose_name='Электронная почта')
@@ -127,6 +139,10 @@ class Staff(models.Model):
     profile_picture = models.ImageField(null=True, upload_to='profile_images/', default='profile_images/default.png',
                                         verbose_name='Картинка профиля')
 
+    # методы
+    def __str__(self):
+        return self.get_gender_display()
+
 
 # управляющий коллектив
 class Managers(models.Model):
@@ -134,7 +150,7 @@ class Managers(models.Model):
     second_name = models.CharField(max_length=30, null=False, blank=False, verbose_name='Фамилия')
     last_name = models.CharField(max_length=30, null=True, blank=False, verbose_name='Отчество')
     gender = models.CharField(max_length=5, null=False, blank=False,
-                              choices=[('M', 'Male'), ('Fe', 'Female'), ('Etc', 'Other')], default=OTHER)
+                              choices=[('M', 'Муж'), ('F', 'Жен'), ('Etc', '???')], default=OTHER)
     birth_date = models.DateField(null=False, blank=False, verbose_name='Дата рождения')
     phone = models.TextField(null=True, blank=False, max_length=20, verbose_name='Телефон')
     email = models.TextField(null=False, blank=False, max_length=30, verbose_name='Электронная почта')
@@ -189,3 +205,6 @@ class Managers(models.Model):
     # методы
     def __str__(self):
         return self.get_position_display()
+
+    def __str__(self):
+        return self.get_gender_display()

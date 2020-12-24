@@ -244,7 +244,7 @@ def get_lesson_history_for_teacher(user_id):
                                               date__gt=time_point,
                                               date__lte=current_date + datetime.timedelta(days=1))
 
-    for lesson in lessons_queryset.order_by('date', 'order').values():
+    for lesson in lessons_queryset.order_by('-date', 'order').values():
         new_lesson = get_lesson_info(lesson, full=False)
         if new_lesson.date >= current_date:
             scheduled_lessons.append(new_lesson)

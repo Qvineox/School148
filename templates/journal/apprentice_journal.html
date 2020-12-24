@@ -89,7 +89,10 @@
                 {% for lesson in lessons.monday %}
                     {% if forloop.counter != 4 and forloop.counter != 7 %}
                         {% if lesson.active %}
-                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                            <td class="lesson-field {{ lesson.scheme }}"
+                                onclick="window.location='/journal/lessons/{{ lesson.id }}';">
+                                {{ lesson.subject }}
+                            </td>
                         {% else %}
                             <td></td>
                         {% endif %}
@@ -108,12 +111,16 @@
                 {% for lesson in lessons.tuesday %}
                     {% if forloop.counter != 4 and forloop.counter != 7 %}
                         {% if lesson.active %}
-                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                            <td class="lesson-field {{ lesson.scheme }}"
+                                onclick="window.location='/journal/lessons/{{ lesson.id }}';">
+                                {{ lesson.subject }}</td>
                         {% else %}
                             <td></td>
                         {% endif %}
                     {% else %}
-                        <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                        <td class="lesson-field {{ lesson.scheme }}"
+                            onclick="window.location='/journal/lessons/{{ lesson.id }}';">
+                            {{ lesson.subject }}</td>
                     {% endif %}
                 {% endfor %}
             </tr>
@@ -124,7 +131,9 @@
                 {% for lesson in lessons.wednesday %}
                     {% if forloop.counter != 4 and forloop.counter != 7 %}
                         {% if lesson.active %}
-                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                            <td class="lesson-field {{ lesson.scheme }}"
+                                onclick="window.location='/journal/lessons/{{ lesson.id }}';">
+                                {{ lesson.subject }}</td>
                         {% else %}
                             <td></td>
                         {% endif %}
@@ -140,7 +149,9 @@
                 {% for lesson in lessons.thursday %}
                     {% if forloop.counter != 4 and forloop.counter != 7 %}
                         {% if lesson.active %}
-                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                            <td class="lesson-field {{ lesson.scheme }}"
+                                onclick="window.location='/journal/lessons/{{ lesson.id }}';">
+                                {{ lesson.subject }}</td>
                         {% else %}
                             <td></td>
                         {% endif %}
@@ -156,7 +167,9 @@
                 {% for lesson in lessons.friday %}
                     {% if forloop.counter != 4 and forloop.counter != 7 %}
                         {% if lesson.active %}
-                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                            <td class="lesson-field {{ lesson.scheme }}"
+                                onclick="window.location='/journal/lessons/{{ lesson.id }}';">
+                                {{ lesson.subject }}</td>
                         {% else %}
                             <td></td>
                         {% endif %}
@@ -172,7 +185,9 @@
                 {% for lesson in lessons.saturday %}
                     {% if forloop.counter != 4 and forloop.counter != 7 %}
                         {% if lesson.active %}
-                            <td class="lesson-field {{ lesson.scheme }}">{{ lesson.subject }}</td>
+                            <td class="lesson-field {{ lesson.scheme }}"
+                                onclick="window.location='/journal/lessons/{{ lesson.id }}';">
+                                {{ lesson.subject }}</td>
                         {% else %}
                             <td></td>
                         {% endif %}

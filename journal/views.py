@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect
 
 from accounts.services import get_user_prior_group_number, get_all_groups
@@ -107,6 +109,7 @@ def lesson_page(request, lesson_id=None):
                    })
 
 
+@permission_required('schedule.change_lessons', raise_exception=True)
 def lesson_panel(request, lesson_id=None):
     lesson_data = get_lesson_data_from_id(lesson_id)
     teacher = lesson_data.teacher
@@ -131,10 +134,14 @@ def lesson_panel(request, lesson_id=None):
         form = MarkPlacementForm(request.POST)
 
         if form.is_valid():
-            set_student_mark(lesson_id,
-                             form.cleaned_data['holder'],
-                             form.cleaned_data['value'],
-                             form.cleaned_data['weight'])
+            try:
+                set_student_mark(lesson_id,
+                                 form.cleaned_data['holder'],
+                                 form.cleaned_data['value'],
+                                 form.cleaned_data['weight'])
+            except DatabaseError:
+                messages.warning(request, 'Установка оценок доступна только для уроков 3-дневной давности.')
+
             return redirect('/journal/lessons/{0}/panel'.format(lesson_id))
 
     # добавление домашнего задания

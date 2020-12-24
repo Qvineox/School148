@@ -71,7 +71,13 @@
             {% if request.user is not None %}
                 <div class="nav-item dropdown">
                     <a type="button"
+                            {% if navbar.privilege == 1 %}
                        class="btn btn-outline-primary"
+                            {% elif navbar.privilege == 4 %}
+                       class="btn btn-outline-success"
+                            {% elif navbar.privilege == 5 %}
+                       class="btn btn-outline-danger"
+                            {% endif %}
                        href="/accounts/profile/me"
                        style="margin-right: 2%; color: whitesmoke">
                         {{ navbar.first_name }} {{ navbar.last_name }}

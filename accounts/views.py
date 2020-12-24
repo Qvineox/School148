@@ -244,7 +244,7 @@ def edit_profile(request, user_id=None):
             new_email = form.data.get('email')
             new_phone = form.data.get('phone')
             new_image = form.cleaned_data['profile_image']
-            new_status = form.data.get('status')
+            # new_status = form.data.get('status')
 
             if user_data.email != new_email:
                 user_data.email = new_email
@@ -256,7 +256,7 @@ def edit_profile(request, user_id=None):
                 user_data.profile_picture = new_image
 
             user_data.save()
-            return profile(request, user_id)
+            return redirect('/accounts/profile/{0}'.format(user_id))
 
     if user_group == 1:
         return render(request, 'profiles/editors/apprentice_editor.html', {'profile_data': user_data,
@@ -320,9 +320,12 @@ def view_study_group(request, group_id):
     else:
         supervisor = None
 
-    toolbox = toolbox_data([('Все группы', '../../all'),
-                            ('Статистика', '/statistics/groups/{0}'.format(group_id)),
-                            ('Редактировать', 'edit/')])
+    tools = [('Все группы', '../../all'), ('Статистика', '/statistics/groups/{0}'.format(group_id))]
+
+    if request.user.has_perm('accounts.change_studygroup'):
+        tools.append(('Редактировать', 'edit/'))
+
+    toolbox = toolbox_data(tools)
 
     return render(request, 'profiles/groups/group_page.html', {'group_data': group_data,
                                                                'headman': headman,
@@ -351,6 +354,7 @@ def edit_study_group(request, group_id):
         set_study_group_settings(group_data, new_specialisation, new_headman, new_supervisor, new_methodist)
 
     available_settings = get_available_study_group_settings(group_data)
+    available_settings['available_supervisors'].append(group_data.supervisor)
 
     return render(request,
                   'profiles/editors/group_editor.html',

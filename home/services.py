@@ -59,7 +59,7 @@ def get_student_homepage_marks(profile_id, period=7):
 def get_teacher_homepage_marks(teacher_id, period=7):
     marks = Marks.objects.filter(appraiser_id=teacher_id,
                                  rating_date__gte=timezone.now() - timedelta(days=period)).order_by(
-        'rating_date').exclude(value=0)
+        '-rating_date').exclude(value=0)
     return marks
 
 
@@ -110,8 +110,8 @@ def get_apprentice_home_data(user_id):
 def get_teacher_home_data(user_id):
     teacher_profile = get_profile_from_user(user_id)
     lessons, pretext, date = get_teacher_homepage_lessons(teacher_profile.id)
-    homeworks = get_teacher_homepage_homework(teacher_profile.id, 7)
-    marks = get_teacher_homepage_marks(teacher_profile.id, 7)
+    homeworks = get_teacher_homepage_homework(teacher_profile.id, 3)
+    marks = get_teacher_homepage_marks(teacher_profile.id, 3)
 
     result = {
         'lessons': lessons,

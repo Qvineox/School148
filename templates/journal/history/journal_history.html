@@ -168,13 +168,13 @@
     <div class="row-12">
         <div class="container-lg panel" style="margin-top: 10px">
             <div class="row" style="margin-left: -0.2%">
-                <h2>Ближайшие занятия</h2>
+                <h2 style="cursor: default">Ближайшие занятия</h2>
             </div>
 
             <div class="row-lg">
                 <ul class="list-group lessons" style="margin-left: -0.2%">
                     {% for lesson in scheduled_lessons %}
-                        <li class="{{ lesson.scheme }} list-group-item lesson hvr-bounce-to-right">
+                        <li style="cursor: default" class="{{ lesson.scheme }} list-group-item lesson hvr-bounce-to-right">
                             <div class="col" style="margin-left: 0.5%; padding-right: 1.5%">
                                 <div class="row">
                                     <h3 class="">{{ lesson.subject }}</h3>
@@ -198,16 +198,16 @@
     <div class="row-12">
         <div class="container-lg panel" style="margin-top: 10px">
             <div class="row" style="margin-left: -0.2%">
-                <h2>Прошедшие занятия</h2>
+                <h2 style="cursor: default">Прошедшие занятия</h2>
             </div>
 
             <div class="row-lg">
                 <ul class="list-group lessons" style="margin-left: -0.2%">
                     {% for lesson in latest_lessons %}
-                        <li class="{{ lesson.scheme }} list-group-item lesson hvr-bounce-to-right">
+                        <li style="cursor: default" class="{{ lesson.scheme }} list-group-item lesson hvr-bounce-to-right">
                             <div class="col" style="margin-left: 0.5%; padding-right: 1.5%">
                                 <div class="row">
-                                    <h3 class="">{{ lesson.subject }}</h3>
+                                    <h3 >{{ lesson.subject }}</h3>
                                     <a href="/journal/lessons/{{ lesson.id }}"
                                        class="btn btn-light"
                                        style="margin-left: auto; height: 80%">
