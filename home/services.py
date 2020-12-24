@@ -20,13 +20,13 @@ def get_teacher_homepage_lessons(teacher_id):
     if datetime.now().hour >= datetime.strptime('17', "%H").hour:
         date = date = datetime.today() + timedelta(days=1)
         for lesson in Lessons.objects.filter(teacher_id=teacher_id, date=date).order_by('order').values():
-            lessons.append(get_lesson_info(lesson, False))
+            lessons.append(get_lesson_info(lesson, True))
 
         pretext = "Завтра"
     else:
         date = date = datetime.today()
         for lesson in Lessons.objects.filter(teacher_id=teacher_id, date=date).order_by('order').values():
-            lessons.append(get_lesson_info(lesson, False))
+            lessons.append(get_lesson_info(lesson, True))
 
         pretext = "Сегодня"
 

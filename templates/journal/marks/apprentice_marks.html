@@ -193,7 +193,7 @@
                                                     aria-label="Количество оцениваний: {{ mark.count }}
                                             | Количество баллов: {{ mark.amount }} {{ mark.appraiser.first_name }} {{ mark.appraiser.last_name }}"
                                                     data-balloon-pos="down">
-                                        {{ mark.value }}
+                                        {{ mark.value|floatformat:2 }}
                                     </button>
                                     {% endif %}
                                 {% endfor %}

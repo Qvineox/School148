@@ -18,6 +18,7 @@ def settings_page(request):
         today = timezone.now().date()
         if command == 'today':
             start_interval_replenish(today)
+
         elif command == 'week':
             week_start = today - timedelta(days=today.weekday())
             week_end = week_start + timedelta(days=6)
@@ -28,6 +29,7 @@ def settings_page(request):
             month_end = next_month - timedelta(days=next_month.day)
 
             start_interval_replenish(month_start, month_end)
+            return redirect('/settings/')
         elif command == 'tomorrow':
             start_interval_replenish(today + timedelta(days=1))
         elif command == 'next_week':
