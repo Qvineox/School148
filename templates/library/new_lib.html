@@ -69,13 +69,17 @@
 {% endblock %}
 {% block main %}
     <h1 style="color: whitesmoke;  user-select: none;">Мои книги</h1>
+
     {% if my_books %}
+
         <ul>
             {% for my_book in my_books %}
+
                     <li class="book_table">
-                        <div class="book bg-dark text-light p-5">
+                        <div class="book bg-dark text-light p-5" id="btn-tooltip" title="Вернуть до {{ my_book.recall_date }}">
                             {% for book in all_books %}
-                                {% if my_book.book_id == book.ISBN_number %}
+
+                                {% if my_book.book_id == book.ISBN_number  %}
                                     <h5 class="text-center">{{ book.title }}</h5>
                                     <br>
                                     <hr>
@@ -104,11 +108,18 @@
 
                         </div>
                     </li>
-
             {% endfor %}
         <br>
     </ul>
     {% else %}
         <h5>Нет доступных книг</h5>
     {% endif %}
+    <!-- jQuery -->
+    <script src="/examples/vendors/jquery/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap JS & Popper -->
+    <script src="/examples/vendors/bootstrap-4.1/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $('#btn-tooltip').tooltip();
+    </script>
 {% endblock %}

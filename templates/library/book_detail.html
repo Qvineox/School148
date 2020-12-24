@@ -5,6 +5,17 @@
 {% endblock %}
 
 {% block main %}
+    {# Скрипты для работы popup #}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+
     <div class="panel panel-default" style="background-color: white;">
       <div class="panel-heading">
         <h3 class="panel-title">Подробная информация о книге: "{{ book_detail.title }}"</h3>
@@ -24,10 +35,33 @@
             {% endif %}
       </div>
       <div class="panel-footer">
-          <button type="submit" class="btn btn-info">Оформить на неделю</button>
-          <button type="submit" class="btn btn-info">Оформить на месяц</button>
-          <button type="submit" class="btn btn-info">Оформить на год</button>
+           <button type="button" class="btn btn-secondary"><a href="/library" style="text-decoration: none; color: white">Отмена</a></button>
+          <button type="submit" class="btn btn-info"  data-toggle="modal" data-target="#bor_book_btn">Оформить заем</button>
       </div>
+        <form action="" method="post">
+                {% csrf_token %}
+                <div class="modal fade" id="bor_book_btn" tabindex="-1" role="dialog"
+                     aria-labelledby="bor_book_btnLabely" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h2 style="margin: auto">Заем книги</h2>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>Выберете дату возврата: {{ add_book_form.as_p }}</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена
+                                </button>
+                                <button type="submit" class="btn btn-success">Подтвердить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
 
 
     </div>
