@@ -236,5 +236,8 @@ def get_available_supervisors():
 
 # возвращает группу, которую курирует указанный преподаватель
 def get_supervision_group(teacher_id):
-    supervision_group = models.StudyGroups.objects.get(supervisor_id=teacher_id)
-    return supervision_group
+    supervision_group = models.StudyGroups.objects.filter(supervisor_id=teacher_id)
+    if supervision_group:
+        return supervision_group[0]
+    else:
+        return None
