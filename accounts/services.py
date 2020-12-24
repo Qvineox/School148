@@ -16,9 +16,9 @@ def check_account_availability(role, first_name, second_name, last_name=None):
     elif role == '2':
         available_accounts = models.Parents.objects.filter(first_name=first_name, second_name=second_name)
     elif role == '3':
-        available_accounts = models.Teachers.objects.filter(first_name=first_name, second_name=second_name)
-    elif role == '4':
         available_accounts = models.Staff.objects.filter(first_name=first_name, second_name=second_name)
+    elif role == '4':
+        available_accounts = models.Teachers.objects.filter(first_name=first_name, second_name=second_name)
     elif role == '5':
         available_accounts = models.Managers.objects.filter(first_name=first_name, second_name=second_name)
     elif role == '6':

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'library',
     'schedule',
     'statistic',
-
+    'svg'
 ]
 
 MIDDLEWARE = [
@@ -197,6 +197,10 @@ STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(STATIC_DIR),
+]
+
+SVG_DIRS=[
+    os.path.join(BASE_DIR, 'static/svg')
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

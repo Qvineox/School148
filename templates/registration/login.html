@@ -4,25 +4,84 @@
     <title>Авторизация</title>
 {% endblock %}
 
+{% block style %}
+
+    <style>
+        .login-btn {
+            font-family: Hack, monospace;
+            background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+            color: #1d1d1d;
+            cursor: pointer;
+            font-size: 2em;
+            padding: 1.5rem;
+            border: 0;
+            transition: all 0.5s;
+            border-radius: 10px;
+            position: relative;
+            width: 45%;
+        }
+
+        .register-btn {
+            background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+        }
+
+        .login-btn::after {
+            font-weight: 400;
+            position: absolute;
+            right: 80%;
+            top: 54%;
+            bottom: 0;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+
+        }
+
+        .login-btn:hover {
+            background-image: linear-gradient(to right, #92fe9d 0%, #00c9ff 100%);
+            transition: all 0.7s;
+            border-radius: 10px;
+            box-shadow: 0px 6px 15px gray;
+            padding: 1.5rem 3rem 1.5rem 1.5rem;
+            color: black;
+
+        }
+
+        .register-btn:hover {
+            background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+            color: whitesmoke;
+        }
+
+        .login-btn::after {
+            opacity: 1;
+            transition: all 0.5s;
+            color: #ffffff;
+
+        }
+    </style>
+{% endblock %}
+
 {% block main %}
-    <div class="container" style="align-items: center; justify-content: center; margin-top: 10%">
-        <div class="card" style="background-color: #292929">
+    <div class="container" style="align-items: center; justify-content: center; margin-top: 10%;">
+        <div class="card" style="background-color: whitesmoke">
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
-                    <p style="text-align: center; color: whitesmoke; font-size: large"> Добро пожаловать в систему Школяр!</p>
-                    <input id="login" title="login" class="form-control" type="text" name="login" placeholder="Учетная запись"
+                    <p style="text-align: center; color: black; font-size: large"> Добро пожаловать в систему
+                        Школяр!</p>
+                    <input id="login" title="login" class="form-control" type="text" name="login"
+                           placeholder="Учетная запись"
                            style="margin-top: 2%" maxlength="150">
-                    <input id="password" title='password' class="form-control" type="password" name="password" placeholder="Пароль"
+                    <input id="password" title='password' class="form-control" type="password" name="password"
+                           placeholder="Пароль"
                            style="margin-top: 2%" maxlength="128">
-                    <div class="row" style="margin-top: 5%">
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Войти
-                            </button>
-                        </div>
-                        <div class="col-8" style="alignment: right">
-                            <a class="btn btn-success btn-block" href="/accounts/preregistration">Регистрация</a>
-                        </div>
+                    <div class="row" style="margin-top: 5%; padding-left: 2%; padding-right: 2%">
+                        <button type="submit" class="login-btn" style="text-align: center">
+                            Войти
+                        </button>
+                        <btn-link class="register-btn login-btn" style="margin-left: auto; text-align: center"
+                                onclick="window.location='/accounts/preregistration';">
+                            Регистрация
+                        </btn-link>
                     </div>
 
                 </form>

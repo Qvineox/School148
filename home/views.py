@@ -42,6 +42,8 @@ def navbar_data(request):
         current_lesson = check_current_lesson(group_id=data.study_group_id)
     elif privilege == 4:
         current_lesson = check_current_lesson(teacher_id=data.id)
+    else:
+        current_lesson = None
 
     data = {
         'first_name': data.first_name,
