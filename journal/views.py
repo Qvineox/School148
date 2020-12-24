@@ -55,7 +55,7 @@ def show_marks(request):
                        'toolbox': toolbox})
 
     elif privilege_level > 4:
-        marks_list = sort_all_marks_for_manager(get_all_marks())
+        marks_list = sort_all_marks_for_teacher(get_all_marks())
         toolbox = toolbox_data([('Список групп', '/journal/'),
                                 ('Все занятия', '/journal/lessons/history')])
 
