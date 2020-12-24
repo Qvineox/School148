@@ -298,64 +298,63 @@ def get_all_marks_for_teacher(user_id):
 
 # возвращает сортированный по предметам, классам и ученикам список оценок для учителя
 def sort_all_marks_for_teacher(all_marks_queryset):
-    disciples = []
-    marks_by_disciples = []
+    groups = []
+    marks_by_groups = []
+    all_subjects = []
 
     # сортировка по дисциплинам
     for mark in all_marks_queryset:
-        if mark.lesson.subject in disciples:
-            marks_by_disciples[disciples.index(mark.lesson.subject)].append(mark)
+        if mark.lesson.subject not in all_subjects:
+            all_subjects.append(mark.lesson.subject)
+
+    # сортировка по дисциплинам
+    for mark in all_marks_queryset:
+        if mark.holder.study_group in groups:
+            marks_by_groups[groups.index(mark.holder.study_group)].append(mark)
         else:
-            disciples.append(mark.lesson.subject)
-            marks_by_disciples.append([mark])
+            groups.append(mark.holder.study_group)
+            marks_by_groups.append([mark])
 
-    disciples_result = []
-    # объединение
-    for position in range(len(disciples)):
-        disciples_result.append((disciples[position], marks_by_disciples[position]))
+    group_subject = []
+    for group_marks in marks_by_groups:
 
-    groups_result = []
-    # сортировка по группам
-    for disciple_tuple in disciples_result:
-        groups = []
-        marks_by_groups = []
+        subjects = []
+        marks_by_subjects = []
 
-        for mark in disciple_tuple[1]:
-            if mark.holder.study_group in groups:
-                marks_by_groups[groups.index(mark.holder.study_group)].append(mark)
+        for mark in group_marks:
+            if mark.lesson.subject in subjects:
+                marks_by_subjects[subjects.index(mark.lesson.subject)].append(mark)
             else:
-                groups.append(mark.holder.study_group)
-                marks_by_groups.append([mark])
+                subjects.append(mark.lesson.subject)
+                marks_by_subjects.append([mark])
 
-        for i in range(len(groups)):
-            groups_result.append((groups[i], marks_by_groups[i]))
+        group_subject.append(marks_by_subjects)
 
-    students_result = []
-    # сортировка по ученикам
-    for group_tuple in groups_result:
-        students = []
-        marks_by_students = []
+    group_subject_student = []
+    for i, group in enumerate(group_subject):
+        group_subject_student.append([])
+        for j, subject in enumerate(group):
+            group_subject_student[i].append([])
 
-        for mark in group_tuple[1]:
-            if mark.holder in students:
-                marks_by_students[students.index(mark.holder)].append(mark)
-            else:
-                students.append(mark.holder)
-                marks_by_students.append([mark])
+            students = []
+            marks_by_students = []
 
-        for i in range(len(students)):
-            students_result.append((students[i], marks_by_students[i]))
+            for mark in subject:
+                if mark.holder in students:
+                    marks_by_students[students.index(mark.holder)].append(mark)
+                else:
+                    students.append(mark.holder)
+                    marks_by_students.append([mark])
 
-    result_by_groups = []
-
-    # объединение студентов в группы
-    for i in range(len(groups_result)):
-        result_by_groups.append((groups_result[i][0], students_result))
+            for k in range(len(students)):
+                group_subject_student[i][j].append((students[k], marks_by_students[k]))
 
     result = []
-    # объединение группы в дисциплины
-    for i in range(len(disciples_result)):
-        result.append((disciples_result[i][0], result_by_groups))
+    for i, group in enumerate(group_subject_student):
+        inner_result = []
+        for j, subject in enumerate(group):
+            inner_result.append((all_subjects[j], subject))
+        result.append((groups[i], inner_result))
 
     return result
 

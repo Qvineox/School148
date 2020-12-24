@@ -166,21 +166,21 @@
             <div class="row-lg">
                 <ul class="list-group lessons" style="margin-left: -0.2%">
 
-                    {% for subject in all_marks %}
-                        <li class="{{ subject.0.scheme }} list-group-item hvr-bounce-to-right" style="margin-top: 5px">
+                    {% for group in all_marks %}
+                        <li class="list-group-item" style="margin-top: 5px">
                             <div class="row-lg">
-                                <h2>{{ subject.0.title }}</h2>
+                                <h2>{{ group.0.grade }}"{{ group.0.symbol }}" класс</h2>
                             </div>
 
-                            {% for group in subject.1 %}
+                            {% for subject in group.1 %}
                                 <ul class="list-group lessons">
-                                    <li class="list-group-item"
+                                    <li class="{{ subject.0.scheme }} list-group-item hvr-bounce-to-right"
                                         style="margin-top: 5px">
                                         <div class="row-lg">
-                                            <h3>{{ group.0.grade }}{{ group.0.symbol }} класс</h3>
+                                            <h3>{{ subject.0.title }}</h3>
                                         </div>
                                         <ul class="list-group lessons">
-                                            {% for student in group.1 %}
+                                            {% for student in subject.1 %}
                                                 <li class="list-group-item">
                                                     <div class="row" style="margin-left: 0">
                                                         <h4>
