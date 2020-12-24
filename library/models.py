@@ -9,7 +9,7 @@ class Books(models.Model):
 
     title = models.CharField(max_length=100, null=False, blank=False, unique=True, verbose_name='Название')
     author = models.CharField(max_length=100, null=False, blank=False, verbose_name='Автор')
-    age_restriction = models.PositiveSmallIntegerField(null=True, blank=False, verbose_name='Ограничение по возрасту')
+    grade_number = models.PositiveSmallIntegerField(null=True, blank=False, verbose_name='Класс')
 
     # флаги и счетчики
     available = models.BooleanField(null=False, default=False, verbose_name='Наличие')

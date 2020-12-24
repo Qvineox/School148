@@ -22,7 +22,7 @@
         }
 
        .book:not(:first-child) {
-            {#margin-left: 0%;#}
+            margin-left: 0%;
         }
 
        .book:hover {
@@ -32,7 +32,7 @@
 
        .book:hover ~ .book {
           position: relative;
-          {#left: 80px;#}
+          left: 80px;
           transition: 0.4s ease-out;
         }
        li.book_table {
@@ -54,7 +54,7 @@
         }
 
        .all_book:not(:first-child) {
-            {#margin-left: 0%;#}
+            margin-left: 0%;
         }
 
        .all_book:hover {
@@ -64,7 +64,7 @@
 
        .all_book:hover ~ .book {
           position: relative;
-          {#left: 80px;#}
+          left: 80px;
           transition: 0.4s ease-out;
         }
    </style>
@@ -103,29 +103,27 @@
                             <h6>{{ book.author }}</h6>
                         </div>
                     </li>
-                    <form  method="post" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-                        {% csrf_token %}
-                          <div class="modal-dialog" role="document" >
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Оформление выдачи</h5>
-                              </div>
-                              <div class="modal-body">
-                                  <p>Название: {{ book.title }}</p>
-                                  <p>Автор: {{ book.author }}</p>
-                                  <hr>
-
-                                    {{ add_book_form.as_p }}
-
-                                  <hr>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                <button type="submit" class="btn btn-info">Оформить</button>
-                              </div>
-                            </div>
-                          </div>
-                    </form>
+{#                    <form  method="post" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >#}
+{#                          <div class="modal-dialog" role="document" >#}
+{#                            <div class="modal-content">#}
+{#                              <div class="modal-header">#}
+{#                                <h5 class="modal-title" id="exampleModalLabel">Оформление выдачи</h5>#}
+{#                              </div>#}
+{#                              <div class="modal-body">#}
+{#                                  {% csrf_token %}#}
+{#                                  <p>Название: {{ book.title }}</p>#}
+{#                                  <p>Автор: {{ book.author }}</p>#}
+{#                                  <hr>#}
+{#                                    {{ add_book_form.as_p }}#}
+{#                                  <hr>#}
+{#                              </div>#}
+{#                              <div class="modal-footer">#}
+{#                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>#}
+{#                                <button type="submit" class="btn btn-info">Оформить</button>#}
+{#                              </div>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                    </form>#}
             {% endfor %}
         </ul>
         <script type="text/javascript">
@@ -141,3 +139,4 @@
         <p>Нет доступных книг</p>
     {% endif %}
 {% endblock %}
+

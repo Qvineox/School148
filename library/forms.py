@@ -13,6 +13,6 @@ class BookAddForm(forms.ModelForm):
         fields = ['recall_date', 'book', 'borrower']
         widgets = {
             'recall_date': DateInput(),
-            'book':  forms.Select(),
+            'book':  forms.HiddenInput(),
             'borrower': forms.HiddenInput()
         }
