@@ -21,7 +21,7 @@ class MarkPlacementForm(forms.Form):
     value = forms.ChoiceField(label='value', required=True, choices=MARK_CHOICES)
     weight = forms.ChoiceField(label='weight', required=False, choices=WEIGHT_CHOICES)
 
-    content = forms.CharField(label='content', required=False)
+    comment = forms.CharField(label='comment', required=False)
 
 
 class HomeworkPlacementForm(forms.Form):

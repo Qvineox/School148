@@ -139,7 +139,7 @@ def lesson_panel(request, lesson_id=None):
                                  form.cleaned_data['holder'],
                                  form.cleaned_data['value'],
                                  form.cleaned_data['weight'],
-                                 comment=form.cleaned_data['content'])
+                                 comment=form.cleaned_data['comment'])
             except DatabaseError:
                 messages.warning(request, 'Установка оценок доступна только для уроков 3-дневной давности.')
 
