@@ -138,7 +138,8 @@ def lesson_panel(request, lesson_id=None):
                 set_student_mark(lesson_id,
                                  form.cleaned_data['holder'],
                                  form.cleaned_data['value'],
-                                 form.cleaned_data['weight'])
+                                 form.cleaned_data['weight'],
+                                 comment=form.cleaned_data['content'])
             except DatabaseError:
                 messages.warning(request, 'Установка оценок доступна только для уроков 3-дневной давности.')
 
