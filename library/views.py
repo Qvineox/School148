@@ -55,7 +55,8 @@ def book_borrow_page(request, pk):
 
 
 def return_book_page(request, fk):
-    bor_book = LoanReceipts.objects.get(book_id=fk)
+    bor_book = LoanReceipts.objects.filter(book_id=fk, borrower_id=request.user)
+    lib_book = Books.objects.get(ISBN_number=fk)
     person_data = navbar_data(request)
     if request.method == 'POST':
         bor_book.delete()
@@ -64,6 +65,7 @@ def return_book_page(request, fk):
     return render(request, 'library/return_book_page.html',
                   {
                       'book_detail': bor_book,
+                      'lib_book': lib_book,
                       'navbar': person_data,
 
 
