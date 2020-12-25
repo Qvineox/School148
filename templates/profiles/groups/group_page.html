@@ -236,7 +236,7 @@
                                 <span>Ученик</span>
                                 <div class="p-2 mt-2 d-flex justify-content-between stats">
                                     <div class="d-flex flex-column"><span class="articles">Средний балл</span> <span
-                                            class="number1">{{ apprentice.stats.1|floatformat:2|default_if_none:"Нет оценок" }}</span>
+                                            class="number1">{{ apprentice.stats.1|floatformat:2|default:"Нет оценок" }}</span>
                                     </div>
                                     <div class="d-flex flex-column"><span class="followers">Посещаемость</span>
                                         <span
