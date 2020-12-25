@@ -110,7 +110,7 @@ def get_apprentice_home_data(user_id):
 def get_teacher_home_data(user_id):
     teacher_profile = get_profile_from_user(user_id)
     lessons, pretext, date = get_teacher_homepage_lessons(teacher_profile.id)
-    homeworks = get_teacher_homepage_homework(teacher_profile.id, 3)
+    homeworks = get_teacher_homepage_homework(teacher_profile.id, 7)
     marks = get_teacher_homepage_marks(teacher_profile.id, 3)
 
     result = {
