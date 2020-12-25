@@ -353,7 +353,7 @@ def sort_all_marks_for_teacher(all_marks_queryset):
     for i, group in enumerate(group_subject_student):
         inner_result = []
         for j, subject in enumerate(group):
-            inner_result.append((all_subjects[j], subject))
+            inner_result.append((subject[0][1][0].lesson.subject, subject))
         result.append((groups[i], inner_result))
 
     return result
