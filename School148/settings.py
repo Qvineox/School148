@@ -27,24 +27,41 @@ SECRET_KEY = '^t$wcl$n2g(i9v*e)yi5c^f3&#cx$ho%7v^tu%+f&fo-z$2^%r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.ngrok.io', 'localhost']
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # My Apps
     'accounts',
     'journal',
     'library',
     'schedule',
     'statistic',
-    'svg'
+    'svg',
+    'api',
+
+    # REST Apps
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -199,7 +216,7 @@ STATICFILES_DIRS = [
     os.path.join(STATIC_DIR),
 ]
 
-SVG_DIRS=[
+SVG_DIRS = [
     os.path.join(BASE_DIR, 'static/svg')
 ]
 

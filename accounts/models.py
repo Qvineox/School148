@@ -13,6 +13,9 @@ class StudyGroups(models.Model):
     methodist = models.ForeignKey('Managers', null=True, on_delete=models.CASCADE, verbose_name='Методист')
     headman = models.ForeignKey('Apprentices', null=True, on_delete=models.CASCADE, verbose_name='Староста')
 
+    def __str__(self):
+        return f'{self.grade}{self.symbol}'
+
 
 MALE = 'M'
 FEMALE = 'Fe'
@@ -69,7 +72,7 @@ class Apprentices(models.Model):
     active = models.BooleanField(null=False, default=False, verbose_name='Активность')
 
     # отношения
-    study_group = models.ForeignKey(StudyGroups, null=True, on_delete=models.CASCADE, verbose_name='Учебная группа')
+    study_group = models.ForeignKey(StudyGroups, related_name='study_group', null=True, on_delete=models.CASCADE, verbose_name='Учебная группа')
 
     father = models.ForeignKey(Parents, null=True, on_delete=models.CASCADE, verbose_name='Отец', related_name='+')
     mother = models.ForeignKey(Parents, null=True, on_delete=models.CASCADE, verbose_name='Мать', related_name='+')
@@ -115,7 +118,7 @@ class Teachers(models.Model):
 
     # методы
     def __str__(self):
-        return self.get_gender_display()
+        return f'{self.second_name} {self.first_name[0]}.{self.last_name[0]}.'
 
 
 # данные персонала

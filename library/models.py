@@ -15,7 +15,6 @@ class Books(models.Model):
     available = models.BooleanField(null=False, default=False, verbose_name='Наличие')
     stock = models.IntegerField(null=False, default=0, verbose_name='Осталось экземпляров')
 
-
     # отношения
     subject = models.ForeignKey('journal.Disciples', null=True, blank=False, on_delete=models.CASCADE,
                                 verbose_name='Предмет')
@@ -30,5 +29,5 @@ class LoanReceipts(models.Model):
     recall_date = models.DateTimeField(null=True, editable=True, verbose_name='Дата возврата')
 
     # отношения
-    borrower = models.ForeignKey(settings.AUTH_USER_MODEL,  null=False, blank=False, on_delete=models.CASCADE,
+    borrower = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, on_delete=models.CASCADE,
                                  verbose_name='Аккаунт заемщика')

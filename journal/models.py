@@ -23,6 +23,9 @@ class Disciples(models.Model):
     methodist = models.ForeignKey('accounts.Managers', null=True, blank=False, on_delete=models.CASCADE,
                                   related_name='+', verbose_name='Методист')
 
+    def __str__(self):
+        return self.title
+
 
 # все поставленные оценки
 class Marks(models.Model):
@@ -93,6 +96,9 @@ class Homeworks(models.Model):
     target_group = models.ForeignKey('accounts.StudyGroups', null=True, blank=False, on_delete=models.CASCADE,
                                      verbose_name='Учебная группа')
 
+    def __str__(self):
+        return self.text
+
 
 class Specialization(models.Model):
     title = models.CharField(max_length=30, null=False, blank=False, verbose_name='Название')
@@ -134,8 +140,16 @@ class Lessons(models.Model):
     active = models.BooleanField(null=False, default=True, verbose_name='Активность')
 
     # отношения
-    subject = models.ForeignKey('Disciples', on_delete=models.CASCADE, null=False, verbose_name='Предмет')
-    teacher = models.ForeignKey('accounts.Teachers', on_delete=models.CASCADE, null=False, verbose_name='Преподаватель')
+    subject = models.ForeignKey('Disciples', related_name='subject', on_delete=models.CASCADE, null=False,
+                                verbose_name='Предмет')
+    teacher = models.ForeignKey('accounts.Teachers', related_name='teacher', on_delete=models.CASCADE, null=False,
+                                verbose_name='Преподаватель')
     study_group = models.ForeignKey('accounts.StudyGroups', on_delete=models.CASCADE, null=False, verbose_name='Класс')
-    homework = models.ForeignKey('Homeworks', on_delete=models.CASCADE, null=True,
+    homework = models.ForeignKey('Homeworks', related_name='homework', on_delete=models.CASCADE, null=True,
                                  verbose_name='Домашнее задание')
+
+    class Meta:
+        ordering = ['date', 'order']
+
+    def __str__(self):
+        return self.subject.title
